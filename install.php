@@ -17,7 +17,7 @@
 			$myfile = fopen("admin/library/settings.php", "w") or die("Unable to open file!");
 			fwrite($myfile, $settings);
 			fclose($myfile);
-			header('Location: admin/?install=1');
+			header('Location: admin/');
 		}
 	}
 
