@@ -1,5 +1,7 @@
 <?php
 	$lang=new stdClass();
+	
+	//Menu
 	$lang->menu=array(
 		array("Start","home"),
 		array("Seiten","sites"),
@@ -15,5 +17,13 @@
 			array("Cache","settings/caching")
 		))
 	);
+
+	//Settings->user
+	$lang->userName="Benutzername";
+	$lang->rights="Rechte";
+	$lang->language="Sprache";
+
+	//Footer
 	$lang->footer="newCMS von Lukas Wallmann";
+
 ?>
