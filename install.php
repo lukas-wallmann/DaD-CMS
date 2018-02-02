@@ -10,10 +10,8 @@
 		if (mysqli_connect_errno()){
 			echo "Failed to connect to MySQL: " . mysqli_connect_error();
 		}else{
-			$caching='$cache=false;';
-			if(isset($_POST["caching"]))$caching='$cache=true;';
 
-			$settings='<?php $_DB=array("'.$_POST["dbhost"].'","'.$_POST["dbuser"].'","'.$_POST["dbpass"].'","'.$_POST["dbname"].'");'.$caching.' ?>';
+			$settings='<?php $_DB=array("'.$_POST["dbhost"].'","'.$_POST["dbuser"].'","'.$_POST["dbpass"].'","'.$_POST["dbname"].'"); ?>';
 			$myfile = fopen("admin/library/settings.php", "w") or die("Unable to open file!");
 			fwrite($myfile, $settings);
 			fclose($myfile);
