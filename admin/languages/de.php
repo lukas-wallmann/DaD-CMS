@@ -1,6 +1,12 @@
 <?php
 	$lang=new stdClass();
 
+	//General
+	$lang->save="speichern";
+	$lang->delete="löschen";
+	$lang->up="hoch";
+	$lang->down="runter";
+
 	//Menu
 	$lang->menu=array(
 		array("Start","home"),
@@ -23,6 +29,14 @@
 	$lang->rights="Rechte";
 	$lang->language="Sprache";
 	$lang->email="E-Mail";
+
+	//Settings->imageformats
+	$lang->imageformatName="Bildformat";
+	$lang->imageformatValue="Ausschnitt";
+	$lang->imageformatFitin="Einpassen";
+	$lang->imageformatCut="Ausschneiden";
+	$lang->imageformatWidth="Breite";
+	$lang->imageformatHeight="Höhe";
 
 	//Footer
 	$lang->footer="newCMS von Lukas Wallmann";

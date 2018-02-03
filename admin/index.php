@@ -4,7 +4,12 @@
 	error_reporting(E_ALL);
 	include "library/_core.php";
 
-	include "includes/header.php";
-	include $_modulFile;
-	include "includes/footer.php";
+	if(isset($_GET["no"])){ //no = no output, its for saving operations
+		include $_modulFile;
+	}else{
+		include "includes/header.php";
+		include $_modulFile;
+		include "includes/footer.php";
+	}
+
 ?>
