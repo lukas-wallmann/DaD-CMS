@@ -4,7 +4,7 @@
 
 	function getDir(){
 		$url = $_SERVER['REQUEST_URI']; //returns the current URL
-		$parts = explode('/',$url);
+		$parts = explode('/',explode("?",$url)[0]);
 		$dir = "";
 		$m=1;
 		if($parts[count($parts) - 2]=="admin")$m=2;

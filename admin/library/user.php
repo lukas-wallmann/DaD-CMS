@@ -15,7 +15,6 @@
 			}
 		}
 	}
-
 	function setLoginSession($id,$user,$pass,$lang,$rights){
 		$_SESSION["id"]=$id;
 		$_SESSION["user"]=$user;
