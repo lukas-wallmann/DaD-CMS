@@ -6,7 +6,8 @@
 	$lang->delete="löschen";
 	$lang->up="hoch";
 	$lang->down="runter";
-
+	$lang->cancel="abbrechen";
+	
 	//Menu
 	$lang->menu=array(
 		array("Start","home"),
@@ -34,7 +35,9 @@
 	$lang->password="Passwort";
 	$lang->rightsRead="Rechte lesen";
 	$lang->rightsWrite="Rechte schreiben";
-
+	$lang->newPassword="Neues Passwort";
+	$lang->deleteUser="Benutzer löschen";
+	$lang->confirmDeleteUser="Benutzer wirklich löschen";
 
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";

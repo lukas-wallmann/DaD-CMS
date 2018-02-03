@@ -3,6 +3,7 @@ $_currentNavPoint="";
 
 function writeNav(){
   global $_currentNavPoint,$lang,$_modul;
+  $rights=json_decode($_SESSION["rights"]);
   $dropdowns=0;
   for($i=0; $i<count($lang->menu); $i++){
     $a=$lang->menu[$i];
@@ -17,7 +18,7 @@ function writeNav(){
       $dropdown="dropdown";
     }
     if($dropdown!="dropdown"){
-      echo '<li class="nav-item '.$active.'"><a class="nav-link" href="?m='.$a[1].'">'.$a[0].'</a></li>';
+      if(in_array($a[1],$rights->disallowRead)==false)echo '<li class="nav-item '.$active.'"><a class="nav-link" href="?m='.$a[1].'">'.$a[0].'</a></li>';
     }else{
       $dropdownpoints="";
       for($j=0; $j<count($a[2]);$j++){
@@ -27,8 +28,11 @@ function writeNav(){
             $act="active";
             $_currentNavPoint=$b[0];
           }
-          $dropdownpoints.='<a class="dropdown-item '.$act.'" href="?m='.$b[1].'">'.$b[0].'</a>';
-
+          if(in_array($b[1],$rights->disallowRead)==false){
+            $dropdownpoints.='<a class="dropdown-item '.$act.'" href="?m='.$b[1].'">'.$b[0].'</a>';
+          }else if($b[1]=="settings/users"){
+            $dropdownpoints.='<a class="dropdown-item '.$act.'" href="?m=settings/users&f=edit&ID='.$_SESSION["id"].'">'.$b[0].'</a>';
+          }
       }
       echo '<li class="nav-item dropdown '.$active.'"><a class="nav-link dropdown-toggle" href="?m='.$a[1].'" id="dropdown'.$dropdowns.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$a[0].'</a><div class="dropdown-menu" aria-labelledby="dropdown'.$dropdowns.'">'.$dropdownpoints.'</div></li>';
     }
