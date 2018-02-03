@@ -29,6 +29,12 @@
 	$lang->rights="Rechte";
 	$lang->language="Sprache";
 	$lang->email="E-Mail";
+	$lang->newUser="neuer Benutzer";
+	$lang->createUser="Benutzer erstellen";
+	$lang->password="Passwort";
+	$lang->rightsRead="Rechte lesen";
+	$lang->rightsWrite="Rechte schreiben";
+
 
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";

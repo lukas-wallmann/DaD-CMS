@@ -18,3 +18,6 @@
 ?>
 </tbody>
 </table>
+<form action="?m=settings/users&f=new" method="post">
+  <button type="submit" class="btn btn-primary mt-3"><?php echo $lang->newUser; ?></button>
+</form>

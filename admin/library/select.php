@@ -9,4 +9,13 @@
     $code.="</select>";
     return $code;
   }
+  function langSelect($v=""){
+    $files=scandir("languages");
+    $a=array();
+    for($i=2;$i<count($files);$i++){
+      $lang=explode(".",$files[$i])[0];
+      array_push($a,array($lang,$lang));
+    }
+    return select("lang",$a,$v);
+  }
 ?>
