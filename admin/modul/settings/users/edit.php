@@ -1,4 +1,5 @@
 <?php
+  if(isset($_GET["msg"]) && $_GET["msg"]=="saved")echo '<div class="p-3 mb-2 bg-primary text-white">saved</div>';
   if(isset($_GET["q"])){
     if($_GET["q"]=="del"){
       die('<form action="?m=settings/users&f=edit&q=delnow&ID='.$_GET["ID"].'" method="post">
@@ -11,12 +12,19 @@
     }
   }
   if(isset($_POST["username"])){
+    $newRights=json_decode($_POST["rights"]);
+    for($i=0; $i<count($_rights->disallowRead); $i++){
+      if(!in_array($_rights->disallowRead[$i],$newRights->disallowRead))die("Nice try motherfucker!");
+    }
+    for($i=0; $i<count($_rights->disallowWrite); $i++){
+      if(!in_array($_rights->disallowWrite[$i],$newRights->disallowWrite))die("Nice try motherfucker!");
+    }
     if(isset($_POST["password"]) && $_POST["password"]!=""){
       mysqli_query($_dbcon,"UPDATE `users` SET `User` = '".$_POST["username"]."',`Password` = '".password_hash($_POST["password"], PASSWORD_DEFAULT)."', `Rights` = '".$_POST["rights"]."', `Language` = '".$_POST["lang"]."', `Email` = '".$_POST["email"]."' WHERE `users`.`ID` = ".$_GET["ID"].";");
     }else{
       mysqli_query($_dbcon,"UPDATE `users` SET `User` = '".$_POST["username"]."', `Rights` = '".$_POST["rights"]."', `Language` = '".$_POST["lang"]."', `Email` = '".$_POST["email"]."' WHERE `users`.`ID` = ".$_GET["ID"].";");
     }
-    header("Location:?m=settings/users");
+    header("Location:?m=settings/users&f=edit&msg=saved&ID=".$_GET["ID"]);
   }
 
   $res=mysqli_query($_dbcon,"Select * From users Where ID=".$_GET["ID"]);

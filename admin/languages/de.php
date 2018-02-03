@@ -7,7 +7,7 @@
 	$lang->up="hoch";
 	$lang->down="runter";
 	$lang->cancel="abbrechen";
-	
+
 	//Menu
 	$lang->menu=array(
 		array("Start","home"),
@@ -49,5 +49,5 @@
 
 	//Footer
 	$lang->footer="newCMS von Lukas Wallmann";
-
+	$lang->logout="ausloggen";
 ?>
