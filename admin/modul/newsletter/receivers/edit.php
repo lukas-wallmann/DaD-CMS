@@ -1,4 +1,7 @@
 <?php
+  if(isset($_GET["a"]) && $_GET["a"]=="import"){
+    die("sucess");
+  }
   if($_GET["ID"]=="NEW"){
     $row=array();
     $row["Name"]=$lang->newReceiverlist;
@@ -50,10 +53,58 @@
           refreshPreview();
         });
         $("#dialog .import").click(function(){
-          alert("import now")
+          importNow();
         });
         refreshPreview();
       };
+
+      function importNow(){
+        var objects=[];
+        var name=-1;
+        var email=-1;
+        $(".row.selectes select").each(function(){
+          if($(this).val()=="Email")email=$(this).parent().attr("data-col");
+          if($(this).val()=="Name")name=$(this).parent().attr("data-col");
+        })
+        if(email>-1){
+          $(".row.data").each(function(){
+            var e=$(this).find(".col."+email).text();
+            var n="";
+            if(name!=-1)n=$(this).find(".col."+name).text();
+            var o={};
+            o.Email=e;
+            o.Name=n;
+            objects.push(o);
+            $(this).remove();
+          });
+          $(".row.selectes").remove();
+          runImport(0,objects);
+        }else{
+            alert("<?php echo $lang->errorSelectAtLeastEmail ?>");
+        }
+      }
+
+      function runImport(n,o){
+        if(n==0)$("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>')
+        var pro=Math.round(n/o.length*10000)/100;
+        $(".prog-bar").css("width",pro+"%").text(pro+"%");
+        var data=o[n];
+        $.ajax({
+          type: "POST",
+          url: "?m=newsletter/receivers&f=edit&no=1&a=import&ID=<?php echo $_GET["ID"] ?>",
+          data: data,
+          success: function(){
+            n++;
+            if(n!=o.length){
+              runImport(n,o);
+            }else{
+              document.location.href="?m=newsletter/receivers";
+            }
+          }
+        });
+
+
+      }
 
       function refreshPreview(){
 
@@ -67,15 +118,15 @@
         for(var i=check; i<data.length; i++){
           var d=data[i].split(",");
           if(i==check){
-            html.push("<div class='row'>");
+            html.push("<div class='row selectes'>");
             for(var j=0; j<d.length; j++){
               var email="";
               if(d[j].split("@").length>1)email="<option value='Email' selected>Email</option>";
-              html.push("<div class='col "+j+"'><select><option value='not'>not import</option>"+email+"<option value='Name'>Name</option></select></div>");
+              html.push("<div class='col' data-col='"+j+"'><select><option value='not'>not import</option>"+email+"<option value='Name'>Name</option></select></div>");
             }
             html.push("</div>");
           }
-          html.push("<div class='row'>");
+          html.push("<div class='row data'>");
           for(var j=0; j<d.length; j++){
             html.push("<div class='col "+j+"'>"+d[j]+"</div>");
           }
@@ -90,8 +141,8 @@
 <h3><?php echo $lang->receiverImport ?></h3>
 <input type='file' onchange='openFile(event)'><br>
 <div id="dialog" class="mt-3" style="display:none">
-  <input type="checkbox" class="firstLineHeading" id="checkbox"><label for="checkbox">First line is heading</label><br>
-  <button class="import btn btn-danger">import</button>
+  <input type="checkbox" class="firstLineHeading" id="checkbox"><label for="checkbox"><?php echo $lang->firstLineHeading ?></label><br>
+  <button class="import btn btn-danger"><?php echo $lang->import ?></button>
 </div>
 <div id='output' class="mt-3">
 </div>

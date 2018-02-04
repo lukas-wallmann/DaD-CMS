@@ -29,6 +29,9 @@
 	$lang->receiverlist="Empfängergruppe";
 	$lang->newReceiverlist="neue Empfängergruppe";
 	$lang->receiverImport="Importiere Empfänger aus .txt oder .csv Datei";
+	$lang->import="importiern";
+	$lang->firstLineHeading="Die erste Zeile enthält Überschriften";
+	$lang->errorSelectAtLeastEmail="Bitte mindestens Feld Email für import auswählen";
 
 	//Settings->user
 	$lang->userName="Benutzername";
