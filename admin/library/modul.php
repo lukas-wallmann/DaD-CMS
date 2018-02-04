@@ -15,4 +15,16 @@
 	$f="index";
 	if(isset($_GET["f"]))$f=$_GET["f"];
 	$_modulFile="modul/".$_modul."/".$f.".php";
+
+	function checkWritePerm(){
+		global $_rights, $_modul;
+		if(in_array($_modul,$_rights->disallowWrite)){
+			if($_modul=="settings/users"){
+				if($_GET["ID"]!=$_SESSION["id"] || $_GET["f"]!="edit")die("Permission denied");
+			}else{
+				die("Permission denied");
+			}
+		}
+	}
+
 ?>

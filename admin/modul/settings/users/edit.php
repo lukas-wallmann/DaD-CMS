@@ -7,11 +7,13 @@
       </form><a href="?m=settings/users"><button type="submit" class="btn btn-primary mt-3">'.$lang->cancel.'</button></a>');
     }
     if($_GET["q"]=="delnow"){
+      checkWritePerm();
       mysqli_query($_dbcon,"DELETE FROM `users` WHERE `users`.`ID` =".$_GET["ID"]);
       header("Location:?m=settings/users");
     }
   }
   if(isset($_POST["username"])){
+    checkWritePerm();
     $newRights=json_decode($_POST["rights"]);
     for($i=0; $i<count($_rights->disallowRead); $i++){
       if(!in_array($_rights->disallowRead[$i],$newRights->disallowRead))die("Nice try motherfucker!");

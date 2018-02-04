@@ -26,6 +26,7 @@ function writeNav(){
           $act="";
           if($_modul==$b[1]){
             $act="active";
+            $active="active";
             $_currentNavPoint=$b[0];
           }
           if(in_array($b[1],$rights->disallowRead)==false){

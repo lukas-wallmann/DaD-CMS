@@ -25,6 +25,11 @@
 		))
 	);
 
+	//Newsletter
+	$lang->receiverlist="Empfängergruppe";
+	$lang->newReceiverlist="neue Empfängergruppe";
+	$lang->receiverImport="Importiere Empfänger aus .txt oder .csv Datei";
+
 	//Settings->user
 	$lang->userName="Benutzername";
 	$lang->rights="Rechte";

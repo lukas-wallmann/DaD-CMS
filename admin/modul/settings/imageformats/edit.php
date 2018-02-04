@@ -1,5 +1,6 @@
 <?php
   if(isset($_POST["mode"])){
+    checkWritePerm();
     mysqli_query($_dbcon,"UPDATE `settings` SET `Value` = '".$_POST["mode"].":".$_POST["width"]."x".$_POST["height"]."' WHERE `settings`.`ID` = ".$_GET[ID].";");
     header("Location:?m=settings/imageformats");
     die("no more to say");
