@@ -65,24 +65,26 @@
         if(opt.forgetFirstLine)check=1;
 
         for(var i=check; i<data.length; i++){
-
           var d=data[i].split(",");
-
           if(i==check){
+            html.push("<div class='row'>");
             for(var j=0; j<d.length; j++){
-              alert(d[j].split("@"));
-              if(d[j].split("@").length>1){
-                email=j;
-              }else{
-                name=j;
-              }
+              var email="";
+              if(d[j].split("@").length>1)email="<option value='Email' selected>Email</option>";
+              html.push("<div class='col "+j+"'><select><option value='not'>not import</option>"+email+"<option value='Name'>Name</option></select></div>");
             }
-            alert("email:"+email+" name:"+name)
-
+            html.push("</div>");
           }
+          html.push("<div class='row'>");
+          for(var j=0; j<d.length; j++){
+            html.push("<div class='col "+j+"'>"+d[j]+"</div>");
+          }
+          html.push("</div>");
+
         }
-        $("#output").append(html.join(""));
+        $("#output").html(html.join(""));
       }
+
 
 </script>
 <h3><?php echo $lang->receiverImport ?></h3>
@@ -91,5 +93,5 @@
   <input type="checkbox" class="firstLineHeading" id="checkbox"><label for="checkbox">First line is heading</label><br>
   <button class="import btn btn-danger">import</button>
 </div>
-<div id='output'>
+<div id='output' class="mt-3">
 </div>
