@@ -12,6 +12,7 @@
 	$lang->menu=array(
 		array("Start","home"),
 		array("Seiten","sites"),
+		array("Dateien","files"),
 		array("Header","header"),
 		array("Newsletter","newsletter/newsletter",array(
 			array("Newsletter","newsletter/newsletter"),
@@ -27,7 +28,10 @@
 
 	//Newsletter
 	$lang->receiverlist="Empfängergruppe";
+	$lang->receivers="Empfänger";
 	$lang->newReceiverlist="neue Empfängergruppe";
+	$lang->deleteReceiverGroup="Empfängergruppe löschen";
+	$lang->confirmDeleteReceiverGroup="Empfängergruppe wirklich löschen?";
 	$lang->receiverImport="Importiere Empfänger aus .txt oder .csv Datei";
 	$lang->import="importiern";
 	$lang->firstLineHeading="Die erste Zeile enthält Überschriften";

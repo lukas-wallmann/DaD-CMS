@@ -1,10 +1,27 @@
 <?php
-  if(isset($_GET["a"]) && $_GET["a"]=="import"){
-    $mail=$_POST["Email"];
-    $name="";
-    if(isset($_POST["Name"]))$name=$_POST["Name"];
-    checkWritePerm();
-    die("sucess:".$mail." :".$name);
+  if(isset($_GET["a"])){
+    if($_GET["a"]=="import"){
+      $mail=$_POST["Email"];
+      $name="";
+      $id=$_GET["ID"];
+      if(isset($_POST["Name"]))$name=$_POST["Name"];
+      checkWritePerm();
+      mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email, GroupID)
+      SELECT * FROM (SELECT '".$name."', '".$mail."', '".$id."') AS tmp
+      WHERE NOT EXISTS (
+          SELECT name FROM newsletterReceivers WHERE Email = '".$mail."' AND GroupID=".$id."
+      ) LIMIT 1;");
+      die("success");
+    }
+    if($_GET["a"]=="del"){
+      die("<h2>".$lang->confirmDeleteReceiverGroup."<h2><a href='?m=newsletter/receivers&f=edit&a=delnow&ID=".$_GET["ID"]."'><button class='btn btn-danger mr-3'>".$lang->delete."</button></a><a href='?m=newsletter/receivers'><button class='btn btn-primary'>".$lang->cancel."</button></a>");
+    }
+    if($_GET["a"]=="delnow"){
+      checkWritePerm();
+      mysqli_query($_dbcon,"DELETE FROM `newsletterReceiverGroups` WHERE `newsletterReceiverGroups`.`ID` = ".$_GET["ID"]);
+      mysqli_query($_dbcon,"DELETE FROM `newsletterReceivers` WHERE `newsletterReceivers`.`GroupID` = ".$_GET["ID"]);
+      header("Location:?m=newsletter/receivers");
+    }
   }
   if($_GET["ID"]=="NEW"){
     $row=array();
@@ -29,6 +46,9 @@
     <button type="submit" class="btn btn-primary mt-3"><?php echo $lang->save ?></button>
 </form>
 <?php   if($_GET["ID"]!="NEW"){ ?>
+<a href="?m=newsletter/receivers&f=edit&a=del&ID=<?php echo $_GET["ID"]?>">
+  <button class="btn btn-danger mt-3"><?php echo $lang->deleteReceiverGroup ?></button>
+</a>
 <script>
 
         var importData="";
@@ -79,7 +99,12 @@
           $("#fileselect").hide();
           $("form").hide();
           $(".row.selectes").remove();
-          runImport(0,email,name);
+          $("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>');
+          if(!opt.forgetFirstLine){
+            runImport(0,email,name);
+          }else{
+            runImport(1,email,name);
+          }
         }else{
             alert("<?php echo $lang->errorSelectAtLeastEmail ?>");
         }
@@ -87,7 +112,6 @@
 
       function runImport(n,email,name){
 
-        if(n==0)$("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>')
         var pro=Math.round(n/importData.length*10000)/100;
         $(".prog-bar").css("width",pro+"%").text(pro+"%");
         var fields=importData[n].split(",");
