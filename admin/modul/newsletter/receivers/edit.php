@@ -1,6 +1,10 @@
 <?php
   if(isset($_GET["a"]) && $_GET["a"]=="import"){
-    die("sucess");
+    $mail=$_POST["Email"];
+    $name="";
+    if(isset($_POST["Name"]))$name=$_POST["Name"];
+    checkWritePerm();
+    die("sucess:".$mail." :".$name);
   }
   if($_GET["ID"]=="NEW"){
     $row=array();
@@ -24,9 +28,11 @@
     <input type="text" name="name" value="<?php echo $row["Name"] ?>" class="form-control">
     <button type="submit" class="btn btn-primary mt-3"><?php echo $lang->save ?></button>
 </form>
+<?php   if($_GET["ID"]!="NEW"){ ?>
 <script>
 
         var importData="";
+        var rawData="";
 
         function openFile(event) {
           var input = event.target;
@@ -34,6 +40,7 @@
           var reader = new FileReader();
           reader.onload = function(){
             importData = reader.result;
+            rawData = reader.result;
             openDialog();
           };
           reader.readAsText(input.files[0]);
@@ -67,36 +74,34 @@
           if($(this).val()=="Name")name=$(this).parent().attr("data-col");
         })
         if(email>-1){
-          $(".row.data").each(function(){
-            var e=$(this).find(".col."+email).text();
-            var n="";
-            if(name!=-1)n=$(this).find(".col."+name).text();
-            var o={};
-            o.Email=e;
-            o.Name=n;
-            objects.push(o);
-            $(this).remove();
-          });
+          $("#output").html("");
+          $("#dialog").hide();
+          $("#fileselect").hide();
+          $("form").hide();
           $(".row.selectes").remove();
-          runImport(0,objects);
+          runImport(0,email,name);
         }else{
             alert("<?php echo $lang->errorSelectAtLeastEmail ?>");
         }
       }
 
-      function runImport(n,o){
+      function runImport(n,email,name){
+
         if(n==0)$("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>')
-        var pro=Math.round(n/o.length*10000)/100;
+        var pro=Math.round(n/importData.length*10000)/100;
         $(".prog-bar").css("width",pro+"%").text(pro+"%");
-        var data=o[n];
+        var fields=importData[n].split(",");
+        var data={};
+        data.Email=fields[email];
+        data.Name=fields[name];
         $.ajax({
           type: "POST",
           url: "?m=newsletter/receivers&f=edit&no=1&a=import&ID=<?php echo $_GET["ID"] ?>",
           data: data,
           success: function(){
             n++;
-            if(n!=o.length){
-              runImport(n,o);
+            if(n!=importData.length){
+              runImport(n,email,name);
             }else{
               document.location.href="?m=newsletter/receivers";
             }
@@ -109,14 +114,15 @@
       function refreshPreview(){
 
         var html=[];
-        var data=importData.split("\n");
+        importData=rawData.split("\n");
         var check=0;
         var email=0;
         var name=-1;
         if(opt.forgetFirstLine)check=1;
+        var l=importData.length;
 
-        for(var i=check; i<data.length; i++){
-          var d=data[i].split(",");
+        for(var i=check; i<l && i<50; i++){
+          var d=importData[i].split(",");
           if(i==check){
             html.push("<div class='row selectes'>");
             for(var j=0; j<d.length; j++){
@@ -138,11 +144,12 @@
 
 
 </script>
-<h3><?php echo $lang->receiverImport ?></h3>
-<input type='file' onchange='openFile(event)'><br>
+<h3 class="mt-5"><?php echo $lang->receiverImport ?></h3>
+<input id="fileselect" type='file' onchange='openFile(event)'><br>
 <div id="dialog" class="mt-3" style="display:none">
   <input type="checkbox" class="firstLineHeading" id="checkbox"><label for="checkbox"><?php echo $lang->firstLineHeading ?></label><br>
   <button class="import btn btn-danger"><?php echo $lang->import ?></button>
 </div>
 <div id='output' class="mt-3">
 </div>
+<?php } ?>
