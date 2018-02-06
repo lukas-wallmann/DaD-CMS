@@ -19,6 +19,46 @@ footer {
 	max-width: 400px;
 	padding: 20px;
 }
+/* filebrowser */
+#filebrowser .entry {
+    width: 120px;
+    height: 140px;
+    float: left;
+    position: relative;
+    margin: 0 20px 20px 0;
+		border: 1px solid #aaa;
+}
+#filebrowser .entry .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    font-size: 90px;
+    line-height: 120px;
+    text-align: center;
+		cursor: pointer;
+}
+#filebrowser .entry .title {
+    position: absolute;
+    bottom: 0;
+		background: #fff;
+		width: 100%;
+		padding: 0 8px;
+		line-height: 20px;
+}
+#filebrowser .entry .title span{
+	cursor: pointer;
+	display: block;
+}
+#filebrowser .entry .title .controls{
+	display: none;
+}
+#filebrowser .entry .title:hover .controls{
+	display: block;
+}
+
+
 /**Buttons**/
 // Button variants
 //
@@ -129,4 +169,3 @@ footer {
     border-radius: 0;
   }
 }
-
