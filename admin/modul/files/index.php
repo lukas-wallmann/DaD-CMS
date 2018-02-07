@@ -26,6 +26,8 @@
      if($mode=="upload"){
       checkWritePerm();
       $path = $_dir.$_REQUEST['filename'];
+      $dirname=dirname($path);
+      if(!file_exists($dirname))mkdir($dirname);
       file_put_contents($path, file_get_contents($_POST['data']));
       die("uploaded");
      }
@@ -47,9 +49,17 @@
       rrmdir($_dir);
     }
 
-    if($mode=="deletefile"){
+    if($mode=="deletefiles"){
       checkWritePerm();
-      unlink($_dir.$_REQUEST["file"]);
+      $files=explode(";",$_REQUEST["files"]);
+      for($i=0; $i<count($files); $i++){
+        unlink($_dir.$files[$i]);
+      }
+    }
+
+    if($mode=="rename"){
+      checkWritePerm();
+      rename($_dir.$_REQUEST["curname"],$_dir.$_REQUEST["newname"]);
     }
 
     die("");
@@ -61,7 +71,7 @@
       <input id="fileInput" type="file" style="display:none;" multiple/>
       <button class="btn btn-secondary mr-2 upload" onclick="document.getElementById('fileInput').click();"><i class="fas fa-upload"></i></button>
       <button class="btn btn-secondary mr-2 newfolder"><i class="fas fa-folder"></i></button>
-      <div class="prog" style="display:none; background:#ccc; height:10px"><div class="bar bg-primary" style="width:0%; height:10px"></div></div>
+      <div class="prog mt-3" style="display:none; background:#ccc; height:10px"><div class="bar bg-primary" style="width:0%; height:10px"></div></div>
     </div>
     <div class="address mb-3"></div>
   </div>
