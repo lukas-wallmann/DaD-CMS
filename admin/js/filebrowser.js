@@ -26,6 +26,8 @@ var fb={
     start:function(){
       fb.uploader.at=0;
       fb.uploader.cat=0;
+      fb.uploader.wait=0;
+      fb.uploader.wat=0;
       fb.uploader.cache=[];
       fb.uploader.run();
     },
@@ -234,8 +236,15 @@ var fb={
       var curname=$(this).parent().parent().parent().find(".title > span").text();
       var newname = prompt("Please enter a new name", curname);
       if (newname != null) {
-          var o={mode:"rename",curname:curname,newname:newname};
-          fb.req(o,fb.init);
+          var o={mode:"rename",curname:curname,newname:newname, dir:fb.dir};
+          if(curname.split(".jpg").lenght==1){
+            fb.req(o,fb.init);
+          }else{
+            fb.req(o,fb.init);
+            o.curname="__thumps/"+o.curname;
+            o.newname="__thumps/"+o.newname;
+            fb.req(o,fb.init);
+          }
       }
     });
     $("#filebrowser .entry .del").click(function(){
