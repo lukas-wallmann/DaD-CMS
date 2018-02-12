@@ -15,9 +15,9 @@
 <div class="container-fluid container-login bg-dark text-white">
 <h1>Please login</h1>
 <form class="login" method="post" action="index.php?login=1">
-	<div><label>user:</label><input name="user" class="form-control"></div><br><br>
-	<div><label>password:</label><input name="pass" type="password" class="form-control"></div><br><br>
-	<button class="btn btn-lg btn-block btn-primary" type="submit">login</button>
+	<div><label>user:</label><input name="user" class="form-control"></div>
+	<div class="mt-3"><label>password:</label><input name="pass" type="password" class="form-control"></div>
+	<button class="btn btn-lg btn-block btn-primary mt-3" type="submit">login</button>
 </form>
 </div>
 </body>

@@ -14,13 +14,14 @@
       die("success");
     }
     if($_GET["a"]=="del"){
-      die("<h2>".$lang->confirmDeleteReceiverGroup."<h2><a href='?m=newsletter/receivers&f=edit&a=delnow&ID=".$_GET["ID"]."'><button class='btn btn-danger mr-3'>".$lang->delete."</button></a><a href='?m=newsletter/receivers'><button class='btn btn-primary'>".$lang->cancel."</button></a>");
+      die("<h2>".$lang->confirmDeleteReceiverGroup."<h2><a href='?m=newsletter/receivers&no=1&f=edit&a=delnow&ID=".$_GET["ID"]."'><button class='btn btn-danger mr-3'>".$lang->delete."</button></a><a href='?m=newsletter/receivers'><button class='btn btn-primary'>".$lang->cancel."</button></a>");
     }
     if($_GET["a"]=="delnow"){
       checkWritePerm();
       mysqli_query($_dbcon,"DELETE FROM `newsletterReceiverGroups` WHERE `newsletterReceiverGroups`.`ID` = ".$_GET["ID"]);
       mysqli_query($_dbcon,"DELETE FROM `newsletterReceivers` WHERE `newsletterReceivers`.`GroupID` = ".$_GET["ID"]);
       header("Location:?m=newsletter/receivers");
+      die("");
     }
   }
   if($_GET["ID"]=="NEW"){
@@ -46,7 +47,7 @@
     <button type="submit" class="btn btn-primary mt-3"><?php echo $lang->save ?></button>
 </form>
 <?php   if($_GET["ID"]!="NEW"){ ?>
-<a href="?m=newsletter/receivers&f=edit&a=del&ID=<?php echo $_GET["ID"]?>">
+<a class="delete" href="?m=newsletter/receivers&f=edit&a=del&ID=<?php echo $_GET["ID"]?>">
   <button class="btn btn-danger mt-3"><?php echo $lang->deleteReceiverGroup ?></button>
 </a>
 <script>
@@ -98,6 +99,7 @@
           $("#dialog").hide();
           $("#fileselect").hide();
           $("form").hide();
+          $(".delete").hide();
           $(".row.selectes").remove();
           $("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>');
           if(!opt.forgetFirstLine){
