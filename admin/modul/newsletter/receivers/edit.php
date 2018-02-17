@@ -6,10 +6,16 @@
       $id=$_GET["ID"];
       if(isset($_POST["Name"]))$name=$_POST["Name"];
       checkWritePerm();
-      mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email, GroupID)
-      SELECT * FROM (SELECT '".$name."', '".$mail."', '".$id."') AS tmp
+      mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email)
+      SELECT * FROM (SELECT '".$name."', '".$mail."') AS tmp
       WHERE NOT EXISTS (
-          SELECT name FROM newsletterReceivers WHERE Email = '".$mail."' AND GroupID=".$id."
+          SELECT name FROM newsletterReceivers WHERE Email = '".$mail."'
+      ) LIMIT 1;");
+      $ID=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From newsletterReceivers WHERE Email='".$mail."'"))["ID"];
+      mysqli_query($_dbcon,"INSERT INTO newsletterReceiversGroupLinks (ReceiverID, GroupID)
+      SELECT * FROM (SELECT '".$ID."', '".$id."') AS tmp
+      WHERE NOT EXISTS (
+          SELECT ReceiverID FROM newsletterReceiversGroupLinks WHERE ReceiverID = '".$ID."'
       ) LIMIT 1;");
       die("success");
     }
@@ -19,7 +25,7 @@
     if($_GET["a"]=="delnow"){
       checkWritePerm();
       mysqli_query($_dbcon,"DELETE FROM `newsletterReceiverGroups` WHERE `newsletterReceiverGroups`.`ID` = ".$_GET["ID"]);
-      mysqli_query($_dbcon,"DELETE FROM `newsletterReceivers` WHERE `newsletterReceivers`.`GroupID` = ".$_GET["ID"]);
+      mysqli_query($_dbcon,"DELETE FROM `newsletterReceiversGroupLinks` WHERE `newsletterReceiversGroupLinks`.`GroupID` = ".$_GET["ID"]);
       header("Location:?m=newsletter/receivers");
       die("");
     }
