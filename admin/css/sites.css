@@ -1,0 +1,53 @@
+.draggable {
+  width: 70px;
+  height: 70px;
+  font-size: 35px;
+  line-height: 60px;
+  vertical-align: top;
+  color:#fff;
+  border:1px solid;
+  display:inline-block;
+  margin: 0 5px 5px 0;
+ }
+.itm{
+  height:100px;
+  margin:20px 0;
+  background: #ccc;
+}
+.ui-draggable-dragging{
+  z-index:9999;
+  opacity: 0.5;
+}
+.itm:hover .handle{
+  display: block;
+}
+.itm .handle{
+  display: none;
+  height: 1px;
+  background:#000;
+  cursor: pointer;
+  position: relative;
+}
+.itm .handle .dragger {
+  height: 20px;
+  width: 50px;
+  background: #000;
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -20px;
+  margin-left: -25px;
+}
+#placeholder{
+  position: relative;
+  z-index: 99999;
+  margin: -1px 0;
+  height: 2px;
+  background: #00ff00;
+}
+.itm .handle .delete {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  height: 20px;
+}
