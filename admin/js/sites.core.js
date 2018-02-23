@@ -3,7 +3,7 @@ $( function() {
   registerPlugin(
     "heading",
     '<i class="fas fa-heading"></i>',
-    function(){}
+    function(itm){console.log(itm)}
   );
   registerPlugin(
     "text",
@@ -25,12 +25,28 @@ $( function() {
     '<i class="fas fa-download"></i>',
     function(){}
   );
+  registerPlugin(
+    "form",
+    '<i class="far fa-address-card"></i>',
+    function(){}
+  )
   setFunctions();
 } );
 
+var $plugins=[];
 function registerPlugin(name,icon,fninit){
+  $plugins.push([name,fninit]);
   $('#elements').append('<div class="draggable btn bg-secondary" data-type="'+name+'">'+icon+'</div>');
 
+}
+
+function getFn(name,fn){
+  for(var i=0; i<$plugins.length; i++){
+    if($plugins[i][0]==name){
+      return $plugins[i][fn];
+      break;
+    }
+  }
 }
 
 function setFunctions(){
@@ -39,9 +55,14 @@ function setFunctions(){
   $( "#elements .draggable" ).draggable({ scroll: true, scrollSensitivity: 100, helper:"clone", drag:function(){
     checkHit($(".ui-draggable-dragging").offset())
   }, stop:function(){
-    $("#placeholder").replaceWith("<div class='itm'><div class='handle'><div class='dragger'></div><div class='delete'>delete</div></div><div class='content'>"+$(this).attr("data-type")+"</div></div>");
+    $("#placeholder").replaceWith("<div class='itm "+$(this).attr("data-type")+" init' data-type='"+$(this).attr("data-type")+"'><div class='handle'><div class='dragger'><i class='fas fa-ellipsis-h'></i></div><div class='delete'><i class='fas fa-trash'></i></div></div><div class='content'>"+$(this).attr("data-type")+"</div></div>");
     setFunctions();
   } });
+
+  $('#content .itm.init').each(function(){
+    getFn($(this).attr("data-type"),1)($(this));
+    $(this).removeClass("init");
+  })
 
   $( "#content .itm" ).draggable({ handle: ".handle .dragger",
    drag:function(){checkHit($(this).offset())},

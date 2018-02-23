@@ -18,25 +18,40 @@
   z-index:9999;
   opacity: 0.5;
 }
+.itm:hover{
+  border: 2px dashed #6c757d;
+}
 .itm:hover .handle{
   display: block;
 }
 .itm .handle{
   display: none;
-  height: 1px;
-  background:#000;
   cursor: pointer;
   position: relative;
 }
 .itm .handle .dragger {
   height: 20px;
   width: 50px;
-  background: #000;
+  background: #6c757d;
   display: block;
   position: absolute;
+  color:#fff;
+  font-size: 20px;
+  line-height: 10px;
+  text-align: center;
   left: 50%;
   top: -20px;
   margin-left: -25px;
+}
+.itm .handle .delete {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    top: -20px;
+    height: 20px;
+    background: #6c757d;
+    color: #fff;
+    padding: 0 10px;
 }
 #placeholder{
   position: relative;
@@ -44,10 +59,4 @@
   margin: -1px 0;
   height: 2px;
   background: #00ff00;
-}
-.itm .handle .delete {
-  position: absolute;
-  right: 0;
-  top: -20px;
-  height: 20px;
 }
