@@ -3,6 +3,7 @@
 
 	//General
 	$lang->save="speichern";
+	$lang->name="Name";
 	$lang->delete="löschen";
 	$lang->up="hoch";
 	$lang->down="runter";
@@ -22,6 +23,7 @@
 		array("Einstellungen","settings/users",array(
 			array("Benutzer","settings/users"),
 			array("Bildformate","settings/imageformats"),
+			array("Design","settings/themes"),
 			array("Cache","settings/caching")
 		))
 	);
@@ -50,6 +52,15 @@
 	$lang->newPassword="Neues Passwort";
 	$lang->deleteUser="Benutzer löschen";
 	$lang->confirmDeleteUser="Benutzer wirklich löschen";
+
+	//Settings->themes
+	$lang->importTheme="Design importiern";
+	$lang->newTheme="Neues Design";
+	$lang->newThemePart="Neues Design Teilstück";
+
+	$lang->plugins="Plugins";
+	$lang->pluginsVariants="Plugin Varianten";
+	$lang->newPlugin="Neues Plugin";
 
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";

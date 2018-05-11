@@ -32,4 +32,8 @@
       </div>
     </nav>
     <main role="main" class="container-fluid">
-			<h1><?php echo $_currentNavPoint ?></h1>
+		<?php
+			if(!isset($_GET["nh"])){
+				echo "<h1>".$_currentNavPoint."</h1>";
+			}
+		?>
