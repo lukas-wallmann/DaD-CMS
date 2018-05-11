@@ -4,7 +4,7 @@
     checkWritePerm();
     mysqli_query($_dbcon,"INSERT INTO `theme` (`ID`, `Name`, `Code`) VALUES (NULL, '".$_POST["name"]."', '');");
     $last_id = $_dbcon->insert_id;
-    header("Location:?m=settings/themes&f=edittheme&nh=1&id=".$last_id);
+    header("Location:?m=settings/themes&f=edittheme&nh=1&ID=".$last_id);
     die();
   }
 ?>

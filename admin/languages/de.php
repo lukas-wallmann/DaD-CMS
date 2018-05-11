@@ -62,6 +62,9 @@
 	$lang->pluginsVariants="Plugin Varianten";
 	$lang->newPlugin="Neues Plugin";
 
+	$lang->themeParts="Code Teile";
+	$lang->themePlugins="Plugins";
+
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";
 	$lang->imageformatValue="Ausschnitt";
@@ -73,4 +76,5 @@
 	//Footer
 	$lang->footer="newCMS von Lukas Wallmann";
 	$lang->logout="ausloggen";
+
 ?>
