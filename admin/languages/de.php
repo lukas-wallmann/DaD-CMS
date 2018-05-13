@@ -65,6 +65,8 @@
 	$lang->themeParts="Code Teile";
 	$lang->themePlugins="Plugins";
 
+	$lang->mainCode="Hauptcode";
+
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";
 	$lang->imageformatValue="Ausschnitt";
