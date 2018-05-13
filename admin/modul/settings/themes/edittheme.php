@@ -52,6 +52,7 @@
         data.newname=name;
         data.partID=id;
       }
+      if(action=="delete")data.deleteID=id;
       $.ajax({
         type: type,
         data: data,
@@ -60,9 +61,9 @@
         var json=JSON.parse(d);
         $(".menu.parts").html("");
         for(var i=0; i<json.length; i++){
-          $(".menu.parts").append('<div class="menu" data-id="'+json[i].ID+'" data-table="themePlugins"><span class="name">'+json[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span></div>');
+          $(".menu.parts").append('<div class="menu" data-id="'+json[i].ID+'" data-table="themeParts"><span class="name">'+json[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>');
         }
-        $(".menu.parts .menu .name, .maincode .name").click(function(){
+        $(".menu.parts .menu .name, .maincode .name").off().click(function(){
           codeEditor.getCode($(this).parent().attr("data-table"),$(this).parent().attr("data-id"));
         });
         $(".menu.parts .menu .edit").click(function(){
@@ -73,7 +74,14 @@
             function(){codeEditor.getThemeParts("rename",$(".cmd input").val(),tmpID)},
             function(){$(".cmd input").focus()}
           )
-        })
+        });
+        $(".menu.parts .menu .delete").click(function(){
+          var r=confirm("<?php echo $lang->delete ?>: "+$(this).parent().text());
+          if(r){
+            codeEditor.removeTemp($(this).parent().attr("data-id"),"themeParts");
+            codeEditor.getThemeParts("delete","",$(this).parent().attr("data-id"));
+          }
+        });
       });
 
 
@@ -124,6 +132,18 @@
         });
     }
 
+    },
+
+    removeTemp:function(id,table){
+      var tmp=[];
+      for(var i=0; i<codeEditor.cache.length; i++){
+        if(codeEditor.cache[i][0]!=id){
+          tmp.push(codeEditor.cache[i])
+        }else if(codeEditor.cache[i][1]!=table){
+          tmp.push(codeEditor.cache[i])
+        }
+      }
+      codeEditor.cache=tmp;
     },
 
     saveTemp:function(){

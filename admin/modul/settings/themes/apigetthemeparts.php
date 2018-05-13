@@ -9,6 +9,10 @@
     $partID=$_POST["partID"];
     mysqli_query($_dbcon,"UPDATE `themeParts` SET `Name` = '$name' WHERE `themeParts`.`ID` = $partID;");
   }
+  if(isset($_POST["deleteID"])){
+      $deleteID=$_POST["deleteID"];
+      mysqli_query($_dbcon,"DELETE FROM `themeParts` WHERE `themeParts`.`ID` = $deleteID");
+  }
 
   $res=mysqli_query($_dbcon,"SELECT * FROM `themeParts` WHERE `ThemeID`=$ID ORDER BY `Name`");
   $tmp=array();
