@@ -17,7 +17,7 @@
 </tbody>
 </table>
 
-
+<h1><?php echo $lang->plugins ?></h1>
 <a class="btn btn-primary mr-3 p-2" href="?m=settings/themes&f=newplugin&nh=1"><?php echo $lang->newPlugin ?></a>
 <a class="btn btn-primary p-2" href="?m=settings/themes&f=importplugin"><?php echo $lang->importPlugin ?></a>
 <table class="table table-striped mt-3">
