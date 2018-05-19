@@ -32,6 +32,13 @@
     cache:[],
 
     init:function(){
+      $(document).bind('keydown', function(e) {
+        if(e.ctrlKey && (e.which == 83)) {
+          e.preventDefault();
+          codeEditor.save();
+          return false;
+        }
+      });
       $(".themepart .b").click(function(){
         codeEditor.cmd(
           '<label class="mr-3"><?php echo $lang->name?></label><input>',
@@ -39,9 +46,32 @@
           function(){$(".cmd input").focus()}
         )
       });
+      $(".themeplugin .b").click(function(){
+        codeEditor.cmd(
+          '<label class="mr-3"><?php echo $lang->name?></label><input>',
+          function(){codeEditor.getPlugins("new",$(".cmd input").val())},
+          function(){$(".cmd input").focus()}
+        )
+      });
+      $(".save").click(function(){
+        codeEditor.save();
+      })
       codeEditor.getThemeParts();
       codeEditor.getPlugins();
     },
+
+    save:function(){
+      codeEditor.saveTemp();
+      var data={};
+      data.parts=JSON.stringify(codeEditor.cache);
+      $.ajax({
+        type: "POST",
+        url: "?m=settings/themes&f=apisavecode&no=1",
+        data: data
+      }).done(function(){
+        alert("done");
+      });
+          },
 
     getThemeParts:function(action="",name="", id=0){
       var type="GET";
@@ -64,6 +94,8 @@
           $(".menu.parts").append('<div class="menu" data-id="'+json[i].ID+'" data-table="themeParts"><span class="name">'+json[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>');
         }
         $(".menu.parts .menu .name, .maincode .name").off().click(function(){
+          $(".selected").removeClass("selected");
+          $(this).parent().addClass("selected");
           codeEditor.getCode($(this).parent().attr("data-table"),$(this).parent().attr("data-id"));
         });
         $(".menu.parts .menu .edit").click(function(){
@@ -80,6 +112,7 @@
           if(r){
             codeEditor.removeTemp($(this).parent().attr("data-id"),"themeParts");
             codeEditor.getThemeParts("delete","",$(this).parent().attr("data-id"));
+            $(".maincode .name").click();
           }
         });
       });
@@ -87,7 +120,49 @@
 
     },
 
-    getPlugins:function(){
+    getPlugins:function(action="",name="", id=0){
+      var type="GET";
+      if(action!="")type="POST";
+      var data={};
+      if(action=="new")data.name=name;
+      if(action=="rename"){
+        data.newname=name;
+        data.partID=id;
+      }
+      if(action=="delete")data.deleteID=id;
+      $.ajax({
+        type: type,
+        data: data,
+        url: "?m=settings/themes&f=apigetthemeparts&no=1&table=themePlugins&ID=<?php echo $_GET["ID"]?>"
+      }).done(function(d) {
+        var json=JSON.parse(d);
+        $(".menu.plugins").html("");
+        for(var i=0; i<json.length; i++){
+          $(".menu.plugins").append('<div class="menu" data-id="'+json[i].ID+'" data-table="themePlugins"><span class="name">'+json[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>');
+        }
+        $(".menu.plugins .menu .name").off().click(function(){
+          $(".selected").removeClass("selected");
+          $(this).parent().addClass("selected");
+          codeEditor.getCode($(this).parent().attr("data-table"),$(this).parent().attr("data-id"));
+        });
+        $(".menu.plugins .menu .edit").click(function(){
+          var tmpname=$(this).parent().text();
+          var tmpID=$(this).parent().attr("data-id");
+          codeEditor.cmd(
+            '<label class="mr-3"><?php echo $lang->name?></label><input value="'+tmpname+'">',
+            function(){codeEditor.getPlugins("rename",$(".cmd input").val(),tmpID)},
+            function(){$(".cmd input").focus()}
+          )
+        });
+        $(".menu.plugins .menu .delete").click(function(){
+          var r=confirm("<?php echo $lang->delete ?>: "+$(this).parent().text());
+          if(r){
+            codeEditor.removeTemp($(this).parent().attr("data-id"),"themePlugins");
+            codeEditor.getPlugins("delete","",$(this).parent().attr("data-id"));
+            $(".maincode .name").click();
+          }
+        });
+      });
 
     },
 
@@ -96,9 +171,12 @@
       html='<div class="cmd"><div class="inner"><form>'+html+'</form></div></div>';
       $("body").append(html);
       oninit();
-      $(".cmd .ctrl .ok").click(function(){
+      $(".cmd form").submit(function(e){
+        alert("DONE");
+
         onfinish();
         $(".cmd").remove();
+        e.preventDefault();
       });
       $(".cmd .ctrl .cancel").click(function(){
         $(".cmd").remove();
@@ -181,5 +259,9 @@
 .cmd .inner {
     background: #fff;
     padding: 20px;
+}
+.selected{
+  font-style: italic;
+  text-decoration: underline;
 }
 </style>
