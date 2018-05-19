@@ -16,3 +16,23 @@
 ?>
 </tbody>
 </table>
+
+
+<a class="btn btn-primary mr-3 p-2" href="?m=settings/themes&f=newplugin&nh=1"><?php echo $lang->newPlugin ?></a>
+<a class="btn btn-primary p-2" href="?m=settings/themes&f=importplugin"><?php echo $lang->importPlugin ?></a>
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th scope="col"><?php echo $lang->name ?></th>
+    </tr>
+  </thead>
+  <tbody>
+
+<?php
+  $res=mysqli_query($_dbcon,"Select * from plugins");
+  while($row=mysqli_fetch_assoc($res)){
+    echo "<tr><td><a href='?m=settings/themes&f=editplugin&nh=1&ID=".$row["ID"]."'>".$row["Name"]."</a></td></tr>";
+  }
+?>
+</tbody>
+</table>

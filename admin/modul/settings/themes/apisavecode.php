@@ -1,5 +1,6 @@
 <?php
 
+  checkWritePerm();
   $parts=json_decode($_POST["parts"]);
 
   for($i=0; $i<count($parts); $i++){

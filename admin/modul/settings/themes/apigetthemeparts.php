@@ -3,15 +3,18 @@
   $table=isset($_GET["table"]) ? $_GET["table"] : "themeParts";
 
   if(isset($_POST["name"])){
+    checkWritePerm();
     $name=$_POST["name"];
     mysqli_query($_dbcon,"INSERT INTO `$table` (`ID`, `ThemeID`, `Name`, `Code`) VALUES (NULL, $ID, '$name', '');");
   }
   if(isset($_POST["newname"])){
+    checkWritePerm();
     $name=$_POST["newname"];
     $partID=$_POST["partID"];
     mysqli_query($_dbcon,"UPDATE `$table` SET `Name` = '$name' WHERE `$table`.`ID` = $partID;");
   }
   if(isset($_POST["deleteID"])){
+      checkWritePerm();
       $deleteID=$_POST["deleteID"];
       mysqli_query($_dbcon,"DELETE FROM `$table` WHERE `$table`.`ID` = $deleteID");
   }
