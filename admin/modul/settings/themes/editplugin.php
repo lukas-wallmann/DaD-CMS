@@ -1,7 +1,7 @@
 <div class="row h-100">
   <div class="col-md-2 leftsidebar">
     <button class="btn btn-primary w-100 save mb-3"><?php echo $lang->save ?></button>
-    <a class="plugincode selected">Plugincode</a>
+    <a class="plugincode selected">Plugincode</a><br>
     <a class="template">Template</a>
   </div>
   <div class="col-md-10 pluginEditor" id="editor"></div>
@@ -22,7 +22,7 @@
   $(document).ready(function(){
     $.getJSON("?m=settings/themes&f=apiplugins&no=1&ID="+pluginID, function( data ) {
       pluginEditor.init(data);
-    });    
+    });
   });
   var pluginEditor={
 

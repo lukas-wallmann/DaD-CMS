@@ -11,25 +11,86 @@ var nCMS={
     nCMS.plugins.push(plugin);
     $('#elements').append('<div class="draggable btn bg-secondary" data-type="'+plugin.identifier+'">'+plugin.icon+'</div>');
   },
+
   init:function(){
     nCMS.dragger.setFunctions();
   },
+
   fieldset:{
+
     init:function(elm){
-      nCMS.fieldset.get(elm.attr("data-type"));
+      var fieldset=nCMS.fieldset.get(elm.attr("data-type"));
+      nCMS.fieldset.build(elm,fieldset);
     },
+
     get:function(identifier){
       for(var i=0; i<nCMS.plugins.length; i++){
         if(nCMS.plugins[i].identifier==identifier){
-          console.log(nCMS.plugins[i].fieldset);
+          return(nCMS.plugins[i].fieldset);
           break;
         }
       }
     },
-    utils:[
 
-    ]
+    build:function(elm,fieldset){
+      for(var i=0; i<fieldset.length; i++){
+        var field=fieldset[i];
+        var fn=eval("nCMS.fieldset.utils."+field.type);
+        console.log(field.type);
+        fn.init(elm,field);
+      }
+    },
+
+    utils:{
+      add:function(elm,code){
+        code='<div class="util">'+code+'</div>';
+        elm.append(code);
+      },
+
+      select:{
+        init:function(elm,field){
+          var code=[];
+          code.push('<label>'+field.name+'</label>');
+          code.push("<select name='"+field.name+"'>");
+          for(var i=0; i<field.data.length; i++){
+            code.push('<option value="'+field.data[i][0]+'">'+field.data[i][0]+'</option>')
+          }
+          code.push("</select>");
+          nCMS.fieldset.utils.add(elm,code.join(""));
+        }
+      },
+      textfield:{
+        init:function(elm,field){
+          var code=[];
+          code.push('<label>'+field.name+'</label>');
+          code.push('<input name="'+field.name+'">');
+          nCMS.fieldset.utils.add(elm,code.join(""));
+        }
+      },
+      filemanager:{
+        init:function(elm,field){
+
+        }
+      },
+      formmanager:{
+        init:function(elm,field){
+
+        }
+      },
+      editor:{
+        init:function(elm,field){
+
+        }
+      },
+      imagemanager:{
+        init:function(elm,field){
+
+        }
+      }
+    }
+
   },
+
   dragger:{
     setFunctions:function(){
       $( "#elements .draggable" ).draggable({ scroll: true, scrollSensitivity: 100, helper:"clone", drag:function(){
