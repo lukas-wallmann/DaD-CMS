@@ -1,0 +1,27 @@
+renderer:
+  blocks
+  listplugins
+  siteconstants
+  if <,>,!=
+
+pluginEditor
+  add plugins
+  sync button
+  responsive
+
+themeEditor
+  add plugins
+  sync button
+  javascript
+  css
+  select for site or newsletter
+  responsive
+
+siteeditor
+  build fields
+  select apiload
+  list Menu
+  teaser
+  teasergroup
+  Header
+  formeditor
