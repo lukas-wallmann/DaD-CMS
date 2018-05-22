@@ -6,16 +6,13 @@ $template='<form action="index.php?handler={{handler}}" method="post">
   <input type="hidden" name="receiver" value="{{receiver}}">
   <input type="hidden" name="mailtemplate" value="{{mailtemplate}}">
   ((foreach form.fields as field))
-    fun
-    ((foreach field.data as data))
-      {{data.name}}{{data.value}}
-    ((/foreach))
       ((if field.type=textarea))
           <div class="form-group">
-            <label class="col-md-4 control-label" for="textarea">{{field.label}}</label>
+            <label class="col-md-4 control-label" for="textarea{{field.index}}">{{field.label}}</label>
             <div class="col-md-8">
-              <textarea class="form-control" name="{{field.name}}" ((if field.required))required ((/if))placeholder="{{field.placeholder}}"></textarea>
+              <textarea class="form-control" name="field{{field.index}}" id="textarea{{field.index}}" ((if field.required))required ((/if))placeholder="{{field.placeholder}}"></textarea>
             </div>
+            <input type="hidden" name="label{{field.index}}" value="{{field.name}}">
           </div>
       ((/if))
   ((/foreach))
@@ -162,8 +159,11 @@ $template='<form action="index.php?handler={{handler}}" method="post">
         foreach($field as &$f){
           $d=$d->$f;
         }
+        $index=0;
         foreach ($d as &$val) {
+          $val->index=$index;
           $data->$key=$val;
+          $index++;
           rendern($data,$foreachto[0],"");
         }
         rendern($data,$foreachto[1],"");
