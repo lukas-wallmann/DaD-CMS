@@ -18,6 +18,7 @@
     fontSize: "13pt"
   });
   var pluginID=<?php echo $_GET["ID"] ?>;
+  var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="js/pluginEditor.js"></script>
 <style>

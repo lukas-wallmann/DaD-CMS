@@ -21,6 +21,7 @@
     fontSize: "13pt"
   });
   var layoutID=<?php echo $_GET["ID"] ?>;
+  var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 
 <script src="js/codeEditor.js"></script>

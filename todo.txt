@@ -5,12 +5,10 @@ renderer:
   if <,>,!=
 
 pluginEditor
-  add plugins
   sync button
   responsive
 
 themeEditor
-  add plugins
   sync button
   javascript
   css
