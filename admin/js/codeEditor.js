@@ -5,6 +5,7 @@
     lastID:0,
     lastTable:"",
     cache:[],
+    pluginData:[],
 
     init:function(){
       $(document).bind('keydown', function(e) {
@@ -22,11 +23,29 @@
         )
       });
       $(".themeplugin .b").click(function(){
-        codeEditor.cmd(
-          '<label class="mr-3"><?php echo $lang->name?></label><input>',
-          function(){codeEditor.getPlugins("new",$(".cmd input").val())},
-          function(){$(".cmd input").focus()}
-        )
+        $.ajax({url:"?m=settings/themes&f=apigetplugins&no=1"}).done(function(d){
+          codeEditor.pluginData=JSON.parse(d);
+          var html=[];
+          for(var i=0; i<codeEditor.pluginData.length; i++){
+            html.push('<div class="addme"><input type="checkbox" id="'+i+'" data-value="'+codeEditor.pluginData[i].ID+'"><label class="ml-3" for="'+i+'">'+codeEditor.pluginData[i].Name+'</label></div>');
+          }
+          codeEditor.cmd(
+            html.join(""),
+            function(){
+              var cache=[];
+              $(".cmd .addme input").each(function(){
+                if($(this).is(":checked")){
+                  for(var i=0; i<codeEditor.pluginData.length; i++){
+                    console.log(codeEditor.pluginData[i].ID+"=="+$(this).attr("data-value"))
+                    if(codeEditor.pluginData[i].ID==$(this).attr("data-value"))cache.push(codeEditor.pluginData[i]);
+                  }
+                }
+              });
+              console.log(cache);
+            },
+            function(){$(".cmd input").focus()}
+          )
+        })
       });
       $(".save").click(function(){
         codeEditor.save();
@@ -96,48 +115,6 @@
     },
 
     getPlugins:function(action="",name="", id=0){
-      var type="GET";
-      if(action!="")type="POST";
-      var data={};
-      if(action=="new")data.name=name;
-      if(action=="rename"){
-        data.newname=name;
-        data.partID=id;
-      }
-      if(action=="delete")data.deleteID=id;
-      $.ajax({
-        type: type,
-        data: data,
-        url: "?m=settings/themes&f=apigetthemeparts&no=1&table=themePlugins&ID="+layoutID
-      }).done(function(d) {
-        var json=JSON.parse(d);
-        $(".menu.plugins").html("");
-        for(var i=0; i<json.length; i++){
-          $(".menu.plugins").append('<div class="menu" data-id="'+json[i].ID+'" data-table="themePlugins"><span class="name">'+json[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>');
-        }
-        $(".menu.plugins .menu .name").off().click(function(){
-          $(".selected").removeClass("selected");
-          $(this).parent().addClass("selected");
-          codeEditor.getCode($(this).parent().attr("data-table"),$(this).parent().attr("data-id"));
-        });
-        $(".menu.plugins .menu .edit").click(function(){
-          var tmpname=$(this).parent().text();
-          var tmpID=$(this).parent().attr("data-id");
-          codeEditor.cmd(
-            '<label class="mr-3"><?php echo $lang->name?></label><input value="'+tmpname+'">',
-            function(){codeEditor.getPlugins("rename",$(".cmd input").val(),tmpID)},
-            function(){$(".cmd input").focus()}
-          )
-        });
-        $(".menu.plugins .menu .delete").click(function(){
-          var r=confirm("<?php echo $lang->delete ?>: "+$(this).parent().text());
-          if(r){
-            codeEditor.removeTemp($(this).parent().attr("data-id"),"themePlugins");
-            codeEditor.getPlugins("delete","",$(this).parent().attr("data-id"));
-            $(".maincode .name").click();
-          }
-        });
-      });
 
     },
 
@@ -147,8 +124,6 @@
       $("body").append(html);
       oninit();
       $(".cmd form").submit(function(e){
-        alert("DONE");
-
         onfinish();
         $(".cmd").remove();
         e.preventDefault();

@@ -31,7 +31,7 @@
 <?php
   $res=mysqli_query($_dbcon,"Select * from plugins");
   while($row=mysqli_fetch_assoc($res)){
-    echo "<tr><td><a href='?m=settings/themes&f=editplugin&nh=1&ID=".$row["ID"]."'>".$row["Name"]."</a></td></tr>";
+    echo "<tr><td><a href='?m=settings/themes&f=editplugin&nh=1&ID=".$row["ID"]."'>".$row["Name"]."</a><a class='ml-3' href='?m=settings/themes&f=syncplugin&nh=1&ID=".$row["ID"]."'><i class='fas fa-sync-alt'></i></a></td></tr>";
   }
 ?>
 </tbody>
