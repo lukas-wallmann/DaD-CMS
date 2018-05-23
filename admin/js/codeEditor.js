@@ -124,7 +124,7 @@
       var data={};
       if(action=="new")data.cache=JSON.stringify(cache);
       if(action=="delete")data.deleteID=id;
-      $.ajax({url:"?m=settings/themes&f=apiplugins&no=1&ID="+layoutID,type:type,data:data}).done(function(d){
+      $.ajax({url:"?m=settings/themes&f=apiplugin&no=1&ID="+layoutID,type:type,data:data}).done(function(d){
         codeEditor.plugins=JSON.parse(d);
         $(".menu.plugins").html("");
         for(var i=0; i<codeEditor.plugins.length; i++){
