@@ -62,6 +62,7 @@
 	$lang->pluginsVariants="Plugin Varianten";
 	$lang->newPlugin="Neues Plugin";
 	$lang->importPlugin="Plugin importieren";
+	$lang->syncPlugin="Plugin syncronisieren";
 
 	$lang->themeParts="Code Teile";
 	$lang->themePlugins="Plugins";
