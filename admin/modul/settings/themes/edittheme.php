@@ -25,23 +25,3 @@
 </script>
 
 <script src="js/codeEditor.js"></script>
-<style>
-.cmd {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 99999;
-    background: rgba(0,0,0,0.5);
-    width: 100%;
-    height: 100%;
-}
-
-.cmd .inner {
-    background: #fff;
-    padding: 20px;
-}
-.selected{
-  font-style: italic;
-  text-decoration: underline;
-}
-</style>
