@@ -94,10 +94,11 @@ var cssjsEditor={
       for(var i=0; i<cssjsEditor.cache.length; i++){
         if(cssjsEditor.cache[i][0]==cssjsEditor.currentID){
           found=true;
-          cssjsEditor.cache[i][1]=editor.getValue();
+          cssjsEditor.cache[i][1]=editor.getSession().getValue();
         }
       }
-      if(!found)cssjsEditor.cache.push([cssjsEditor.currentID,editor.getValue()]);
+      if(!found)cssjsEditor.cache.push([cssjsEditor.currentID,editor.getSession().getValue()]);
+
     }
   },
 

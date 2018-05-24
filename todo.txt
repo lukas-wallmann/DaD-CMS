@@ -10,8 +10,6 @@ pluginEditor
 
 themeEditor
   sync button
-  javascript
-  css
   select for site or newsletter
   responsive
 

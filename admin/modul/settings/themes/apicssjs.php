@@ -1,4 +1,6 @@
 <?php
+  header("Content-Type: text/plain");
+
   $id=$_GET["ID"];
   $mode=$_GET["mode"];
 
@@ -11,7 +13,10 @@
     checkWritePerm();
     $cache=json_decode($_POST["cache"]);
     foreach($cache as &$save){
-      mysqli_query($_dbcon,"UPDATE `".$mode."Parts` SET `Code` = '".$save[1]."' WHERE `".$mode."Parts`.`ID` = ".$save[0].";");
+      $code=mysqli_real_escape_string($_dbcon,$save[1]);
+      //echo $code;
+      echo "UPDATE `".$mode."Parts` SET `Code` = '".mysqli_real_escape_string($_dbcon,$save[1])."' WHERE `".$mode."Parts`.`ID` = ".$save[0].";";
+      mysqli_query($_dbcon,"UPDATE `".$mode."Parts` SET `Code` = '$code' WHERE `".$mode."Parts`.`ID` = ".$save[0].";");
     }
     die();
   }
@@ -31,7 +36,7 @@
   if(isset($_POST["deleteID"])){
     checkWritePerm();
     $deleteID=$_POST["deleteID"];
-    mysqli_query($_dbcon,"DELETE FROM `".$mode."Parts` WHERE `scriptParts`.`ID` = ".$deleteID);
+    mysqli_query($_dbcon,"DELETE FROM `".$mode."Parts` WHERE `".$mode."Parts`.`ID` = ".$deleteID);
   }
 
   $res=mysqli_query($_dbcon,"Select * From ".$mode."Parts WHERE ParentID=".$id." ORDER BY Name");
