@@ -2,6 +2,7 @@
   <div class="col-md-2 leftsidebar">
     <button class="btn btn-primary w-100 save mb-1"><?php echo $lang->save ?></button>
     <button class="btn btn-secondary w-100 add mb-3"><i class="fas fa-plus-square"></i></button>
+    <div class="menu"></div>
   </div>
   <div class="col-md-10 pluginEditor" id="editor"></div>
 </div>
