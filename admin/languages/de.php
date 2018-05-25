@@ -11,8 +11,8 @@
 
 	//Menu
 	$lang->menu=array(
-		array("Start","home"),
 		array("Seiten","sites"),
+		array("Menü","menu"),
 		array("Dateien","files"),
 		array("Header","header"),
 		array("Newsletter","newsletter/newsletter",array(
@@ -26,6 +26,9 @@
 			array("Cache","settings/caching")
 		))
 	);
+
+	//menus
+	$lang->newMenu="Neues Menü erstellen";
 
 	//Newsletter
 	$lang->receiverlist="Empfängergruppe";
