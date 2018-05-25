@@ -15,6 +15,10 @@
     if($_POST["action"]=="rename"){
       mysqli_query($_dbcon,"UPDATE `menus` SET `Name` = '$name' WHERE `menus`.`ID` = $id;");
     }
+    if($_POST["action"]=="update"){
+      $content=$_POST["content"];
+      mysqli_query($_dbcon,"UPDATE `menus` SET `Content` = '$content' WHERE `menus`.`ID` = $id;");
+    }
   }
 
   $res=mysqli_query($_dbcon,"Select * FROM menus ORDER BY Name");

@@ -29,12 +29,63 @@ var menuBuilder={
     });
   },
 
+  editMenuPoint:function(from,data,helper){
+    console.log(data);
+    var html='<label class="mr-3">'+consts.name+'</label><input class="name" value="'+data.name+'">';
+    var selected_top="";
+    var selected_blank="";
+    if(data.target=="_top"){
+      selected_top=" selected";
+    }else{
+      selected_blank=" selected";
+    }
+    html+='<br><label class="mr-3">Target</label><select class="target"><option value="_top"'+selected_top+'>_top</option><option value="_blank"'+selected_blank+'>_blank</option></select>';
+    var selectedSite="";
+    var selectedLink="";
+    if(data.action=="site"){
+      selectedSite=" selected";
+    }else{
+      selectedLink=" selected";
+    }
+    html+='<br><label class="mr-3">Action</label><select class="action"><option value="site"'+selectedSite+'>show site</option><option value="link"'+selectedLink+'>show link</option></select>';
+    html+='<br><label class="mr-3">Link</label><input class="link" value="'+data.link+'">';
+    menuBuilder.cmd(
+      html,
+      function(){
+        var dat={};
+        dat.link=$(".cmd .link").val();
+        dat.name=$(".cmd .name").val();
+        dat.action=$('.cmd .action').val();
+        dat.target=$('.cmd .target').val();
+        if(from=="new"){
+          dat.sub=[];
+          dat.ID=Date.now();
+          console.log(dat);
+          var code=menuBuilder.getPoint(dat);
+          helper.append(code);
+          menuBuilder.save(helper);
+        }else{
+          dat.id=data.ID;
+          dat.sub=data.sub;
+          var code=menuBuilder.getPoint(dat);
+          from.replaceWith(code);
+          menuBuilder.save(helper)
+        }
+        menuBuilder.setFunctions();
+      },
+      function(){$(".cmd input.name").focus()}
+    )
+  },
+
   setFunctions(){
-    $(".menu .edit, .menu .delete, .menu .plus").off();
+
+    $(".menu, .menu .edit, .menu .delete, .menu .plus").off();
+
     $(".menu > .title > .delete").click(function(){
       var r=confirm(consts.delete+": "+$(this).parent().text());
       if(r)menuBuilder.loadMenus("delete","",$(this).parent().parent().attr("data-id"));
     });
+
     $(".menu > .title > .edit").click(function(){
       var tmpname=$(this).parent().text();
       var tmpID=$(this).parent().parent().attr("data-id");
@@ -44,14 +95,47 @@ var menuBuilder={
         function(){$(".cmd input").focus()}
       )
     });
+
+    $(".menu .plus").click(function(){
+      menuBuilder.editMenuPoint("new",{name:"",action:"site",target:"_top",link:""},$(this).parent().next());
+    });
+
+    $(".menu ul .edit").click(function(){
+      menuBuilder.editMenuPoint($(this).parent().parent(),{name:$(this).parent().text(),action:$(this).parent().parent().attr("data-action"),target:$(this).parent().parent().attr("data-target"),link:$(this).parent().parent().attr("data-link"), sub:menuBuilder.getSub($(this).parent().parent())},$(this));
+    });
+
+    $(".menu ul .delete").click(function(){
+      var r=confirm(consts.delte+": "+$(this).parent().text());
+      if(r){
+        var helper=$(this).parent().parent().parent();
+        $(this).parent().parent().remove();
+        menuBuilder.save($(helper));
+      }
+    });
+
+  },
+
+  getSub:function(elm){
+    var sub=[];
+    elm.children("ul").each(function(){
+      $(this).children("li").each(function(){
+        var data={
+          name:$(this).children("div").first().text(),
+          action:$(this).attr("data-action"),
+          target:$(this).attr("data-target"),
+          link:$(this).attr("data-link"),
+          sub:menuBuilder.getSub($(this))
+        };
+        sub.push(data);
+      });
+    });
+    return sub;
   },
 
   getPoint:function(data){
-    var code='<li data-id="'+data.ID+'" data-action="'+data.action+'" data-url="'+data.URL+'" data-target="'+data.target+'">';
-    code+='<div class="point">'+data.name+'</div>';
-    if(data.sub.length>0){
-      code+=menuBuilder.getPoints(data.sub);
-    }
+    var code='<li data-id="'+data.ID+'" data-action="'+data.action+'" data-link="'+data.link+'" data-target="'+data.target+'">';
+    code+='<div class="point"><span>'+data.name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="plus ml-1"><i class="fas fa-plus-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>';
+    code+=menuBuilder.getPoints(data.sub);
     code+="</li>";
     return code;
   },
@@ -75,12 +159,17 @@ var menuBuilder={
   build:function(){
     $(".menus").html("");
     for(var i=0; i<menuBuilder.data.length; i++){
-      $(".menus").append('<div class="menu" data-ID="'+menuBuilder.data[i].ID+'" data-name="'+menuBuilder.data[i].Name+'"><div class="title"><span>'+menuBuilder.data[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="plus ml-1"><i class="fas fa-plus-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div><div class="points">'+menuBuilder.getPoints(JSON.parse(menuBuilder.data[i].Content))+'</div></div>');
+      $(".menus").append('<div class="menu" data-ID="'+menuBuilder.data[i].ID+'" data-name="'+menuBuilder.data[i].Name+'"><div class="title"><span>'+menuBuilder.data[i].Name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="plus ml-1"><i class="fas fa-plus-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>'+menuBuilder.getPoints(JSON.parse(menuBuilder.data[i].Content))+'</div>');
     }
   },
 
-  saveMenu:function(sel){
-
+  save:function(helper){
+    var elm=helper;
+    while(!elm.hasClass("menu")){
+      elm=elm.parent();
+    }
+    var data={action:"update",id:elm.attr("data-id"),name:"",content:JSON.stringify(menuBuilder.getSub(elm))};
+    $.ajax({url:"?m=menu&f=apimenu&no=1",type:"POST",data:data});
   },
 
   cmd:function(html,onfinish,oninit=function(){}){
@@ -89,9 +178,9 @@ var menuBuilder={
     $("body").append(html);
     oninit();
     $(".cmd form").submit(function(e){
+      e.preventDefault();
       onfinish();
       $(".cmd").remove();
-      e.preventDefault();
     });
     $(".cmd .ctrl .cancel").click(function(){
       $(".cmd").remove();
