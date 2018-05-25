@@ -1,17 +1,5 @@
-renderer:
-  blocks
-  listplugins
-  siteconstants
-  if <,>,!=
-
-pluginEditor
-  sync button
-  responsive
-
-themeEditor
-  sync button
-  select for site or newsletter
-  responsive
+menu builder
+site list
 
 siteeditor
   build fields
@@ -21,3 +9,21 @@ siteeditor
   teasergroup
   Header
   formeditor
+
+renderer:
+  blocks
+  listplugins
+  siteconstants
+  if <,>,!=
+
+theme
+  delete parts on delete
+
+pluginEditor
+  sync button
+  responsive
+
+themeEditor
+  sync button
+  select for site or newsletter
+  responsive

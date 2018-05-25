@@ -22,7 +22,6 @@
 		)),
 		array("Einstellungen","settings/users",array(
 			array("Benutzer","settings/users"),
-			array("Bildformate","settings/imageformats"),
 			array("Design","settings/themes"),
 			array("Cache","settings/caching")
 		))

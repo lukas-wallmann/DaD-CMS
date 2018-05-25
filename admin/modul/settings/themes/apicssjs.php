@@ -14,8 +14,6 @@
     $cache=json_decode($_POST["cache"]);
     foreach($cache as &$save){
       $code=mysqli_real_escape_string($_dbcon,$save[1]);
-      //echo $code;
-      echo "UPDATE `".$mode."Parts` SET `Code` = '".mysqli_real_escape_string($_dbcon,$save[1])."' WHERE `".$mode."Parts`.`ID` = ".$save[0].";";
       mysqli_query($_dbcon,"UPDATE `".$mode."Parts` SET `Code` = '$code' WHERE `".$mode."Parts`.`ID` = ".$save[0].";");
     }
     die();
