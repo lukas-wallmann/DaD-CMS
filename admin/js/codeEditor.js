@@ -17,7 +17,7 @@
         }
       });
       $(".themepart .b").click(function(){
-        codeEditor.cmd(
+        cmd(
           '<label class="mr-3">'+consts.name+'</label><input>',
           function(){codeEditor.getThemeParts("new",$(".cmd input").val())},
           function(){$(".cmd input").focus()}
@@ -34,7 +34,7 @@
             }
             if(!found)html.push('<div class="addme"><input type="checkbox" id="'+i+'" data-value="'+codeEditor.pluginData[i].ID+'"><label class="ml-3" for="'+i+'">'+codeEditor.pluginData[i].Name+'</label></div>');
           }
-          codeEditor.cmd(
+          cmd(
             html.join(""),
             function(){
               var cache=[];
@@ -99,7 +99,7 @@
         $(".menu.parts .menu .edit").click(function(){
           var tmpname=$(this).parent().text();
           var tmpID=$(this).parent().attr("data-id");
-          codeEditor.cmd(
+          cmd(
             '<label class="mr-3">'+consts.name+'</label><input value="'+tmpname+'">',
             function(){codeEditor.getThemeParts("rename",$(".cmd input").val(),tmpID)},
             function(){$(".cmd input").focus()}
@@ -144,20 +144,6 @@
       })
     },
 
-    cmd:function(html,onfinish,oninit=function(){}){
-      html+="<div class='ctrl'><button class='btn btn-primary ok' type='submit'>"+consts.save+"</button><button class='btn btn-warning cancel'>"+consts.cancel+"</button></div>";
-      html='<div class="cmd"><div class="inner"><form>'+html+'</form></div></div>';
-      $("body").append(html);
-      oninit();
-      $(".cmd form").submit(function(e){
-        onfinish();
-        $(".cmd").remove();
-        e.preventDefault();
-      });
-      $(".cmd .ctrl .cancel").click(function(){
-        $(".cmd").remove();
-      });
-    },
 
     getCode:function(table,id){
 

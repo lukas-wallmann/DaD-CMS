@@ -7,7 +7,7 @@ var cssjsEditor={
   init:function(){
     cssjsEditor.getParts("","","",true);
     $("button.add").click(function(){
-      cssjsEditor.cmd(
+      cmd(
         '<label class="mr-3">'+consts.name+'</label><input>',
         function(){cssjsEditor.getParts("new",$(".cmd input").val())},
         function(){$(".cmd input").focus()}
@@ -63,7 +63,7 @@ var cssjsEditor={
       $(".menu .edit").click(function(){
         var tmpname=$(this).parent().text();
         var tmpID=$(this).parent().attr("data-id");
-        cssjsEditor.cmd(
+        cmd(
           '<label class="mr-3">'+consts.name+'</label><input value="'+tmpname+'">',
           function(){cssjsEditor.getParts("rename",$(".cmd input").val(),tmpID)},
           function(){$(".cmd input").focus()}
@@ -120,21 +120,6 @@ var cssjsEditor={
       });
     }
 
-  },
-
-  cmd:function(html,onfinish,oninit=function(){}){
-    html+="<div class='ctrl'><button class='btn btn-primary ok' type='submit'>"+consts.save+"</button><button class='btn btn-warning cancel'>"+consts.cancel+"</button></div>";
-    html='<div class="cmd"><div class="inner"><form>'+html+'</form></div></div>';
-    $("body").append(html);
-    oninit();
-    $(".cmd form").submit(function(e){
-      onfinish();
-      $(".cmd").remove();
-      e.preventDefault();
-    });
-    $(".cmd .ctrl .cancel").click(function(){
-      $(".cmd").remove();
-    });
   }
 }
 

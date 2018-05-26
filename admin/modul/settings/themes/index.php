@@ -55,4 +55,5 @@
 <script>
 var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
+<script src="js/cmd.js"></script>
 <script src="js/themes.js"></script>

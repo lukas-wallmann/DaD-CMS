@@ -6,7 +6,7 @@
   </div>
   <div class="col-md-10 pluginEditor" id="editor"></div>
 </div>
-
+<script src="js/cmd.js"></script>
 <script src="js/ace/ace.js"></script>
 <script src="js/height100.js"></script>
 <script>
