@@ -1,4 +1,5 @@
 <button class="btn btn-secondary new"><?php echo $lang->newMenu ?></button>
+
 <div class="menus mt-3">
 
 </div>
@@ -15,5 +16,8 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
   font-weight: bold;
   background: #FCFC51;
   padding: 10px;
+}
+ul.ui-sortable {
+    padding-left: 20px;
 }
 </style>

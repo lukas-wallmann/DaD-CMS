@@ -1,4 +1,5 @@
 site list
+outsource cmd
 
 siteeditor
   build fields
@@ -13,6 +14,7 @@ renderer:
   blocks
   listplugins
   siteconstants
+  .length
   if <,>,!=
 
 theme

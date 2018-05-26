@@ -30,7 +30,6 @@ var menuBuilder={
   },
 
   editMenuPoint:function(from,data,helper){
-    console.log(data);
     var html='<label class="mr-3">'+consts.name+'</label><input class="name" value="'+data.name+'">';
     var selected_top="";
     var selected_blank="";
@@ -59,13 +58,12 @@ var menuBuilder={
         dat.target=$('.cmd .target').val();
         if(from=="new"){
           dat.sub=[];
-          dat.ID=Date.now();
-          console.log(dat);
+          dat.id=Date.now();
           var code=menuBuilder.getPoint(dat);
           helper.append(code);
           menuBuilder.save(helper);
         }else{
-          dat.id=data.ID;
+          dat.id=data.id;
           dat.sub=data.sub;
           var code=menuBuilder.getPoint(dat);
           from.replaceWith(code);
@@ -105,12 +103,18 @@ var menuBuilder={
     });
 
     $(".menu ul .delete").click(function(){
-      var r=confirm(consts.delte+": "+$(this).parent().text());
+      var r=confirm(consts.delete+": "+$(this).parent().text());
       if(r){
         var helper=$(this).parent().parent().parent();
         $(this).parent().parent().remove();
         menuBuilder.save($(helper));
       }
+    });
+
+    $(".menus ul").sortable({
+        stop:function(e,ui){
+          menuBuilder.save(ui.item);
+        }
     });
 
   },
@@ -121,6 +125,7 @@ var menuBuilder={
       $(this).children("li").each(function(){
         var data={
           name:$(this).children("div").first().text(),
+          id:$(this).attr("data-id"),
           action:$(this).attr("data-action"),
           target:$(this).attr("data-target"),
           link:$(this).attr("data-link"),
@@ -133,7 +138,7 @@ var menuBuilder={
   },
 
   getPoint:function(data){
-    var code='<li data-id="'+data.ID+'" data-action="'+data.action+'" data-link="'+data.link+'" data-target="'+data.target+'">';
+    var code='<li data-id="'+data.id+'" data-action="'+data.action+'" data-link="'+data.link+'" data-target="'+data.target+'">';
     code+='<div class="point"><span>'+data.name+'</span><span class="edit ml-3"><i class="fas fa-pen-square"></i></span><span class="plus ml-1"><i class="fas fa-plus-square"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></div>';
     code+=menuBuilder.getPoints(data.sub);
     code+="</li>";
@@ -141,7 +146,6 @@ var menuBuilder={
   },
 
   getPoints:function(data){
-    console.log(data.length);
     if(data.length==0){
       return "<ul></ul>";
     }else{

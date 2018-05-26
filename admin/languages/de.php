@@ -30,6 +30,10 @@
 	//menus
 	$lang->newMenu="Neues Menü erstellen";
 
+	//sites
+	$lang->allMenus="alle Menüs";
+	$lang->newSite="neue Seite";
+
 	//Newsletter
 	$lang->receiverlist="Empfängergruppe";
 	$lang->receivers="Empfänger";
