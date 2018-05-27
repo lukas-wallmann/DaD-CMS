@@ -34,6 +34,18 @@
 	$lang->allMenus="alle Menüs";
 	$lang->newSite="neue Seite";
 	$lang->noMenu="ohne Menüzuordnung";
+	$lang->menuAssignment="Menüzuordnung";
+	$lang->title="Titel";
+	$lang->metaData="Meta Daten";
+	$lang->metaTitle="Metatitel";
+	$lang->metaTags="Meta Keywords";
+	$lang->metaDescription="Metabeschreibung";
+	$lang->teaser="Teaser";
+	$lang->teaserName="Teasertitel";
+	$lang->teaserPicture="Teaserbild";
+	$lang->teaserText="Teasertext";
+	$lang->teaserPrice="Teaserpreis";
+	$lang->teaserGroup="Teasergruppe";
 
 	//Newsletter
 	$lang->receiverlist="Empfängergruppe";

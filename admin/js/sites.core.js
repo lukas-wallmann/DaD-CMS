@@ -1,4 +1,7 @@
 $( function() {
+  $(".section .dropper").click(function(){
+    $(this).next().toggle("slow");
+  })
   $("main").append('<div id="elements"></div><div id="content"></div>');
   $.getScript( "tmpplugins.js" ).done(function( script, textStatus ) {
     nCMS.init();
