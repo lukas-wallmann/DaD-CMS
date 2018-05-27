@@ -33,6 +33,7 @@
 	//sites
 	$lang->allMenus="alle Menüs";
 	$lang->newSite="neue Seite";
+	$lang->noMenu="ohne Menüzuordnung";
 
 	//Newsletter
 	$lang->receiverlist="Empfängergruppe";

@@ -1,5 +1,3 @@
-site list
-outsource cmd
 
 siteeditor
   build fields
