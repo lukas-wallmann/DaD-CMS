@@ -128,7 +128,7 @@
         codeEditor.plugins=JSON.parse(d);
         $(".menu.plugins").html("");
         for(var i=0; i<codeEditor.plugins.length; i++){
-          $(".menu.plugins").append('<div class="point" data-table="themePlugins" data-id="'+codeEditor.plugins[i].ID+'"><span class="name mr-3">'+codeEditor.plugins[i].Name+'</span><span class="sync"><i class="fas fa-sync-alt"></i><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></span></div>');
+          $(".menu.plugins").append('<div class="point" data-table="themePlugins" data-id="'+codeEditor.plugins[i].ID+'"><span class="name mr-3">'+codeEditor.plugins[i].Name+'</span><span class="sync"><i class="fas fa-sync-alt"></i></span><span class="delete ml-1"><i class="fas fa-trash-alt"></i></span></span></div>');
         }
         $(".menu.plugins .point .name").click(function(){
           $(".selected").removeClass("selected");

@@ -7,7 +7,7 @@
       $menuid=$_POST["menuid"];
       $name=mysqli_real_escape_string($_dbcon,$_POST["name"]);
       $pos=$_POST["pos"];
-      mysqli_query($_dbcon,"INSERT INTO `sites` (`ID`, `Title`, `Pos`, `MenuID`, `MetaTitle`, `MetaTags`, `Content`, `TeaserName`, `TeaserText`, `TeaserPrice`) VALUES (NULL, '$name', '$pos', '$menuid', '', '', '', '', '', '');");
+      mysqli_query($_dbcon,"INSERT INTO `sites` (`ID`, `Title`, `Pos`, `MenuID`, `MetaTitle`, `MetaDescription`, `MetaTags`, `Content`, `TeaserName`, `TeaserPicture`, `TeaserText`, `TeaserPrice`, `FixSiteURL`, `SiteURL`, `FixMeta`,`Layout`) VALUES (NULL, '$name', '$pos', '$menuid', '', '', '', '', '', '', '', '', '0', '', '0','0');");
       echo $_dbcon->insert_id;
     }
 

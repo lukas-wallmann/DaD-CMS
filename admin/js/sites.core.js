@@ -1,9 +1,9 @@
 $( function() {
   $(".section .dropper").click(function(){
-    $(this).next().toggle("slow");
+    $(this).next().toggle("fast");
   })
   $("main").append('<div id="elements"></div><div id="content"></div>');
-  $.getScript( "tmpplugins.js" ).done(function( script, textStatus ) {
+  $.getScript( "?m=sites&f=apigetjs&no=1&ID="+$("#layout").val() ).done(function( script, textStatus ) {
     nCMS.init();
   })
 } );

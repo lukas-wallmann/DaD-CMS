@@ -33,9 +33,13 @@
 	//sites
 	$lang->allMenus="alle Menüs";
 	$lang->newSite="neue Seite";
+	$lang->siteSettings="Seiteneinstellungen";
 	$lang->noMenu="ohne Menüzuordnung";
 	$lang->menuAssignment="Menüzuordnung";
 	$lang->title="Titel";
+	$lang->URL="Seiten-URL";
+	$lang->fixURL="fixiere Seiten-URL";
+	$lang->layout="Design";
 	$lang->metaData="Meta Daten";
 	$lang->metaTitle="Metatitel";
 	$lang->metaTags="Meta Keywords";
