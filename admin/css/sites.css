@@ -1,4 +1,4 @@
-.draggable {
+.draggable, #content .icon {
   width: 70px;
   height: 70px;
   font-size: 35px;
@@ -8,9 +8,11 @@
   border:1px solid;
   display:inline-block;
   margin: 0 5px 5px 0;
+  text-align: center;
+  background: #6c757d!important;
  }
 .itm{
-  height:100px;
+  min-height: 105px;
   margin:20px 0;
   background: #ccc;
 }
@@ -18,40 +20,38 @@
   z-index:9999;
   opacity: 0.5;
 }
-.itm:hover{
-  border: 2px dashed #6c757d;
-}
 .itm:hover .handle{
   display: block;
 }
 .itm .handle{
-  display: none;
   cursor: pointer;
-  position: relative;
-}
-.itm .handle .dragger {
-  height: 20px;
-  width: 50px;
-  background: #6c757d;
-  display: block;
   position: absolute;
-  color:#fff;
-  font-size: 20px;
-  line-height: 10px;
-  text-align: center;
-  left: 50%;
-  top: -20px;
-  margin-left: -25px;
+  left: 0;
+  top: 0;
+}
+.itm .content .name {
+    font-style: italic;
+}
+#content .icon {
+    margin: 0;
+}
+#content{
+  list-style: none;
+}
+#content li .content {
+    padding: 6px 10px 10px 80px;
 }
 .itm .handle .delete {
     position: absolute;
-    right: 0;
-    font-size: 14px;
-    top: -20px;
-    height: 20px;
+    font-size: 18px;
+    top: 80px;
+    height: 25px;
     background: #6c757d;
     color: #fff;
-    padding: 0 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    border: 1px solid;
 }
 #placeholder{
   position: relative;

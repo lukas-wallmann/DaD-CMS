@@ -150,12 +150,25 @@
   </div>
 </div>
 
-
+<script>
+  var contents=[
+    {
+      pluginID:5,
+      text:"Hallo Welt"
+    },
+    {
+      pluginID:4,
+      text:"Test",
+      variant:"h6"
+    }
+  ];
+</script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="css/sites.css">
+<script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/inline/ckeditor.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/touchpunch.js"></script>
-<script src="js/sites.core.js"></script>
+<script src="js/sites.core.bak.js"></script>
 <style>
   .section {
       margin: 20px 0;
@@ -167,4 +180,9 @@
   .section .content{
     display:none;
   }
+  ul#elements, ul#content {
+    padding: 0;
+  }
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
 </style>
