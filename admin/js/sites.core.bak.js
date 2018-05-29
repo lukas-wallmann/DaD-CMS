@@ -58,12 +58,14 @@ var nCMS={
               if(field.data[i][1]==data)selected=" selected";
               code.push('<option value="'+field.data[i][1]+'"'+selected+'>'+field.data[i][0]+'</option>');
             }
-            code.push('</select>');
+            code.push('</select><br>');
           }
           break;
       case "filemanager":
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multipe+'" data-allow="*"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
           break;
       case "imagemanager":
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multipe+'" data-allow="image"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
           break;
       case "formmanager":
           break;
@@ -74,6 +76,7 @@ var nCMS={
   },
 
   helpers:{
+    quillcount:0,
     getPlugin:function(id){
       for(var i=0; i<nCMS.plugins.length; i++){
         if(nCMS.plugins[i].id==id){
@@ -91,11 +94,28 @@ var nCMS={
 
   setFunctions:function(){
     nCMS.dragger.setFunctions();
-    InlineEditor
-            .create( document.querySelector( '.texteditor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+    $(".texteditor").each(function(){
+      if($(this).attr("id")=="" || $(this).attr("id")==undefined){
+        nCMS.helpers.quillcount++;
+        $(this).attr("id","quill"+nCMS.helpers.quillcount);
+        var toolbarOptions = [
+          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+          ['blockquote', 'code-block'],
+
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+          [{ 'align': [] }]
+        ];
+
+        var quill = new Quill('#quill'+nCMS.helpers.quillcount, {
+          modules: {
+            toolbar: toolbarOptions
+          },
+          theme: 'snow'
+        });
+      }
+    })
   },
 
 
@@ -105,7 +125,7 @@ var nCMS={
         nCMS.dragger.checkHit($(".ui-draggable-dragging").offset())
       }, stop:function(){
         $("#placeholder").replaceWith(nCMS.buildPlugin(nCMS.helpers.getPlugin($(this).attr("data-pluginid"))));
-        nCMS.dragger.setFunctions();
+        nCMS.setFunctions();
       } });
 
       $( "#content .itm" ).draggable({ handle: ".handle .icon",

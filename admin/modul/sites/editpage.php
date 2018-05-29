@@ -165,7 +165,8 @@
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="css/sites.css">
-<script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/inline/ckeditor.js"></script>
+<link rel="stylesheet" href="css/quill.snow.css">
+<script src="js/quill.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/touchpunch.js"></script>
 <script src="js/sites.core.bak.js"></script>

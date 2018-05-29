@@ -32,6 +32,9 @@
 .itm .content .name {
     font-style: italic;
 }
+.texteditor{
+  background: #fff;
+}
 #content .icon {
     margin: 0;
 }
