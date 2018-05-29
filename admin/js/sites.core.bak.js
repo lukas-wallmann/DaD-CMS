@@ -62,10 +62,10 @@ var nCMS={
           }
           break;
       case "filemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multipe+'" data-allow="*"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="*"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
           break;
       case "imagemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multipe+'" data-allow="image"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
           break;
       case "formmanager":
           break;
@@ -116,8 +116,10 @@ var nCMS={
         });
       }
     })
+    $(".filemanager").each(function(){
+      if(!$(this).hasClass("hasfilemanager"))$(this).fileManager().addClass("hasfilemanager");
+    });
   },
-
 
   dragger:{
     setFunctions:function(){

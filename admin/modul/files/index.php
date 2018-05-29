@@ -29,7 +29,7 @@
       $dirname=dirname($path);
       if(!file_exists($dirname))mkdir($dirname);
       file_put_contents($path, file_get_contents($_POST['data']));
-      die("uploaded");
+      die($_REQUEST["filename"]);
      }
 
     if($mode=="list"){

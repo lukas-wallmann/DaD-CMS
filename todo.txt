@@ -1,3 +1,11 @@
+fileManager
+list ohne formate
+thumpnails anzeigen
+list übernehemen in hidden field
+dateinamen unique
+dateien löschen wenn element gelöscht wird
+auswahl von dateien
+
 
 siteeditor
   build fields
