@@ -14,6 +14,7 @@ $.fn.fileManager = function() {
     var accept="";
     if($(this).attr("data-allow")=="image")accept=' accept="image/*"';
     if($(this).attr("data-multiple")==false)multiple="";
+    this.append("<div class='pre mb-3' style='height:20px; display:none; background:#fff'><div class='bar bg-primary' style='height:20px'></div></div>");
     this.append('<ul class="preview'+previewclass+'"></ul>');
     this.append('<input id="fileManager'+this.fileManager+'" style="display:none" type="file"'+multiple+accept+'/>');
     this.append('<button class="btn btn-secondary mr-2 upload" onclick="document.getElementById(\'fileManager'+this.fileManager+'\').click();"><i class="fas fa-upload"></i></button>');
@@ -107,7 +108,6 @@ $.fn.fileManager = function() {
                   y=0;
                 var relw = widthto/width;
                 var relh = heigthto/height;
-                console.log("widthto"+widthto+",heigthto:"+heigthto+",width:"+width);
 
               if(mode=="fitin"){
                 if (relh > relw) {
@@ -193,8 +193,8 @@ $.fn.fileManager = function() {
           var ident=fb.uploader.cache[fb.uploader.cat][2];
           $.post( fb.api, { filename: fb.uploader.cache[fb.uploader.cat][0], data:fb.uploader.cache[fb.uploader.cat][1], dir:fb.dir, mode:"upload"  } ).done(function(d){
            fb.uploader.cat++;
-           $(".prog").show();
-           $(".prog .bar").width(((fb.uploader.at+(fb.uploader.cat/fb.uploader.cache.length))/fb.uploader.files.length*100)+"%");
+           main.find(".pre").show();
+          main.find(".pre .bar").width(((fb.uploader.at+(fb.uploader.cat/fb.uploader.cache.length))/fb.uploader.files.length*100)+"%");
            if(main.formats!=undefined && ident!=""){
              if(fb.list[fb.uploader.at]==undefined){
                fb.list[fb.uploader.at]={};
@@ -213,7 +213,7 @@ $.fn.fileManager = function() {
              if(fb.uploader.at<fb.uploader.files.length){
                fb.uploader.run();
              }else{
-               $(".prog").hide();
+               main.find(".pre").hide();
                fb.init();
              }
            }
