@@ -23,13 +23,29 @@
        }
      }
 
+
+
      if($mode=="upload"){
       checkWritePerm();
       $path = $_dir.$_REQUEST['filename'];
       $dirname=dirname($path);
       if(!file_exists($dirname))mkdir($dirname);
-      file_put_contents($path, file_get_contents($_POST['data']));
-      die($_REQUEST["filename"]);
+      if(file_exists($path)){
+        if(file_get_contents($_POST['data'])!=file_get_contents($path)){
+          $increment = 0;
+          list($name, $ext) = explode('.', $path);
+          while(file_exists($path) && file_get_contents($_POST['data'])!=file_get_contents($path)) {
+              $increment++;
+              // $loc is now "userpics/example1.jpg"
+              $path= $name. $increment . '.' . $ext;
+          }
+          file_put_contents($path, file_get_contents($_POST['data']));
+
+        }
+      }else{
+        file_put_contents($path, file_get_contents($_POST['data']));
+      }
+      die($path);
      }
 
     if($mode=="list"){

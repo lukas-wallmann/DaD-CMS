@@ -41,7 +41,7 @@ $.fn.fileManager = function() {
         main.find(".preview").html("");
         if(main.formats!=undefined){
           for(var i=0; i<oldval.length; i++){
-              main.find(".preview").append('<li><img src="uploads/'+oldval[i].autothump+'"><div class="delete"><i class="fas fa-trash-alt"></i></div><textarea style="display:none">'+JSON.stringify(oldval[i])+'</textarea></li>');
+              main.find(".preview").append('<li><img src="'+oldval[i].autothump+'"><div class="delete"><i class="fas fa-trash-alt"></i></div><textarea style="display:none">'+JSON.stringify(oldval[i])+'</textarea></li>');
           }
         }else{
           for(var i=0; i<oldval.length; i++){
