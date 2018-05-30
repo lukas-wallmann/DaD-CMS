@@ -62,10 +62,10 @@ var nCMS={
           }
           break;
       case "filemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="*"><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="*"><textarea style="display:none" class="saveme" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
           break;
       case "imagemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><input type="hidden" class="saveme" data-name="'+field.name+'"></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multipe="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
           break;
       case "formmanager":
           break;

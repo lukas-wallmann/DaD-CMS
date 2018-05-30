@@ -5,12 +5,16 @@ $.fn.fileManager = function() {
     fileManagers++;
     this.fileManager=fileManagers;
     this.formats=this.attr("data-formats");
-    if(this.formats!=undefined)this.formats=JSON.parse(this.formats);
+    var previewclass="";
+    if(this.formats!=undefined){
+      this.formats=JSON.parse(this.formats);
+      previewclass=" images";
+    }
     var multiple=" multiple";
     var accept="";
     if($(this).attr("data-allow")=="image")accept=' accept="image/*"';
     if($(this).attr("data-multiple")==false)multiple="";
-    this.append('<div class="preview"></div>');
+    this.append('<ul class="preview'+previewclass+'"></ul>');
     this.append('<input id="fileManager'+this.fileManager+'" style="display:none" type="file"'+multiple+accept+'/>');
     this.append('<button class="btn btn-secondary mr-2 upload" onclick="document.getElementById(\'fileManager'+this.fileManager+'\').click();"><i class="fas fa-upload"></i></button>');
     this.fi=$(this).find("#fileManager"+this.fileManager);
@@ -26,8 +30,43 @@ $.fn.fileManager = function() {
       list:[],
 
       init:function(){
+        var oldval=JSON.parse(main.find('.saveme').text());
+
+        for(var i=0; i<fb.list.length; i++){
+          oldval.push(fb.list[i]);
+        }
+
+        main.find('.saveme').text(JSON.stringify(oldval));
+        main.find(".preview").html("");
+        if(main.formats!=undefined){
+          for(var i=0; i<oldval.length; i++){
+            if(main.formats!=undefined){
+              main.find(".preview").append('<li><img src="uploads/'+oldval[i].autothump+'"><div class="delete"><i class="fas fa-trash-alt"></i></div><textarea style="display:none">'+JSON.stringify(oldval[i])+'</textarea></li>');
+            }
+          }
+        }
+        main.find(".preview .delete").click(function(){
+          $(this).parent().remove();
+          fb.updateval();
+        })
+
+        main.find(".preview").sortable({stop:fb.updateval});
+
 
       },
+
+      updateval:function(){
+        if(main.formats!=undefined){
+          var tmp=[];
+          main.find(".preview li textarea").each(function(){
+            tmp.push(JSON.parse($(this).text()));
+          });
+          main.find(".saveme").text(JSON.stringify(tmp));
+        }
+
+      },
+
+
       uploader:{
 
         files:[],
@@ -61,6 +100,7 @@ $.fn.fileManager = function() {
                   y=0;
                 var relw = widthto/width;
                 var relh = heigthto/height;
+                console.log("widthto"+widthto+",heigthto:"+heigthto+",width:"+width);
 
               if(mode=="fitin"){
                 if (relh > relw) {
@@ -80,6 +120,8 @@ $.fn.fileManager = function() {
               height*=relto;
 
               if(mode=="fitin"){
+
+
                 canvas.width = width;
                 canvas.height = height;
               }else{
@@ -107,7 +149,7 @@ $.fn.fileManager = function() {
               if (theFile.type=="image/jpeg") {
                 if(main.formats!=undefined){
                   fb.uploader.wait=2+main.formats.length;
-                  fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback);
+                  fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,"autothump");
                   fb.uploader.callback(e.target.result,theFile.name);
                   for(var i=0; i<main.formats.length; i++){
                     var name=main.formats[i][0];
@@ -141,19 +183,19 @@ $.fn.fileManager = function() {
 
         upload:function(){
           var ident=fb.uploader.cache[fb.uploader.cat][2];
-          console.log("ident:"+ident);
           $.post( fb.api, { filename: fb.uploader.cache[fb.uploader.cat][0], data:fb.uploader.cache[fb.uploader.cat][1], dir:fb.dir, mode:"upload"  } ).done(function(d){
            fb.uploader.cat++;
            $(".prog").show();
            $(".prog .bar").width(((fb.uploader.at+(fb.uploader.cat/fb.uploader.cache.length))/fb.uploader.files.length*100)+"%");
-           if(ident!=""){
+           if(main.formats!=undefined && ident!=""){
              if(fb.list[fb.uploader.at]==undefined){
                fb.list[fb.uploader.at]={};
              }
              var data=fb.list[fb.uploader.at];
              data[ident]=d;
              fb.list[fb.uploader.at]=data;
-             console.log(fb.list);
+           }else if(main.formats==undefined && ident==""){
+             fb.list[fb.uploader.at]=d;
            }
            if(fb.uploader.cat<fb.uploader.cache.length){
              fb.uploader.upload();

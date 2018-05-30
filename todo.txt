@@ -1,7 +1,5 @@
 fileManager
-list ohne formate
-thumpnails anzeigen
-list übernehemen in hidden field
+anzeigen von nicht bilddateien
 dateinamen unique
 dateien löschen wenn element gelöscht wird
 auswahl von dateien
