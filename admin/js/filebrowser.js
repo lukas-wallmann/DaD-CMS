@@ -32,7 +32,7 @@ var fb={
       fb.uploader.run();
     },
 
-    resize:function(url,info=["fitin",1920,1080],name="file.jpg",callback=function(){},q=0.8){
+    resize:function(url,info=["fitin",1920,1080],name="file.jpg",callback=function(){},type,q=0.8){
       var image = new Image();
       image.onload = function (imageEvent) {
 
@@ -74,7 +74,7 @@ var fb={
             canvas.height = heigthto;
           }
           canvas.getContext('2d').drawImage(image, x, y, width, height);
-          var dataUrl = canvas.toDataURL('image/jpeg',q);
+          var dataUrl = canvas.toDataURL(type,q);
           callback(dataUrl,image.name);
       }
 
@@ -89,9 +89,9 @@ var fb={
       reader.onload = (function(theFile) {
         return function(e) {
           // Render thumbnail.
-          if (theFile.type=="image/jpeg") {
+          if (theFile.type=="image/jpeg" || theFile.type=="image/png") {
             fb.uploader.wait=2;
-            fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback);
+            fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,theFile.type);
             fb.uploader.callback(e.target.result,theFile.name);
           }else{
             fb.uploader.wait=1;
@@ -183,8 +183,8 @@ var fb={
       return newf;
     }
 
-    function isJPG(n){
-      return n.split(".jpg").length>1;
+    function isImage(n){
+      return n.split(".jpg").length>1 || n.split(".png").length>1;
     }
 
     var folders=[];
@@ -196,11 +196,11 @@ var fb={
 
     for(var i=0; i<d.files.length; i++){
       f=d.files[i];
-      if(f!="." && f!=".." && f!="__thumps"){
+      if(f!="." && f!=".." && f.substring(0,2)!="__"){
         if(isFolder(f)){
           folders.push("<div class='entry folder' data-dir='"+fb.dir+f+"/'><div class='icon'><i class='fas fa-folder-open'></i></div><div class='title'><span>"+f+"<span></div></div>");
         }else{
-          if(isJPG(f)){
+          if(isImage(f)){
             var background=" style='background:url(\"uploads/"+fb.dir+"__thumps/"+f+"\")'";
             files.push("<div class='entry file' data-file='"+fb.dir+f+"'><div class='icon'"+background+"></div><div class='title'><span>"+f+"</span></div></div>");
           }else{

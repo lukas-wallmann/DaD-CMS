@@ -35,7 +35,7 @@
 .texteditor{
   background: #fff;
 }
-.filemanager ul.preview.images {
+.filemanager ul.preview {
     list-style: none;
     margin: 0;
     padding: 0;
