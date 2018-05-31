@@ -170,21 +170,65 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/touchpunch.js"></script>
 <script src="js/filemanager.js"></script>
+<script src="js/cmd.js"></script>
+<script>
+var consts=JSON.parse('<?php echo json_encode($lang)?>');
+</script>
 <script src="js/sites.core.bak.js"></script>
 <style>
-  .section {
-      margin: 20px 0;
-  }
-  .section .dropper {
-      margin: 0 0 10px 0;
-      font-size: 20px;
-  }
-  .section .content{
-    display:none;
-  }
-  ul#elements, ul#content {
-    padding: 0;
-  }
-  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+.section {
+    margin: 20px 0;
+}
+.section .dropper {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+.section .content{
+  display:none;
+}
+ul#elements, ul#content {
+  padding: 0;
+}
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 
+#popupwin .inner {
+  background: #fff;
+  position: relative;
+  height: auto;
+  padding:0 20px;
+}
+#popupwin .itm {
+  height: 150px;
+  width: 124px;
+  background: none;
+  display: inline-block;
+  margin: 0 5px 5px 0;
+  font-size: 104px;
+  position: relative;
+  border: 2px solid #ccc;
+}
+#popupwin .itm.selected{
+  border:2px solid #ff0000;
+}
+#popupwin .itm .name {
+    line-height: 14px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+}
+
+#popupwin .itm img,#popupwin .itm svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#popupwin .top {
+    position: fixed;
+    z-index: 999;
+    background: #fff;
+    width: 100%;
+}
 </style>

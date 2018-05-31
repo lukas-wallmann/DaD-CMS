@@ -13,12 +13,16 @@ $.fn.fileManager = function() {
     var multiple=" multiple";
     var accept="";
     if($(this).attr("data-allow")=="image")accept=' accept="image/*"';
-    if($(this).attr("data-multiple")==false)multiple="";
+    if($(this).attr("data-multiple")=="false")multiple="";
     this.append("<div class='pre mb-3' style='height:20px; display:none; background:#fff'><div class='bar bg-primary' style='height:20px'></div></div>");
     this.append('<ul class="preview'+previewclass+'"></ul>');
     this.append('<input id="fileManager'+this.fileManager+'" style="display:none" type="file"'+multiple+accept+'/>');
     this.append('<button class="btn btn-secondary mr-2 upload" onclick="document.getElementById(\'fileManager'+this.fileManager+'\').click();"><i class="fas fa-upload"></i></button>');
+    this.append('<button class="btn btn-primary browse"><i class="fas fa-folder-open"></i></button>');
     this.fi=$(this).find("#fileManager"+this.fileManager);
+    this.find(".browse").click(function(){
+      fb.browse.init();
+    });
     this.fi.change(function(evt){
       fb.uploader.files=evt.target.files;
       fb.uploader.start();
@@ -30,13 +34,115 @@ $.fn.fileManager = function() {
       api:"?m=files&no=1&a=api",
       list:[],
 
+      browse:{
+        dir:"",
+        init:function(){
+          fb.browse.load();
+        },
+        load:function(dir=""){
+          fb.browse.dir=dir;
+          var api=fb.api+"&dir="+dir;
+          $.ajax({url:api}).done(function(d){
+            fb.browse.build(JSON.parse(d));
+          });
+        },
+        build:function(data){
+          var code=[];
+          code.push("<div class='top'><div class='nav mb-3 mt-3'>");
+          code.push(fb.browse.buildNav(fb.browse.dir));
+          code.push("</div>");
+          code.push('<div class="buttons mb-3"><button class="btn btn-primary mr-3 save">'+consts.save+'</button><button class="btn btn-danger cancel">'+consts.cancel+'</button></div>');
+          code.push('</div><div class="content">');
+          code.push(fb.browse.buildEntrys(data.files));
+          code.push("</div>");
+          fb.browse.popup(code.join(""));
+          fb.browse.setPopupFunctions();
+        },
+        buildNav:function(dir){
+          var html=['<button type="button" data-dir="" class="btn btn-primary btn-sm mr-1"><i class="fas fa-home"></i></button>'];
+          var parts=fb.browse.dir.split("/");
+          var cur="";
+          for(var i=0; i<parts.length-1; i++){
+            cur+=parts[i]+"/";
+            html.push('/<button type="button" data-dir="'+cur+'" class="btn btn-primary btn-sm mr-1 ml-1">'+parts[i]+'</button>');
+          }
+          return html.join("");
+        },
+        buildEntrys:function(data){
+          var html=[];
+          function getParent(dir){
+            var parts=dir.split("/");
+            var newpath="";
+            for(var i=0; i<parts.length-2; i++){
+              newpath+=parts[i]+"/";
+            }
+            return newpath;
+          }
+          function isFolder(p){
+            return p.split(".").length==1;
+          }
+          function isImage(p){
+            return p.split(".jpg").length>1 || p.split(".png").length>1;
+          }
+          if(fb.browse.dir!="")html.push('<div class="itm folder" data-url="'+getParent(fb.browse.dir)+'"><i class="far fa-arrow-alt-circle-left"></i></div>');
+          for(var i=0; i<data.length; i++){
+            var entry=data[i];
+            if(entry!="." && entry!=".." && entry.substring(0,2)!="__"){
+              if(isFolder(entry)){
+                html.push('<div class="itm folder" data-url="'+fb.browse.dir+entry+"/"+'"><i class="fas fa-folder-open"></i><div class="name">'+entry+'</div></div>');
+              }else{
+                if(isImage(entry)){
+                  html.push('<div class="itm file" data-url="'+fb.browse.dir+entry+'"><img src="uploads/'+fb.browse.dir+"__thumps/"+entry+'"><div class="name">'+entry+'</div></div>');
+                }else{
+                  html.push('<div class="itm file" data-url="'+fb.browse.dir+entry+'"><i class="fas fa-file"></i><div class="name">'+entry+'</div></div>');
+                }
+              }
+            }
+          }
+          return html.join("");
+        },
+        popup:function(code){
+          $("#popupwin").remove();
+          $("body").css("padding-top","0").children("*").hide()
+          var tmp=[];
+          tmp.push('<div id="popupwin"><div class="inner">');
+          tmp.push(code);
+          tmp.push('</div></div>');
+          $("body").append(tmp.join(""));
+        },
+        setPopupFunctions:function(){
+          $("#popupwin .content").css("padding-top",($("#popupwin .top").height()+35)+"px");
+          $('#popupwin .itm.file').click(function(){
+            if(main.attr("data-multiple")=="false")$('#popupwin .itm.file.selected').removeClass("selected");
+            $(this).toggleClass("selected");
+          });
+          $("#popupwin .itm.folder").click(function(){
+            fb.browse.load($(this).attr("data-url"));
+          });
+          $('#popupwin .save').click(function(){
+            var selected=[];
+            $('#popupwin .selected').each(function(){
+              selected.push($(this).attr("data-url"));
+            });
+            fb.uploader.generateForm(selected);
+            $("#popupwin .cancel").click();
+          })
+          $("#popupwin .cancel").click(function(){
+            $("#popupwin").remove();
+            $("body").css("padding-top","5rem").children("*").show();
+          })
+        }
+      },
+
       init:function(){
         var oldval=JSON.parse(main.find('.saveme').text());
-
+        console.log(fb.list);
         for(var i=0; i<fb.list.length; i++){
           oldval.push(fb.list[i]);
         }
-
+        fb.list=[];
+        console.log("fb list resetted");
+        console.log(fb.list);
         main.find('.saveme').text(JSON.stringify(oldval));
         main.find(".preview").html("");
         if(main.formats!=undefined){
@@ -83,14 +189,35 @@ $.fn.fileManager = function() {
         wait:0,
         wat:0,
         cat:0,
+        gFrom:false,
 
         start:function(){
+          fb.uploader.reset();
+          fb.uploader.run();
+        },
+
+        reset:function(){
           fb.uploader.at=0;
           fb.uploader.cat=0;
           fb.uploader.wait=0;
           fb.uploader.wat=0;
           fb.uploader.cache=[];
-          fb.uploader.run();
+          fb.uploader.gFrom=false;
+        },
+
+        generateForm:function(arr){
+          fb.uploader.reset();
+          fb.uploader.gFrom=true;
+          if(main.formats==undefined){
+            for(var i=0; i<arr.length; i++){
+                fb.list.push({name:arr[i], link:arr[i]})
+                fb.init();
+            }
+          }else{
+            fb.uploader.files=arr;
+            fb.uploader.run();
+          }
+
         },
 
         resize:function(url,info=["fitin",1920,1080],name="file.jpg",callback=function(){},type="image/jpg",ident="",q=0.8){
@@ -148,36 +275,55 @@ $.fn.fileManager = function() {
         },
 
         run:function(){
-          var reader = new FileReader();
+          if(!fb.uploader.gFrom){
+            var reader = new FileReader();
 
-          reader.onload = (function(theFile) {
-            return function(e) {
-              // Render thumbnail.
-              if (theFile.type=="image/jpeg" || theFile.type=="image/png") {
-                if(main.formats!=undefined){
-                  fb.uploader.wait=2+main.formats.length;
-                  fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,theFile.type,"autothump");
-                  fb.uploader.callback(e.target.result,theFile.name);
-                  for(var i=0; i<main.formats.length; i++){
-                    var name=main.formats[i][0];
-                    var format=main.formats[i][1].split(":");
-                    format[1]=format[1].split("x");
+            reader.onload = (function(theFile) {
+              return function(e) {
+                // Render thumbnail.
+                if (theFile.type=="image/jpeg" || theFile.type=="image/png") {
+                  if(main.formats!=undefined){
+                    fb.uploader.wait=2+main.formats.length;
+                    fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,theFile.type,"autothump");
+                    fb.uploader.callback(e.target.result,theFile.name);
+                    for(var i=0; i<main.formats.length; i++){
+                      var name=main.formats[i][0];
+                      var format=main.formats[i][1].split(":");
+                      format[1]=format[1].split("x");
 
-                    fb.uploader.resize(e.target.result,[format[0],format[1][0],format[1][1]],"__"+name+"/"+theFile.name,fb.uploader.callback,theFile.type,name);
+                      fb.uploader.resize(e.target.result,[format[0],format[1][0],format[1][1]],"__"+name+"/"+theFile.name,fb.uploader.callback,theFile.type,name);
+                    }
+                  }else{
+                    fb.uploader.wait=2;
+                    fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,theFile.type,"autothump");
+                    fb.uploader.callback(e.target.result,theFile.name);
                   }
                 }else{
-                  fb.uploader.wait=2;
-                  fb.uploader.resize(e.target.result,["crop",120,120],"__thumps/"+theFile.name,fb.uploader.callback,theFile.type,"autothump");
+                  fb.uploader.wait=1;
                   fb.uploader.callback(e.target.result,theFile.name);
                 }
-              }else{
-                fb.uploader.wait=1;
-                fb.uploader.callback(e.target.result,theFile.name);
-              }
-            };
-          })(fb.uploader.files[fb.uploader.at]);
-
-          reader.readAsDataURL(fb.uploader.files[fb.uploader.at]);
+              };
+            })(fb.uploader.files[fb.uploader.at]);
+            reader.readAsDataURL(fb.uploader.files[fb.uploader.at]);
+          }else{
+            var theFile=fb.uploader.files[fb.uploader.at];
+            var parts=theFile.split(".");
+            var type="image/"+parts[parts.length-1];
+            fb.uploader.wait=1+main.formats.length;
+            parts=theFile.split("/");
+            var dir="";
+            for(var i=0; i<parts.length-1; i++){
+              dir+=parts[i]+"/";
+            }
+            var file=parts[parts.length-1];
+            fb.uploader.resize("uploads/"+theFile,["crop",120,120],dir+"__thumps/"+file,fb.uploader.callback,type,"autothump");
+            for(var i=0; i<main.formats.length; i++){
+              var name=main.formats[i][0];
+              var format=main.formats[i][1].split(":");
+              format[1]=format[1].split("x");
+              fb.uploader.resize("uploads/"+theFile,[format[0],format[1][0],format[1][1]],dir+"__"+name+"/"+file,fb.uploader.callback,type,name);
+            }
+          }
         },
 
         callback:function(data,filename,ident=""){
