@@ -136,30 +136,30 @@ $.fn.fileManager = function() {
 
       init:function(){
         var oldval=JSON.parse(main.find('.saveme').text());
-        console.log(fb.list);
         for(var i=0; i<fb.list.length; i++){
           oldval.push(fb.list[i]);
         }
         fb.list=[];
-        console.log("fb list resetted");
-        console.log(fb.list);
         main.find('.saveme').text(JSON.stringify(oldval));
         main.find(".preview").html("");
         if(main.formats!=undefined){
           for(var i=0; i<oldval.length; i++){
-              main.find(".preview").append('<li><img src="'+oldval[i].autothump+'"><div class="delete"><i class="fas fa-trash-alt"></i></div><textarea style="display:none">'+JSON.stringify(oldval[i])+'</textarea></li>');
+              main.find(".preview").append('<li><img src="uploads/'+oldval[i].autothump+'"><div class="delete"><i class="fas fa-trash-alt"></i></div><textarea style="display:none">'+JSON.stringify(oldval[i])+'</textarea></li>');
           }
+          main.find(".preview").sortable({stop:fb.updateval});
+
         }else{
           for(var i=0; i<oldval.length; i++){
-              main.find(".preview").append('<li><div class="file">'+oldval[i].link+'</div><input class="form-control" value="'+oldval[i].name+'"><div class="delete"><i class="fas fa-trash-alt"></i></div></li>');
+              main.find(".preview").append('<li><label class="file" for="input'+main.fileManager+"-"+i+'">'+oldval[i].link+'</label><input style="position:relative; z-index:99" id="input'+main.fileManager+"-"+i+'" class="form-control" value="'+oldval[i].name+'"><div class="delete"><i class="fas fa-trash-alt"></i></div></li>');
           }
+          main.find(".preview").sortable({stop:fb.updateval, handle:".file"});
+
         }
         main.find(".preview .delete").click(function(){
           $(this).parent().remove();
           fb.updateval();
         })
 
-        main.find(".preview").sortable({stop:fb.updateval});
 
 
       },

@@ -45,7 +45,8 @@
       }else{
         file_put_contents($path, file_get_contents($_POST['data']));
       }
-      die($path);
+      $stringl=0-(strlen($path)-8);
+      die(substr($path,$stringl));
      }
 
     if($mode=="list"){

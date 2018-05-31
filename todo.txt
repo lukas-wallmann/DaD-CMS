@@ -1,9 +1,6 @@
 fileManager
-anzeigen von nicht bilddateien
-dateinamen unique
-dateien löschen wenn element gelöscht wird
-auswahl von dateien
-
+  maximale uploadgröße für bilder
+  
 
 siteeditor
   build fields
