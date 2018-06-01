@@ -50,24 +50,33 @@ var nCMS={
           code.push('<div class="saveme div texteditor">'+data+'</div>');
           break;
       case "select":
-          if(field.data!=undefined){
             code.push('<label>'+field.name+'</label><br>');
-            code.push('<select class="saveme form-control" data-name="'+field.name+'">');
-            for(var i=0; i<field.data.length; i++){
-              var selected="";
-              if(field.data[i][1]==data)selected=" selected";
-              code.push('<option value="'+field.data[i][1]+'"'+selected+'>'+field.data[i][0]+'</option>');
+            var data=field.dataURL!=undefined;
+            var dataclass="";
+            var dataattr="";
+            if(data){
+              dataclass=" getdata";
+              dataattr=" data-url='"+field.dataURL+"'";
+            }
+            code.push('<select class="saveme form-control'+dataclass+'" data-name="'+field.name+'" data-val="'+data+'"'+dataattr+'>');
+            if(field.data!=undefined){
+              for(var i=0; i<field.data.length; i++){
+                var selected="";
+                if(field.data[i][1]==data)selected=" selected";
+                code.push('<option value="'+field.data[i][1]+'"'+selected+'>'+field.data[i][0]+'</option>');
+              }
             }
             code.push('</select><br>');
-          }
+
           break;
       case "filemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="*"><textarea style="display:none" class="saveme" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="*"><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
           break;
       case "imagemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
           break;
       case "formmanager":
+          code.push('<div class="formmanager"><textarea style="display:none" class="template">'+JSON.stringify(field.fields)+'</textarea><textarea style="display:none" class="saveme json">'+JSON.stringify(data)+'</textarea></div>');
           break;
       default:
           code.push("<div>unknown fieldtype:"+field.type+"</div>");
@@ -119,6 +128,20 @@ var nCMS={
     $(".filemanager").each(function(){
       if(!$(this).hasClass("hasfilemanager"))$(this).fileManager().addClass("hasfilemanager");
     });
+    $(".formmanager").each(function(){
+      if(!$(this).hasClass("hasformmanager"))$(this).formManager().addClass("hasformmanager");
+    });
+    $('select.getdata').each(function(){
+      var elm=$(this);
+      $.ajax({url:elm.attr("data-url")}).done(function(d){
+        var data=JSON.parse(d);
+        for(var i=0; i<data.length; i++){
+          var selected="";
+          if(data[i][1]==elm.attr("data-val"))selected=" selected";
+          elm.append('<option value="'+data[i][1]+'"'+selected+'>'+data[i][0]+'</option>');
+        }
+      });
+    })
   },
 
   dragger:{

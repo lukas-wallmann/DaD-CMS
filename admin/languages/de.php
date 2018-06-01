@@ -32,6 +32,8 @@
 
 	//sites
 	$lang->allMenus="alle Menüs";
+	$lang->newFormField="Neues Formularfeld";
+	$lang->pleaseChooseFormFieldType="Bitte Feldtype auswählen";
 	$lang->newSite="neue Seite";
 	$lang->siteSettings="Seiteneinstellungen";
 	$lang->noMenu="ohne Menüzuordnung";

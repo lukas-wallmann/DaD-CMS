@@ -6,9 +6,9 @@ function cmd(html,onfinish,oninit=function(){}){
   $(".cmd form").submit(function(e){
     e.preventDefault();
     onfinish();
-    $(".cmd").remove();
+    $(".cmd").last().remove();
   });
   $(".cmd .ctrl .cancel").click(function(){
-    $(".cmd").remove();
+    $(".cmd").last().remove();
   });
 }
