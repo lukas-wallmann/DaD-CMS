@@ -80,6 +80,19 @@ ul#elements, ul#content {
     list-style: none;
     padding: 0;
 }
+.formmanager ul.form li {
+    position: relative;
+}
+
+.formmanager .buttons {
+    position: absolute;
+    font-size: 23px;
+}
+
+.formmanager ul
+li .content {
+    padding-left: 35px !important;
+}
 #popupwin .itm .name {
     line-height: 14px;
     font-size: 12px;

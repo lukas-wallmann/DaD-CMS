@@ -33,15 +33,40 @@ $.fn.formManager = function() {
          data=JSON.parse($(main).find(".saveme").text());
          var code=[];
          for(var i=0; i<data.length; i++){
-           code.push('<li>');
+           code.push('<li><div class="buttons"><div class="drag"><i class="fas fa-bars"></i></div><div class="delete"><i class="fas fa-trash-alt"></i></div></div><div class="content">');
            code.push(fm.buildFieldset(fm.helpers.getPlugin(data[i].type),data[i]));
-           code.push("</li>");
+           code.push("</div></li>");
          }
          $(main).find(".form").html(code.join(""));
-         $(main).find(".form").sortable({handle:"label",stop:fm.actFormData});
-         console.log($(main).find(".form li"));
-         $(main).find(".form li").click(function(e){
-           fm.editByCMD($(this));
+         $(main).find(".form").sortable({handle:".drag",stop:fm.actFormData});
+         $(main).find(".form li .buttons .delete").click(function(){
+           $(this).parent().parent().remove();
+           fm.actFormData();
+         })
+         $(main).find(".form li label").click(function(e){
+           fm.editByCMD($(this).parent());
+         });
+         $(".quilleditor").each(function(){
+           if($(this).attr("id")=="" || $(this).attr("id")==undefined){
+             fm.helpers.quillcount++;
+             $(this).attr("id","quilleditor"+fm.helpers.quillcount);
+             var toolbarOptions = [
+               ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+               ['blockquote', 'code-block'],
+
+               [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+               [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+               [{ 'align': [] }]
+             ];
+
+             var quill = new Quill('#quilleditor'+fm.helpers.quillcount, {
+               modules: {
+                 toolbar: toolbarOptions
+               },
+               theme: 'snow'
+             });
+           }
          })
       },
 
@@ -55,7 +80,7 @@ $.fn.formManager = function() {
 
       buildFieldset:function(plugin,data){
         var code=[];
-        code.push("<label>"+data.name+"</label>");
+        code.push("<label>"+data.name+"<span class='edit'><i class='fas fa-pen-square ml-1'></i></span></label>");
         code.push('<textarea style="display:none" class="plugin">'+JSON.stringify(plugin)+'</textarea>');
         code.push('<textarea style="display:none" class="data">'+JSON.stringify(data)+'</textarea>');
         switch (data.type) {
@@ -67,7 +92,7 @@ $.fn.formManager = function() {
             code.push("</select>");
             break;
 
-          case "texteditor":
+          case "editor":
             code.push("<div class='quilleditor'></div>");
             break;
 
@@ -83,6 +108,10 @@ $.fn.formManager = function() {
             code.push("<input type='checkbox' class='form-control'>");
             break;
 
+          case "checkbox":
+            code.push("<input type='checkbox' class='form-control'>");
+            break;
+
           default:
             code.push('<input class="form-control">');
         }
@@ -90,6 +119,7 @@ $.fn.formManager = function() {
       },
 
       helpers:{
+        quillcount:0,
         getPlugin:function(type){
           for(var i=0; i<template.length; i++){
             if(template[i].type==type){
@@ -198,7 +228,6 @@ $.fn.formManager = function() {
           function(){
             var plugin=JSON.parse(elm.find(".plugin").text());
             var data=JSON.parse(elm.find(".data").text());
-            console.log(data);
             for(var i=0; i<plugin.fieldset.length; i++){
               var name=plugin.fieldset[i].name;
               var dataf=data[name];

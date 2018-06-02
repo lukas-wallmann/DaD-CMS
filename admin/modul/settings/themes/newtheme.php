@@ -14,6 +14,7 @@
   <select name="for">
     <option value="site">Site</option>
     <option value="newsletter">Newsletter</option>
+    <option value="mail">Email</option>
   </select><br>
   <button type="submit" class="btn btn-primary"><?php echo $lang->save ?></button>
 </form>

@@ -37,7 +37,6 @@ var nCMS={
   getField:function(field,content){
     var data="";
     var code=[];
-    //console.log(content);
     if(field.type=="imagemanager" || field.type=="filemanager"){
       data=nCMS.helpers.getData(field.name,content,[]);
     }else{
@@ -77,6 +76,9 @@ var nCMS={
           code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
           break;
       case "formmanager":
+          if(data.fields==undefined){
+            data={fields:[]};
+          }
           code.push('<div class="formmanager"><textarea style="display:none" class="template">'+JSON.stringify(field.fields)+'</textarea><textarea style="display:none" class="saveme json">'+JSON.stringify(data.fields)+'</textarea></div>');
           break;
       default:
@@ -88,7 +90,6 @@ var nCMS={
   helpers:{
     quillcount:0,
     getPlugin:function(id){
-      //console.log(nCMS.plugins)
       for(var i=0; i<nCMS.plugins.length; i++){
         if(nCMS.plugins[i].id==id){
           return nCMS.plugins[i];
