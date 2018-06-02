@@ -160,6 +160,19 @@
       pluginID:4,
       text:"Test",
       variant:"h6"
+    },
+    {
+      pluginID:9,
+      receiver:"lukas.wallmann@yahoo.de",
+      handler:"index.php",
+      mailtemplate:7,
+      form:{
+        fields:[
+          {type:"textfield",name:"Name",required:1},
+          {type:"select",name:"Select",data:[{value:"test",name:"Test"},{value:"test2",name:"Test2"}]}
+        ]
+      }
+
     }
   ];
 </script>
@@ -175,4 +188,4 @@
 <script>
 var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
-<script src="js/sites.core.bak.js"></script>
+<script src="js/sites.core.js"></script>
