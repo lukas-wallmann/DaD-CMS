@@ -1,6 +1,26 @@
 <?php
   $siterow=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM sites WHERE ID=".$_GET["ID"]));
   print_r($_POST);
+  if(isset($_GET["no"])){
+    $id=$_GET["ID"];
+    $title=mysqli_real_escape_string($_dbcon,$_POST["title"]);
+    $menu=$_POST["menu"];
+    $url=mysqli_real_escape_string($_dbcon,$_POST["url"]);
+    $fixurl=0;
+    if(isset($_POST["fixurl"]))$fixurl=1;
+    $layout=$_POST["layout"];
+    $metatitle=mysqli_real_escape_string($_dbcon,$_POST["metatitle"]);
+    $metatags=mysqli_real_escape_string($_dbcon,$_POST["metatags"]);
+    $metadescription=mysqli_real_escape_string($_dbcon,$_POST["metadescription"]);
+    $teasername=mysqli_real_escape_string($_dbcon,$_POST["teasername"]);
+    $teaserimage=mysqli_real_escape_string($_dbcon,$_POST["teaserimage"]);
+    $teasertext=mysqli_real_escape_string($_dbcon,$_POST["teasertext"]);
+    $teaserprice=mysqli_real_escape_string($_dbcon,$_POST["teaserprice"]);
+    $content=mysqli_real_escape_string($_dbcon,$_POST["content"]);
+    $fixmeta=0;
+    mysqli_query($_dbcon,"UPDATE `sites` SET `Title` = '$title', `MenuID` = '$menu', `MetaTitle` = '$metatitle', `MetaDescription` = '$metadescription', `MetaTags` = '$metatags', `Content` = '$content', `TeaserName` = '$teasername', `TeaserPicture` = '$teaserimage', `TeaserText` = '$teasertext', `TeaserPrice` = '$teaserprice', `FixSiteURL` = '$fixurl', `SiteURL` = '$url', `FixMeta` = '$fixmeta', `Layout` = '$layout' WHERE `sites`.`ID` = $id;");
+    header("Location:?m=sites");
+  }
  ?>
 <form action="?m=sites&f=editpage&no=1&ID=<?php echo $_GET["ID"]?>" method="post">
 <div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button></div>
@@ -152,7 +172,7 @@
      </div>
   </div>
 </div>
-<textarea   id="contents" name="content"><?php echo $siterow["Content"]?></textarea>
+<textarea style="display:none" id="contents" name="content"><?php echo $siterow["Content"]?></textarea>
 </form>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -173,7 +193,7 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
     position: fixed;
     top: 56px;
     left: 0;
-    z-index: 9999;
+    z-index: 100;
     background: #fff;
     padding: 10px 20px;
     width: 100%;

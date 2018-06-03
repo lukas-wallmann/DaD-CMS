@@ -16,6 +16,7 @@ var nCMS={
   },
 
   init:function(){
+    if($("#contents").text()=="")$("#contents").text("[]");
     var contents=JSON.parse($("#contents").text());
     console.log(contents);
     for(var i=0; i<contents.length; i++){
@@ -72,10 +73,14 @@ var nCMS={
 
           break;
       case "filemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="*"><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
+          var val=JSON.stringify(data);
+          if(field.settings.multiple==false)val="["+val+"]";
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="*"><textarea style="display:none" class="saveme json multiple'+field.settings.multiple+'" data-name="'+field.name+'">'+val+'</textarea></div>');
           break;
       case "imagemanager":
-          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+JSON.stringify(data)+'</textarea></div>');
+          var val=JSON.stringify(data);
+          if(field.settings.multiple==false)val="["+val+"]";
+          code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme json multiple'+field.settings.multiple+'" data-name="'+field.name+'">'+val+'</textarea></div>');
           break;
       case "formmanager":
           if(data.fields==undefined){
@@ -103,6 +108,28 @@ var nCMS={
       var data=eval("content."+name);
       if(data==undefined)data=standard;
       return data;
+    },
+    slug:function(str) {
+      str = str.replace(/^\s+|\s+$/g, ''); // trim
+      str = str.toLowerCase();
+
+      // remove accents, swap ñ for n, etc
+      var from = "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþÞĐđßÆa·/_,:;";
+      var to   = "AAAAAACCCDEEEEEEEEIIIINNOOOOOORRSTUUUUUYYZaaaaaacccdeeeeeeeeiiiinnooooooorrstuuuuuyyzbBDdBAa------";
+      for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+      }
+
+      str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+      return str;
+    },
+    updateURL:function(){
+      if(!$('#fixurl').is(":checked")){
+        $("#url").val(nCMS.helpers.slug($("#title").val()));
+      }
     }
   },
 
@@ -116,6 +143,7 @@ var nCMS={
         var value=$(this).val();
         if($(this).hasClass("json")){
           value=JSON.parse($(this).text());
+          if($(this).hasClass("multiplefalse"))value=value[0];
         }
         if($(this).hasClass("texteditor")){
           value=$(this).find('.ql-editor').html();
@@ -134,10 +162,15 @@ var nCMS={
 
   setFunctions:function(){
     nCMS.dragger.setFunctions();
+    nCMS.helpers.updateURL();
+
+    $("#title").change(nCMS.helpers.updateURL).keyup(nCMS.helpers.updateURL);
+
     $(".fixedtop .save").click(function(e){
       e.preventDefault();
       nCMS.updateContentsVal();
-    })
+      $("form").submit();
+    });
     $(".texteditor").each(function(){
       if($(this).attr("id")=="" || $(this).attr("id")==undefined){
         nCMS.helpers.quillcount++;
