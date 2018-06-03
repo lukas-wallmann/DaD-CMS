@@ -16,6 +16,8 @@ var nCMS={
   },
 
   init:function(){
+    var contents=JSON.parse($("#contents").text());
+    console.log(contents);
     for(var i=0; i<contents.length; i++){
       var content=contents[i];
       var plugin=nCMS.helpers.getPlugin(content.pluginID);
@@ -47,7 +49,7 @@ var nCMS={
           code.push('<label>'+field.name+'</label><br><input class="saveme form-control" data-name="'+field.name+'" value="'+data+'">');
           break;
       case "editor":
-          code.push('<div class="saveme div texteditor">'+data+'</div>');
+          code.push('<div class="saveme div texteditor" data-name="'+field.name+'">'+data+'</div>');
           break;
       case "select":
             code.push('<label>'+field.name+'</label><br>');
@@ -79,7 +81,7 @@ var nCMS={
           if(data.fields==undefined){
             data={fields:[]};
           }
-          code.push('<div class="formmanager"><textarea style="display:none" class="template">'+JSON.stringify(field.fields)+'</textarea><textarea style="display:none" class="saveme json">'+JSON.stringify(data.fields)+'</textarea></div>');
+          code.push('<div class="formmanager"><textarea style="display:none" class="template">'+JSON.stringify(field.fields)+'</textarea><textarea style="display:none" class="saveme json formfields" data-name="'+field.name+'">'+JSON.stringify(data.fields)+'</textarea></div>');
           break;
       default:
           code.push("<div>unknown fieldtype:"+field.type+"</div>");
@@ -104,8 +106,38 @@ var nCMS={
     }
   },
 
+  updateContentsVal:function(){
+    var tmp=[];
+    $("#content > li").each(function(){
+      var data={};
+      data.pluginID=$(this).attr("data-pluginid");
+      $(this).find('.saveme').each(function(){
+        var name=$(this).attr("data-name");
+        var value=$(this).val();
+        if($(this).hasClass("json")){
+          value=JSON.parse($(this).text());
+        }
+        if($(this).hasClass("texteditor")){
+          value=$(this).find('.ql-editor').html();
+        }
+        if($(this).hasClass("formfields")){
+          data[name]={fields:value};
+        }else{
+          data[name]=value;
+        }
+      });
+      tmp.push(data);
+    });
+    $("#contents").text(JSON.stringify(tmp));
+  },
+
+
   setFunctions:function(){
     nCMS.dragger.setFunctions();
+    $(".fixedtop .save").click(function(e){
+      e.preventDefault();
+      nCMS.updateContentsVal();
+    })
     $(".texteditor").each(function(){
       if($(this).attr("id")=="" || $(this).attr("id")==undefined){
         nCMS.helpers.quillcount++;

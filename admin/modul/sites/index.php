@@ -25,7 +25,7 @@
   <?php
     $res=mysqli_query($_dbcon,"Select * From sites ORDER BY Pos");
     while($row=mysqli_fetch_assoc($res)){
-      echo '<li data-id="'.$row["ID"].'" data-pos="'.$row["Pos"].'" data-menuid="'.$row["MenuID"].'"><a href="?m=sites&f=editpage&ID='.$row["ID"].'">'.$row["Title"].'</a></li>';
+      echo '<li data-id="'.$row["ID"].'" data-pos="'.$row["Pos"].'" data-menuid="'.$row["MenuID"].'"><a href="?m=sites&f=editpage&nh=1&ID='.$row["ID"].'">'.$row["Title"].'</a></li>';
     }
    ?>
 </ul>

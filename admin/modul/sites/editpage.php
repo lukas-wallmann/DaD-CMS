@@ -1,6 +1,9 @@
 <?php
   $siterow=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM sites WHERE ID=".$_GET["ID"]));
+  print_r($_POST);
  ?>
+<form action="?m=sites&f=editpage&no=1&ID=<?php echo $_GET["ID"]?>" method="post">
+<div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button></div>
 <div class="topbar">
   <div class="section">
     <div class="dropper"><i class="fas fa-arrows-alt-v mr-2"></i><?php echo $lang->siteSettings ?></div>
@@ -11,7 +14,7 @@
             <label for="title"><?php echo $lang->title ?></label>
           </div>
           <div>
-            <input id="title" class="form-control" value="<?php echo $siterow["Title"]?>"><br>
+            <input id="title" name="title" class="form-control" value="<?php echo $siterow["Title"]?>"><br>
           </div>
         </div>
         <div class="col-sm-6">
@@ -19,7 +22,7 @@
             <label for="menu"><?php echo $lang->menuAssignment ?></label>
           </div>
           <div>
-            <select class="menu form-control" id="menu">
+            <select class="menu form-control" name="menu" id="menu">
               <option value="0"><?php echo $lang->noMenu ?></option>
             <?php
               $code="";
@@ -52,13 +55,13 @@
             <label for="url"><?php echo $lang->URL ?></label>
           </div>
           <div>
-            <input id="url" class="form-control" value="<?php echo $siterow["SiteURL"]?>"><br>
+            <input id="url" name="url" class="form-control" value="<?php echo $siterow["SiteURL"]?>"><br>
           </div>
           <div>
             <label for="fixurl"><?php echo $lang->fixURL ?></label>
           </div>
           <div>
-            <input id="fixurl" type="checkbox" value="1" <?php if($siterow["FixSiteURL"]==1)echo " checked";?>><br>
+            <input id="fixurl" name="fixurl" type="checkbox" value="1" <?php if($siterow["FixSiteURL"]==1)echo " checked";?>><br>
           </div>
         </div>
         <div class="col-sm-6">
@@ -66,7 +69,7 @@
             <label for="layout"><?php echo $lang->layout ?></label>
           </div>
           <div>
-            <select id="layout" class="form-control">
+            <select id="layout" name="layout" class="form-control">
               <?php
                 $res=mysqli_query($_dbcon,"Select * FROM theme WHERE LayoutFor='site'");
                 while($row=mysqli_fetch_assoc($res)){
@@ -90,7 +93,7 @@
          <label for="metatitle"><?php echo $lang->metaTitle ?></label>
        </div>
        <div>
-         <input id="metatitle" class="form-control" value="<?php echo $siterow["MetaTitle"]?>"><br>
+         <input id="metatitle" name="metatitle" class="form-control" value="<?php echo $siterow["MetaTitle"]?>"><br>
        </div>
      </div>
      <div>
@@ -98,7 +101,7 @@
          <label for="metatags"><?php echo $lang->metaTags ?></label>
        </div>
        <div>
-         <input id="metatags" class="form-control" value="<?php echo $siterow["MetaTags"]?>"><br>
+         <input id="metatags" name="metatags" class="form-control" value="<?php echo $siterow["MetaTags"]?>"><br>
        </div>
      </div>
      <div>
@@ -106,7 +109,7 @@
          <label for="metadescription"><?php echo $lang->metaDescription ?></label>
        </div>
        <div>
-         <textarea id="metadescription" class="form-control"><?php echo $siterow["MetaDescription"]?></textarea>
+         <textarea id="metadescription" name="metadescription" class="form-control"><?php echo $siterow["MetaDescription"]?></textarea>
        </div>
      </div>
    </div>
@@ -120,7 +123,7 @@
          <label for="teasername"><?php echo $lang->teaserName ?></label>
        </div>
        <div>
-         <input id="teasername" class="form-control" value="<?php echo $siterow["TeaserName"]?>"><br>
+         <input id="teasername" name="teasername" class="form-control" value="<?php echo $siterow["TeaserName"]?>"><br>
        </div>
      </div>
      <div>
@@ -128,7 +131,7 @@
          <label for="teaserimage"><?php echo $lang->teaserPicture ?></label>
        </div>
        <div>
-         <input id="teaserimage" class="form-control" value="<?php echo $siterow["TeaserPicture"]?>"><br>
+         <input id="teaserimage" name="teaserimage" class="form-control" value="<?php echo $siterow["TeaserPicture"]?>"><br>
        </div>
      </div>
      <div>
@@ -136,7 +139,7 @@
          <label for="teasertext"><?php echo $lang->teaserText ?></label>
        </div>
        <div>
-         <textarea id="teasertext" class="form-control"><?php echo $siterow["TeaserText"]?></textarea><br>
+         <textarea id="teasertext" name="teasertext" class="form-control"><?php echo $siterow["TeaserText"]?></textarea><br>
        </div>
      </div>
      <div>
@@ -144,38 +147,14 @@
          <label for="teaserprice"><?php echo $lang->teaserPrice ?></label>
        </div>
        <div>
-         <input id="teaserprice" class="form-control" value="<?php echo $siterow["TeaserPrice"]?>">
+         <input id="teaserprice" name="teaserprice" class="form-control" value="<?php echo $siterow["TeaserPrice"]?>">
        </div>
      </div>
   </div>
 </div>
+<textarea   id="contents" name="content"><?php echo $siterow["Content"]?></textarea>
+</form>
 
-<script>
-  var contents=[
-    {
-      pluginID:5,
-      text:"Hallo Welt"
-    },
-    {
-      pluginID:4,
-      text:"Test",
-      variant:"h6"
-    },
-    {
-      pluginID:9,
-      receiver:"lukas.wallmann@yahoo.de",
-      handler:"index.php",
-      mailtemplate:7,
-      form:{
-        fields:[
-          {type:"textfield",name:"Name",required:1},
-          {type:"select",name:"Select",data:[{value:"test",name:"Test"},{value:"test2",name:"Test2"}]}
-        ]
-      }
-
-    }
-  ];
-</script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="css/sites.css">
 <link rel="stylesheet" href="css/quill.snow.css">
@@ -189,3 +168,19 @@
 var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="js/sites.core.js"></script>
+<style>
+.fixedtop {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 0 5px;
+}
+
+form {
+    padding: 43px 0 0 0;
+}
+</style>

@@ -72,7 +72,7 @@ $.fn.formManager = function() {
 
       actFormData:function(){
         var tmp=[];
-        $(".form li").each(function(){
+        $(main).find(".form li").each(function(){
           tmp.push(JSON.parse($(this).find(".data").text()));
         })
         main.find(".saveme").text(JSON.stringify(tmp));
@@ -140,6 +140,10 @@ $.fn.formManager = function() {
         for(var i=0; i<fields.length; i++){
           fm.addFieldToCMD(fields[i]);
         }
+        fm.setDataBuilderFunctions();
+      },
+
+      setDataBuilderFunctions:function(){
         $(".databuilder .add").click(function(e){
           e.preventDefault();
           cmd(
@@ -156,10 +160,7 @@ $.fn.formManager = function() {
               }
             }).focus()}
           )
-        })
-      },
-
-      setDataBuilderFunctions:function(){
+        });
         $(".cmd .databuilder ul").sortable({handle:".icon",stop:function(e,ui){fm.updateDataBuilderVal(ui.item.parent().parent())}});
         $('.cmd .databuilder ul li .delete').click(function(){
           var parent=$(this).parent().parent().parent();
@@ -223,7 +224,26 @@ $.fn.formManager = function() {
         cmd(
           '<div class="fieldset"></div>',
           function(){
+            var data={};
+              data.type=JSON.parse($(elm).find(".data").text()).type;
+              $(".cmd .fieldset .saveme").each(function(){
+                var name=$(this).attr("data-name");
+                var value=$(this).val();
+                if($(this).is("input[type='checkbox']")){
+                  if($(this).is(":checked")){
+                    value=1;
+                  }else{
+                    value=0;
+                  }
+                }
+                if($(this).hasClass("json"))value=JSON.parse($(this).text());
+                data[name]=value;
+            });
 
+
+              $(elm).find(".data").text(JSON.stringify(data));
+              fm.actFormData();
+              fm.buildFields();
           },
           function(){
             var plugin=JSON.parse(elm.find(".plugin").text());
