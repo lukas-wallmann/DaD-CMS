@@ -4,7 +4,16 @@ ini_set('display_errors', 1);
 include "admin/library/_sitecore.php";
 
 $data=new stdClass();
+$basefolder=explode($_SERVER['DOCUMENT_ROOT'],dirname(__FILE__));
+if(count($basefolder)==1){
+  $basefolder="";
+}else{
+  $basefolder=$basefolder[1];
+}
+$data->uploadpath=$basefolder."/admin/uploads/";
+
 $data->site=new stdClass();
+$data->site->currentyear=date("Y");
 $res=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From sites WHERE ID=18"));
 foreach($res as $key => $value) {
   $data->site->$key=$value;
@@ -25,7 +34,7 @@ $data->theme->plugins=new stdClass();
 $res=mysqli_query($_dbcon,"Select * From themePlugins Where ThemeID=".$data->site->Layout);
 while($row=mysqli_fetch_assoc($res)){
   $name=$row["PluginID"];
-  $data->theme->parts->$name=$row["Code"];
+  $data->theme->plugins->$name=$row["Code"];
 }
 $data->nav=new stdClass();
 $res=mysqli_query($_dbcon,"Select * From menus");
@@ -45,13 +54,14 @@ function prepareMenu($menus){
     }else{
       $menus[$i]->href=$menus[$i]->link;
     }
+    $menus[$i]->hassub=false;
+    if(count($menus[$i]->sub)>0)$menus[$i]->hassub=true;
     $menus[$i]->sub=prepareMenu($menus[$i]->sub);
   }
   return $menus;
 }
 
 
- //print_r($data);
   $renderer=new renderer();
   $renderer->preRender($data);
   //$renderer->render($data,$template,"");
@@ -99,7 +109,6 @@ function prepareMenu($menus){
       }
 
       private function getForEachTo($part){
-        //echo $part;
         $tmpcode=array("","");
         $wasend=false;
         $tmp2=explode("((/foreach))",$part);
@@ -134,7 +143,6 @@ function prepareMenu($menus){
 
 
       private function getIfTo($part){
-        //echo $part;
         $tmpcode=array("","");
         $wasend=false;
         $tmp2=explode("((/if))",$part);
@@ -169,8 +177,9 @@ function prepareMenu($menus){
 
 
       public function render($data,$template,$action){
+
         //fix for unneeded space
-        $template=join("))",explode("))\n",$template));
+        //$template=join("))",explode("))\n",$template));
 
         if($action==""){
           $temp=explode("((",$template,2);
@@ -183,6 +192,20 @@ function prepareMenu($menus){
         }
 
         if($action=="(("){
+          if(substr($template,0,11)=="listPlugins"){
+            $tmp=explode("listPlugins))",$template,2);
+            foreach($data->site->Content as &$content){
+              $tmpdata=$content;
+              $tmpdata->site=$data->site;
+              $tmpdata->theme=$data->theme;
+              $tmpdata->nav=$data->nav;
+              $tmpdata->uploadpath=$data->uploadpath;
+              $pluginID=$content->pluginID;
+              $tmptemplate=$data->theme->plugins->$pluginID;
+              $this->code.=$this->render($tmpdata,$tmptemplate,"");
+            }
+            $this->code.=$this->render($data,$tmp[1],"");
+          }
           if(substr($template,0,4)=="css:"){
             $tmp=explode("))",$template,2);
             $name=explode(":",$tmp[0])[1];
@@ -200,9 +223,7 @@ function prepareMenu($menus){
             $tmp=explode("))",$template,2);
             $foreachto=$this->getForEachTo($tmp[1]);
             $tmp=explode(" ",$tmp[0]);
-
             $field=explode(".",$tmp[1]);
-            //print_r($data);
             $d=$data;
             $key=$tmp[3];
             foreach($field as &$f){
@@ -245,27 +266,27 @@ function prepareMenu($menus){
               }
             }
             if(count($compare)==2){
-              if($action="="){
+              if($action=="="){
                 if($d==$compare[1]){
                   $this->render($data,$ifto[0],"");
                 }
               }
-              if($action="<"){
+              if($action=="<"){
                 if($d<$compare[1]){
                   $this->render($data,$ifto[0],"");
                 }
               }
-              if($action=">"){
+              if($action==">"){
                 if($d>$compare[1]){
                   $this->render($data,$ifto[0],"");
                 }
               }
-              if($action="<="){
+              if($action=="<="){
                 if($d<=$compare[1]){
                   $this->render($data,$ifto[0],"");
                 }
               }
-              if($action=">="){
+              if($action==">="){
                 if($d>=$compare[1]){
                   $this->render($data,$ifto[0],"");
                 }
