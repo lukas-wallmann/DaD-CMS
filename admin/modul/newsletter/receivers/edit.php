@@ -1,23 +1,26 @@
 <?php
   if(isset($_GET["a"])){
     if($_GET["a"]=="import"){
-      $mail=$_POST["Email"];
-      $name="";
-      $id=$_GET["ID"];
-      if(isset($_POST["Name"]))$name=$_POST["Name"];
       checkWritePerm();
-      mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email)
-      SELECT * FROM (SELECT '".$name."', '".$mail."') AS tmp
-      WHERE NOT EXISTS (
-          SELECT name FROM newsletterReceivers WHERE Email = '".$mail."'
-      ) LIMIT 1;");
-      $ID=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From newsletterReceivers WHERE Email='".$mail."'"))["ID"];
-      mysqli_query($_dbcon,"INSERT INTO newsletterReceiversGroupLinks (ReceiverID, GroupID)
-      SELECT * FROM (SELECT '".$ID."', '".$id."') AS tmp
-      WHERE NOT EXISTS (
-          SELECT ReceiverID FROM newsletterReceiversGroupLinks WHERE ReceiverID = '".$ID."'
-      ) LIMIT 1;");
+      $entrys=json_decode($_POST["entrys"]);
+      foreach($entrys as &$entry){
+        $mail=$entry->Email;
+        $name=$entry->Name;
+        $id=$_GET["ID"];
+        mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email)
+        SELECT * FROM (SELECT '".$name."', '".$mail."') AS tmp
+        WHERE NOT EXISTS (
+            SELECT name FROM newsletterReceivers WHERE Email = '".$mail."'
+        ) LIMIT 1;");
+        $ID=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From newsletterReceivers WHERE Email='".$mail."'"))["ID"];
+        mysqli_query($_dbcon,"INSERT INTO newsletterReceiversGroupLinks (ReceiverID, GroupID)
+        SELECT * FROM (SELECT '".$ID."', '".$id."') AS tmp
+        WHERE NOT EXISTS (
+            SELECT ReceiverID FROM newsletterReceiversGroupLinks WHERE ReceiverID = '".$ID."'
+        ) LIMIT 1;");
+      }
       die("success");
+
     }
     if($_GET["a"]=="del"){
       die("<h2>".$lang->confirmDeleteReceiverGroup."<h2><a href='?m=newsletter/receivers&no=1&f=edit&a=delnow&ID=".$_GET["ID"]."'><button class='btn btn-danger mr-3'>".$lang->delete."</button></a><a href='?m=newsletter/receivers'><button class='btn btn-primary'>".$lang->cancel."</button></a>");
@@ -60,6 +63,8 @@
 
         var importData="";
         var rawData="";
+        var stepsize=10;
+        var last=0;
 
         function openFile(event) {
           var input = event.target;
@@ -107,7 +112,7 @@
           $("form").hide();
           $(".delete").hide();
           $(".row.selectes").remove();
-          $("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div>');
+          $("#output").append('<div class="prog" style="height:20px; background:#ccc"><div class="prog-bar bg-primary text-white" style="width: 0%; height:20px; text-align:center">0%</div></div><div class="stepsize mt-3">Stepsize calculating</div>');
           if(!opt.forgetFirstLine){
             runImport(0,email,name);
           }else{
@@ -122,17 +127,34 @@
 
         var pro=Math.round(n/importData.length*10000)/100;
         $(".prog-bar").css("width",pro+"%").text(pro+"%");
-        var fields=importData[n].split(",");
-        var data={};
-        data.Email=fields[email];
-        data.Name=fields[name];
+        var data={entrys:[]};
+        var to=n+stepsize;
+        if(to>importData.length-1)to=importData.length-1;
+        for(var i=n; i<to; i++){
+          var d={};
+          var fields=importData[n].split(",");
+          n++;
+          d.Email=fields[email];
+          d.Name=fields[name];
+          data.entrys.push(d);
+        }
+        data.entrys=JSON.stringify(data.entrys);
+
         $.ajax({
           type: "POST",
           url: "?m=newsletter/receivers&f=edit&no=1&a=import&ID=<?php echo $_GET["ID"] ?>",
           data: data,
           success: function(){
-            n++;
-            if(n!=importData.length){
+            if(n!=importData.length-1){
+              var now=Date.now();
+              var diff=now-last;
+              if(diff<1500){
+                stepsize++;
+              }else{
+                stepsize--;
+              }
+              last=Date.now();
+              $(".stepsize").text("Stepsize:"+stepsize);
               runImport(n,email,name);
             }else{
               document.location.href="?m=newsletter/receivers";

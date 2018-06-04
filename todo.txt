@@ -1,6 +1,8 @@
 fileManager
   maximale uploadgröße für bilder
-  
+
+Newsletter
+  bei import größere schritte machen
 
 siteeditor
   build fields
@@ -10,13 +12,6 @@ siteeditor
   teasergroup
   Header
   formeditor
-
-renderer:
-  blocks
-  listplugins
-  siteconstants
-  .length
-  if <,>,!=
 
 theme
   delete parts on delete
@@ -29,21 +24,3 @@ themeEditor
   sync button
   select for site or newsletter
   responsive
-
-quill:
-var toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
-
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-  [{ 'align': [] }]
-];
-
-var quill = new Quill('#editor-container', {
-  modules: {
-    toolbar: toolbarOptions
-  },
-  theme: 'snow'
-});

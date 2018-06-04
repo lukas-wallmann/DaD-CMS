@@ -66,7 +66,7 @@ var DaDCMS={
               for(var i=0; i<field.data.length; i++){
                 var selected="";
                 if(field.data[i][1]==data)selected=" selected";
-                code.push('<option value="'+field.data[i][1]+'"'+selected+'>'+field.data[i][0]+'</option>');
+                code.push('<option value="'+field.data[i].value+'"'+selected+'>'+field.data[i].name+'</option>');
               }
             }
             code.push('</select><br>');
@@ -79,7 +79,7 @@ var DaDCMS={
           break;
       case "imagemanager":
           var val=JSON.stringify(data);
-          if(field.settings.multiple==false)val="["+val+"]";
+          if(field.settings.multiple==false && val!="[]")val="["+val+"]";
           code.push('<label>'+field.name+'</label><br><div class="filemanager" data-multiple="'+field.settings.multiple+'" data-allow="image" data-formats=\''+JSON.stringify(field.settings.formats)+'\'><textarea style="display:none" class="saveme json multiple'+field.settings.multiple+'" data-name="'+field.name+'">'+val+'</textarea></div>');
           break;
       case "formmanager":
