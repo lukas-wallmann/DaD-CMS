@@ -4,17 +4,16 @@
 	//General
 	$lang->save="speichern";
 	$lang->name="Name";
+	$lang->new="neu";
 	$lang->delete="löschen";
-	$lang->up="hoch";
-	$lang->down="runter";
 	$lang->cancel="abbrechen";
+	$lang->language="Sprache";
 
 	//Menu
 	$lang->menu=array(
 		array("Seiten","sites"),
 		array("Menü","menu"),
 		array("Dateien","files"),
-		array("Header","header"),
 		array("Newsletter","newsletter/newsletter",array(
 			array("Newsletter","newsletter/newsletter"),
 			array("Empfänger","newsletter/receivers"),
@@ -22,9 +21,11 @@
 		)),
 		array("Einstellungen","settings/users",array(
 			array("Benutzer","settings/users"),
-			array("Design","settings/themes"),
-			array("Cache","settings/caching")
-		))
+			array("Cache","settings/caching"),
+			array("Sprachen","settings/languages"),
+		)),
+		array("Design","settings/themes")
+
 	);
 
 	//menus
@@ -105,7 +106,7 @@
 	$lang->imageformatHeight="Höhe";
 
 	//Footer
-	$lang->footer="newCMS von Lukas Wallmann";
+	$lang->footer="DaD-CMS von Lukas Wallmann";
 	$lang->logout="ausloggen";
 
 ?>

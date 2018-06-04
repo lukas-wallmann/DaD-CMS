@@ -21,8 +21,9 @@ var menuBuilder={
       data.action=action;
       data.name=name;
       data.id=id;
+      data.lang=ncmslang;
     }
-    $.ajax({url:"?m=menu&f=apimenu&no=1", type:type, data:data}).done(function(d){
+    $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+ncmslang, type:type, data:data}).done(function(d){
       menuBuilder.data=JSON.parse(d);
       menuBuilder.build();
       menuBuilder.setFunctions();
@@ -67,6 +68,7 @@ var menuBuilder={
           dat.sub=data.sub;
           var code=menuBuilder.getPoint(dat);
           from.replaceWith(code);
+          console.log(helper);
           menuBuilder.save(helper)
         }
         menuBuilder.setFunctions();
@@ -99,7 +101,7 @@ var menuBuilder={
     });
 
     $(".menu ul .edit").click(function(){
-      menuBuilder.editMenuPoint($(this).parent().parent(),{name:$(this).parent().text(),action:$(this).parent().parent().attr("data-action"),target:$(this).parent().parent().attr("data-target"),link:$(this).parent().parent().attr("data-link"), sub:menuBuilder.getSub($(this).parent().parent())},$(this));
+      menuBuilder.editMenuPoint($(this).parent().parent(),{name:$(this).parent().text(),action:$(this).parent().parent().attr("data-action"),target:$(this).parent().parent().attr("data-target"),link:$(this).parent().parent().attr("data-link"), sub:menuBuilder.getSub($(this).parent().parent())},$(this).parent().parent().parent());
     });
 
     $(".menu ul .delete").click(function(){
@@ -169,8 +171,10 @@ var menuBuilder={
 
   save:function(helper){
     var elm=helper;
-    while(!elm.hasClass("menu")){
+    var steps=0;
+    while(!elm.hasClass("menu") && steps<100){
       elm=elm.parent();
+      steps++;
     }
     var data={action:"update",id:elm.attr("data-id"),name:"",content:JSON.stringify(menuBuilder.getSub(elm))};
     $.ajax({url:"?m=menu&f=apimenu&no=1",type:"POST",data:data});

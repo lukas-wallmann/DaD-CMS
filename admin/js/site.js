@@ -19,11 +19,12 @@ var site={
     data.action="new";
     data.name=name;
     data.menuid=0;
+    data.lang=ncmslang;
     data.pos=Number($("ul.sites li").last().attr("data-pos"))+1;
     if(isNaN(data.pos))data.pos=0;
     if(menuid!="all")data.menuid=menuid;
     $.ajax({url:"?m=sites&f=apisite&no=1", type:"POST", data:data}).done(function(d){
-      document.location.href="?m=sites&f=editpage&ID="+d;
+      document.location.href="?m=sites&f=editpage&nh=1&ID="+d;
     });
   },
 

@@ -7,7 +7,8 @@
     $name=$_POST["name"];
 
     if($_POST["action"]=="new"){
-      mysqli_query($_dbcon,"INSERT INTO `menus` (`ID`, `Name`, `Content`) VALUES (NULL, '$name', '[]');");
+      $language=$_POST["lang"];
+      mysqli_query($_dbcon,"INSERT INTO `menus` (`ID`, `Name`, `Content`,`Language`) VALUES (NULL, '$name', '[]','$language');");
     }
     if($_POST["action"]=="delete"){
       mysqli_query($_dbcon,"DELETE FROM `menus` WHERE `menus`.`ID` = $id");
@@ -20,8 +21,8 @@
       mysqli_query($_dbcon,"UPDATE `menus` SET `Content` = '$content' WHERE `menus`.`ID` = $id;");
     }
   }
-
-  $res=mysqli_query($_dbcon,"Select * FROM menus ORDER BY Name");
+  $lang=$_GET["lang"];
+  $res=mysqli_query($_dbcon,"Select * FROM menus WHERE Language='$lang' ORDER BY Name");
   $tmp=array();
   while($row=mysqli_fetch_assoc($res)){
     array_push($tmp,$row);

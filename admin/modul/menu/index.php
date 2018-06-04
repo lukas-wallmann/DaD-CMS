@@ -1,3 +1,4 @@
+<?php include "includes/langselect.php" ?>
 <button class="btn btn-secondary new"><?php echo $lang->newMenu ?></button>
 
 <div class="menus mt-3">

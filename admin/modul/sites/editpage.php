@@ -1,6 +1,5 @@
 <?php
   $siterow=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM sites WHERE ID=".$_GET["ID"]));
-  print_r($_POST);
   if(isset($_GET["no"])){
     $id=$_GET["ID"];
     $title=mysqli_real_escape_string($_dbcon,$_POST["title"]);

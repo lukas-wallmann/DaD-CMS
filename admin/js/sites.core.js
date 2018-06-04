@@ -4,14 +4,14 @@ $( function() {
   })
   $("main").append('<ul id="elements" class="drag"></ul><ul id="content" class="drag"></ul>');
   $.getScript( "?m=sites&f=apigetjs&no=1&ID="+$("#layout").val() ).done(function( script, textStatus ) {
-    nCMS.init();
+    DaDCMS.init();
   })
 } );
 
-var nCMS={
+var DaDCMS={
   plugins:[],
   registerPlugin:function(plugin){
-    nCMS.plugins.push(plugin);
+    DaDCMS.plugins.push(plugin);
     $('#elements').append('<li class="draggable btn bg-secondary" data-pluginid="'+plugin.id+'" data-name="'+plugin.name+'"><div class="icon">'+plugin.icon+'</div></li>');
   },
 
@@ -21,17 +21,17 @@ var nCMS={
     console.log(contents);
     for(var i=0; i<contents.length; i++){
       var content=contents[i];
-      var plugin=nCMS.helpers.getPlugin(content.pluginID);
-      $("#content").append(nCMS.buildPlugin(plugin,content));
+      var plugin=DaDCMS.helpers.getPlugin(content.pluginID);
+      $("#content").append(DaDCMS.buildPlugin(plugin,content));
     }
-    nCMS.setFunctions();
+    DaDCMS.setFunctions();
   },
 
   buildPlugin:function(plugin,content={}){
     var code=[];
     code.push("<li class='itm' data-name='"+plugin.name+"' data-pluginid='"+plugin.id+"'><div class='handle'><div class='icon'>"+plugin.icon+"</div><div class='delete'><i class='fas fa-trash'></i></div></div><div class='content'><div class='name'>"+plugin.name+"</div>");
     for(var i=0; i<plugin.fieldset.length; i++){
-      code.push(nCMS.getField(plugin.fieldset[i],content));
+      code.push(DaDCMS.getField(plugin.fieldset[i],content));
     }
     code.push("</div></li>");
     return code.join("");
@@ -41,9 +41,9 @@ var nCMS={
     var data="";
     var code=[];
     if(field.type=="imagemanager" || field.type=="filemanager"){
-      data=nCMS.helpers.getData(field.name,content,[]);
+      data=DaDCMS.helpers.getData(field.name,content,[]);
     }else{
-      data=nCMS.helpers.getData(field.name,content);
+      data=DaDCMS.helpers.getData(field.name,content);
     }
     switch(field.type) {
       case "textfield":
@@ -97,9 +97,9 @@ var nCMS={
   helpers:{
     quillcount:0,
     getPlugin:function(id){
-      for(var i=0; i<nCMS.plugins.length; i++){
-        if(nCMS.plugins[i].id==id){
-          return nCMS.plugins[i];
+      for(var i=0; i<DaDCMS.plugins.length; i++){
+        if(DaDCMS.plugins[i].id==id){
+          return DaDCMS.plugins[i];
           break;
         }
       }
@@ -112,6 +112,11 @@ var nCMS={
     slug:function(str) {
       str = str.replace(/^\s+|\s+$/g, ''); // trim
       str = str.toLowerCase();
+
+      var replace=[["ü","ue"],["ä","ae"],["ö","oe"],["ß","ss"]];
+      for(var i=0; i<replace.length; i++){
+        str=str.split(replace[i][0]).join(replace[i][1]);
+      }
 
       // remove accents, swap ñ for n, etc
       var from = "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþÞĐđßÆa·/_,:;";
@@ -128,7 +133,7 @@ var nCMS={
     },
     updateURL:function(){
       if(!$('#fixurl').is(":checked")){
-        $("#url").val(nCMS.helpers.slug($("#title").val()));
+        $("#url").val(DaDCMS.helpers.slug($("#title").val()));
       }
     }
   },
@@ -161,20 +166,20 @@ var nCMS={
 
 
   setFunctions:function(){
-    nCMS.dragger.setFunctions();
-    nCMS.helpers.updateURL();
+    DaDCMS.dragger.setFunctions();
+    DaDCMS.helpers.updateURL();
 
-    $("#title").change(nCMS.helpers.updateURL).keyup(nCMS.helpers.updateURL);
+    $("#title").change(DaDCMS.helpers.updateURL).keyup(DaDCMS.helpers.updateURL);
 
     $(".fixedtop .save").click(function(e){
       e.preventDefault();
-      nCMS.updateContentsVal();
+      DaDCMS.updateContentsVal();
       $("form").submit();
     });
     $(".texteditor").each(function(){
       if($(this).attr("id")=="" || $(this).attr("id")==undefined){
-        nCMS.helpers.quillcount++;
-        $(this).attr("id","quill"+nCMS.helpers.quillcount);
+        DaDCMS.helpers.quillcount++;
+        $(this).attr("id","quill"+DaDCMS.helpers.quillcount);
         var toolbarOptions = [
           ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
           ['blockquote', 'code-block'],
@@ -185,7 +190,7 @@ var nCMS={
           [{ 'align': [] }]
         ];
 
-        var quill = new Quill('#quill'+nCMS.helpers.quillcount, {
+        var quill = new Quill('#quill'+DaDCMS.helpers.quillcount, {
           modules: {
             toolbar: toolbarOptions
           },
@@ -215,14 +220,14 @@ var nCMS={
   dragger:{
     setFunctions:function(){
       $( "#elements .draggable" ).draggable({ scroll: true, scrollSensitivity: 100, helper:"clone", drag:function(){
-        nCMS.dragger.checkHit($(".ui-draggable-dragging").offset())
+        DaDCMS.dragger.checkHit($(".ui-draggable-dragging").offset())
       }, stop:function(){
-        $("#placeholder").replaceWith(nCMS.buildPlugin(nCMS.helpers.getPlugin($(this).attr("data-pluginid"))));
-        nCMS.setFunctions();
+        $("#placeholder").replaceWith(DaDCMS.buildPlugin(DaDCMS.helpers.getPlugin($(this).attr("data-pluginid"))));
+        DaDCMS.setFunctions();
       } });
 
       $( "#content .itm" ).draggable({ handle: ".handle .icon",
-       drag:function(){nCMS.dragger.checkHit($(this).offset())},
+       drag:function(){DaDCMS.dragger.checkHit($(this).offset())},
        stop:function(){
          $(this).css("left","auto");
          $(this).css("top","auto");
