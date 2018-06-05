@@ -22,11 +22,15 @@ if($url==""){
   }
   header("Location:$basefolder".$langto."/");
 }else{
-  include "includes/class.servefromcacheorgenerate.php";
-  $server=new servefromcacheorgenerate();
-  $server->serve($url);
+  if(substr($url,0,3)=="css" || substr($url,0,6)=="script"){
+    include "includes/class.serverjscss.php";
+    $server=new serverjscss();
+    $server->serve($url);
+  }else{
+    include "includes/class.servefromcacheorgenerate.php";
+    $server=new servefromcacheorgenerate();
+    $server->serve($url);
+  }
 }
-
-
 
 ?>

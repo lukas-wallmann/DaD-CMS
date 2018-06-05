@@ -21,7 +21,7 @@ class renderer{
     }
 
     public function getCode(){
-      return $this->code;
+      return preg_replace('/\s+/S', " ", $this->code);
     }
 
 
@@ -110,8 +110,7 @@ class renderer{
 
     public function render($data,$template,$action){
 
-      //fix for unneeded space
-      //$template=join("))",explode("))\n",$template));
+      global $basefolder;
 
       if($action==""){
         $temp=explode("((",$template,2);
@@ -141,13 +140,13 @@ class renderer{
         if(substr($template,0,4)=="css:"){
           $tmp=explode("))",$template,2);
           $name=explode(":",$tmp[0])[1];
-          $this->code.="getcss.php?f=".$name;
+          $this->code.=$basefolder."css/".$name;
           $this->code.=$this->render($data,$tmp[1],"");
         }
         if(substr($template,0,3)=="js:"){
           $tmp=explode("))",$template,2);
           $name=explode(":",$tmp[0])[1];
-          $this->code.="getjs.php?f=".$name;
+          $this->code.=$basefolder."script/".$name;
           $this->code.=$this->render($data,$tmp[1],"");
         }
         if(substr($template,0,7)=="foreach"){

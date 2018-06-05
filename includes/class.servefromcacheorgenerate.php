@@ -13,7 +13,7 @@
         }
       }else{
         $res=mysqli_query($_dbcon,"SELECT * FROM `cache` WHERE `URL`='$url'");
-        if (mysql_num_rows($result)==0) {
+        if (mysqli_num_rows($res)==0) {
           $this->generate($url);
         }else{
           echo mysqli_fetch_assoc($res)["Code"];

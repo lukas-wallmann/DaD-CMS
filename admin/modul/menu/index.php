@@ -10,6 +10,7 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/touchpunch.js"></script>
+<script src="js/cmd.js"></script>
 <script src="js/menu.js"></script>
 <style>
 .menu .title {
@@ -21,4 +22,5 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
 ul.ui-sortable {
     padding-left: 20px;
 }
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; background:#fcfc51; border:1px solid #a3a302 }
 </style>

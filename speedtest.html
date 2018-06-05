@@ -1,0 +1,58 @@
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script>
+  var loaders=0;
+  var breakloader=false;
+  var addloader=true;
+  var loadtimes=[];
+  var loaderurl="/wordpress/";
+  var stop=false;
+  $(document).ready(function(){
+    load();
+  });
+  function load(){
+    var time=Date.now();
+    $.ajax({url:loaderurl}).done(function(){
+      if(addloader && !stop){
+        load();
+        addloader=false;
+        loaders++;
+      }
+      if(!breakloader && !stop){
+        load();
+      }else{
+        loaders--;
+      }
+      var endtime=Date.now();
+      var dif=endtime-time;
+      loadtimes.push(dif);
+      if(loadtimes.length>50){
+        var tmp=[];
+        for(var i=loadtimes.length-1; i>0; i--){
+          tmp.push(loadtimes[i]);
+        }
+      }
+      $(".currentloadtime").text(dif+"ms");
+      $(".loaders").text(loaders+" Loaders");
+      if(dif<5000){
+        addloader=true;
+      }else{
+        if(!stop){
+          alert("max loaders for time:5000ms "+loaders);
+          breakloader=true;
+          addloader=false
+          stop=true;
+        }
+      ;
+      }
+    })
+  }
+</script>
+
+<div class="loaders"></div>
+<div class="currentloadtime"></div>
+<div class="avgloadtime"></div>
+<div class="log"></div>

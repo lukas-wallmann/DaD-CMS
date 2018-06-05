@@ -5,7 +5,7 @@ var menuBuilder={
   init:function(){
     menuBuilder.loadMenus();
     $("button.new").click(function(){
-        menuBuilder.cmd(
+        cmd(
         '<label class="mr-3">'+consts.name+'</label><input>',
         function(){menuBuilder.loadMenus("new",$(".cmd input").val())},
         function(){$(".cmd input").focus()}
@@ -21,7 +21,7 @@ var menuBuilder={
       data.action=action;
       data.name=name;
       data.id=id;
-      data.lang=ncmslang;
+      data.lang=dadcmslang;
     }
     $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+dadcmslang, type:type, data:data}).done(function(d){
       menuBuilder.data=JSON.parse(d);
@@ -49,7 +49,7 @@ var menuBuilder={
     }
     html+='<br><label class="mr-3">Action</label><select class="action"><option value="site"'+selectedSite+'>show site</option><option value="link"'+selectedLink+'>show link</option></select>';
     html+='<br><label class="mr-3">Link</label><input class="link" value="'+data.link+'">';
-    menuBuilder.cmd(
+    cmd(
       html,
       function(){
         var dat={};
@@ -88,7 +88,7 @@ var menuBuilder={
     $(".menu > .title > .edit").click(function(){
       var tmpname=$(this).parent().text();
       var tmpID=$(this).parent().parent().attr("data-id");
-      menuBuilder.cmd(
+      cmd(
         '<label class="mr-3">'+consts.name+'</label><input value="'+tmpname+'">',
         function(){menuBuilder.loadMenus("rename",$(".cmd input").val(),tmpID)},
         function(){$(".cmd input").focus()}
@@ -100,7 +100,7 @@ var menuBuilder={
     });
 
     $(".menu ul .edit").click(function(){
-      menuBuilder.editMenuPoint($(this).parent().parent(),{name:$(this).parent().text(),action:$(this).parent().parent().attr("data-action"),target:$(this).parent().parent().attr("data-target"),link:$(this).parent().parent().attr("data-link"), sub:menuBuilder.getSub($(this).parent().parent())},$(this).parent().parent().parent());
+      menuBuilder.editMenuPoint($(this).parent().parent(),{name:$(this).parent().text(),action:$(this).parent().parent().attr("data-action"),id:$(this).parent().parent().attr("data-id"),target:$(this).parent().parent().attr("data-target"),link:$(this).parent().parent().attr("data-link"), sub:menuBuilder.getSub($(this).parent().parent())},$(this).parent().parent().parent());
     });
 
     $(".menu ul .delete").click(function(){
@@ -113,6 +113,7 @@ var menuBuilder={
     });
 
     $(".menus ul").sortable({
+        placeholder: "ui-state-highlight",
         stop:function(e,ui){
           menuBuilder.save(ui.item);
         }
@@ -179,19 +180,5 @@ var menuBuilder={
     $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+dadcmslang,type:"POST",data:data});
   },
 
-  cmd:function(html,onfinish,oninit=function(){}){
-    html+="<div class='ctrl'><button class='btn btn-primary ok' type='submit'>"+consts.save+"</button><button class='btn btn-warning cancel'>"+consts.cancel+"</button></div>";
-    html='<div class="cmd"><div class="inner"><form>'+html+'</form></div></div>';
-    $("body").append(html);
-    oninit();
-    $(".cmd form").submit(function(e){
-      e.preventDefault();
-      onfinish();
-      $(".cmd").remove();
-    });
-    $(".cmd .ctrl .cancel").click(function(){
-      $(".cmd").remove();
-    });
-  }
 }
 $(document).ready(menuBuilder.init);
