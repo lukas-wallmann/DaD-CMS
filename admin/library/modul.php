@@ -16,6 +16,23 @@
 	if(isset($_GET["f"]))$f=$_GET["f"];
 	$_modulFile="modul/".$_modul."/".$f.".php";
 
+	function emptydir($dir) {
+		 if (is_dir($dir)) {
+			 $objects = scandir($dir);
+			 foreach ($objects as $object) {
+				 if ($object != "." && $object != "..") {
+						 unlink($dir."/".$object);
+				 }
+			 }
+		 }
+	 }
+
+	function clearCache(){
+		global $_dbcon;
+		mysqli_query($_dbcon,"TRUNCATE `cache`");
+		emptydir("../cache/");
+	}
+
 	function checkWritePerm(){
 		global $_rights, $_modul;
 		if(in_array($_modul,$_rights->disallowWrite)){
@@ -24,7 +41,11 @@
 			}else{
 				die("Permission denied");
 			}
+		}else{
+			clearCache();
 		}
 	}
+
+
 
 ?>

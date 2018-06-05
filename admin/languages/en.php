@@ -97,6 +97,14 @@
 
 	$lang->mainCode="Main code";
 
+	//settings->languages
+	$lang->standardLang="Standard language";
+
+	//Settings->Cache
+	$lang->cacheInfo="Where the sites should be chached? In database is fast if it runs on SSD while the rest not.";
+	$lang->useDbCache="use database";
+	$lang->useFileCache="use filesystem";
+
 	//Settings->imageformats
 	$lang->imageformatName="image format";
 	$lang->imageformatValue="cut";

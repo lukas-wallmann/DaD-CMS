@@ -144,7 +144,7 @@ $.fn.formManager = function() {
       },
 
       setDataBuilderFunctions:function(){
-        $(".databuilder .add").click(function(e){
+        $(".databuilder .add").off().click(function(e){
           e.preventDefault();
           cmd(
             '<label>name</label><input class="form-control name"><label>value</label><input class="form-control value">',

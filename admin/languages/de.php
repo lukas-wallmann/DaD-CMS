@@ -97,6 +97,14 @@
 
 	$lang->mainCode="Hauptcode";
 
+	//settings->languages	
+	$lang->standardLang="Standard Sprache";
+
+	//Settings->Cache
+	$lang->cacheInfo="Damit nicht jede Seite immer generiert werden muss, werden die Seiten zwischengespeichert um schneller aufgerufen werden zu können. Sie haben die Wahl zwischen Datenbank und Dateisystem. Wenn sie beispielsweise eine SSD Datenbank zur Verfügung haben aber nur einen normalen Webspace so ist die Datenbank schneller. Andernfalls ist meist die Speicherung als Datei schneller";
+	$lang->useDbCache="Datenbank nutzen";
+	$lang->useFileCache="Dateien nutzen";
+
 	//Settings->imageformats
 	$lang->imageformatName="Bildformat";
 	$lang->imageformatValue="Ausschnitt";

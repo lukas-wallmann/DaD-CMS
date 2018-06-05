@@ -23,7 +23,7 @@ var menuBuilder={
       data.id=id;
       data.lang=ncmslang;
     }
-    $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+ncmslang, type:type, data:data}).done(function(d){
+    $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+dadcmslang, type:type, data:data}).done(function(d){
       menuBuilder.data=JSON.parse(d);
       menuBuilder.build();
       menuBuilder.setFunctions();
@@ -68,7 +68,6 @@ var menuBuilder={
           dat.sub=data.sub;
           var code=menuBuilder.getPoint(dat);
           from.replaceWith(code);
-          console.log(helper);
           menuBuilder.save(helper)
         }
         menuBuilder.setFunctions();
@@ -177,7 +176,7 @@ var menuBuilder={
       steps++;
     }
     var data={action:"update",id:elm.attr("data-id"),name:"",content:JSON.stringify(menuBuilder.getSub(elm))};
-    $.ajax({url:"?m=menu&f=apimenu&no=1",type:"POST",data:data});
+    $.ajax({url:"?m=menu&f=apimenu&no=1&lang="+dadcmslang,type:"POST",data:data});
   },
 
   cmd:function(html,onfinish,oninit=function(){}){

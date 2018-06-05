@@ -18,7 +18,6 @@ var DaDCMS={
   init:function(){
     if($("#contents").text()=="")$("#contents").text("[]");
     var contents=JSON.parse($("#contents").text());
-    console.log(contents);
     for(var i=0; i<contents.length; i++){
       var content=contents[i];
       var plugin=DaDCMS.helpers.getPlugin(content.pluginID);

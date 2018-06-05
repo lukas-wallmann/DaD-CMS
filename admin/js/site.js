@@ -19,7 +19,7 @@ var site={
     data.action="new";
     data.name=name;
     data.menuid=0;
-    data.lang=ncmslang;
+    data.lang=dadcmslang;
     data.pos=Number($("ul.sites li").last().attr("data-pos"))+1;
     if(isNaN(data.pos))data.pos=0;
     if(menuid!="all")data.menuid=menuid;

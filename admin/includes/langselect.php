@@ -18,5 +18,5 @@
  </select>
 </div>
 <script>
-  var ncmslang="<?php echo $dadcmslang ?>";
+  var dadcmslang="<?php echo $dadcmslang ?>";
 </script>
