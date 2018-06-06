@@ -11,6 +11,11 @@ class serverjscss{
     $this->cachemode=mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `settings` WHERE `Name`='cache'"))["Value"];
     if(substr($url,0,3)=="css")$this->type="css";
     $this->name=substr($url,strlen($this->type)+1,strlen($url));
+    if($this->type=="script"){
+      header('Content-Type: application/javascript');
+    }else{
+      header('Content-Type: text/css');
+    }
 
     if($this->cachemode=="file"){
       $cachefile="cache/".str_replace("/","_",$url);
@@ -43,11 +48,9 @@ class serverjscss{
         $tmp.=$row["Code"];
       }
       if($this->type=="script"){
-        header('Content-Type: application/javascript');
         include "class.jsshrink.php";
         $tmp=\JShrink\Minifier::minify($tmp);
       }else{
-        header("Content-type: text/css", true);
         include "class.scss.php";
         $scss = new scssc();
         $tmp=$scss->compile($tmp);

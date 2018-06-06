@@ -12,6 +12,13 @@ if(count($basefolder)==1){
 $basefolderlength=strlen($basefolder);
 $url=substr($_SERVER['REQUEST_URI'],$basefolderlength,strlen($_SERVER['REQUEST_URI'])-$basefolderlength);
 
+if(isset($_POST["_fromid"])){
+  include "includes/class.form.php";
+  $form=new form();
+  $form->handle();
+  die();
+}
+
 if($url==""){
   $standardlang=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM settings WHERE Name='standardLanguage'"))["Value"];
   $langto=$standardlang;

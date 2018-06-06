@@ -111,6 +111,9 @@ $.fn.formManager = function() {
           case "checkbox":
             code.push("<input type='checkbox' class='form-control'>");
             break;
+          case "submit":
+            code.push("<br><button class='btn btn-primary'>"+data.name+"</button>");
+            break;
 
           default:
             code.push('<input class="form-control">');
@@ -214,6 +217,17 @@ $.fn.formManager = function() {
                 fm.id++;
                 code.push('<input type="checkbox" class="saveme mr-3" id="'+fm.id+'" data-name="'+field.name+'"'+checked+'><label for="'+fm.id+'">'+field.name+'</label>')
                 break;
+            case "fieldchooser":
+                  code.push("<select class='saveme form-control' data-name='"+field.name+"'>");
+                  main.find("li").each(function(){
+                    var $tmpdata=JSON.parse($(this).find(".data").text());
+                    if($tmpdata.type==field.allow){
+                      var selected="";
+                      if($tmpdata.id==data)selected=" selected";
+                      code.push('<option value="'+$tmpdata.id+'"'+selected+'>'+$tmpdata.name+'</option>');
+                    }
+                  })
+                  break;
             default:
                 code.push("unknown type:"+field.type);
         }
@@ -224,7 +238,7 @@ $.fn.formManager = function() {
         cmd(
           '<div class="fieldset"></div>',
           function(){
-            var data={};
+            var data=JSON.parse(elm.find(".data").text());
               data.type=JSON.parse($(elm).find(".data").text()).type;
               $(".cmd .fieldset .saveme").each(function(){
                 var name=$(this).attr("data-name");
@@ -284,6 +298,7 @@ $.fn.formManager = function() {
         });
 
           var dataTemp=JSON.parse($(main).find(".saveme").text());
+          data.id=Date.now();
           dataTemp.push(data);
           $(main).find(".saveme").text(JSON.stringify(dataTemp));
           fm.buildFields();

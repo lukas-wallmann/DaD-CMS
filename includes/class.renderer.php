@@ -1,9 +1,11 @@
 <?php
 class renderer{
     var $code="";
+    var $baseurl="";
 
     public function preRender($data){
       $tmp=$data->theme->code;
+      $this->baseurl=$data->baseurl;
       $tmp=$this->replaceBlocks($tmp,$data->theme->parts);
       $this->render($data,$tmp,"");
     }
@@ -131,6 +133,7 @@ class renderer{
             $tmpdata->theme=$data->theme;
             $tmpdata->nav=$data->nav;
             $tmpdata->uploadpath=$data->uploadpath;
+            $tmpdata->baseurl=$data->baseurl;
             $pluginID=$content->pluginID;
             $tmptemplate=$data->theme->plugins->$pluginID;
             $this->code.=$this->render($tmpdata,$tmptemplate,"");
@@ -164,6 +167,7 @@ class renderer{
           foreach ($d as &$val) {
             $val->index=$index;
             $data->$key=$val;
+            $data->baseurl=$this->baseurl;
             $index++;
             $this->render($data,$foreachto[0],"");
           }

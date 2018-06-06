@@ -6,7 +6,7 @@ class databuilder{
     $this->data=new stdClass();
 
     $this->data->uploadpath=$basefolder."admin/uploads/";
-
+    $this->data->baseurl=$basefolder;
     $this->data->site=new stdClass();
     $this->data->site->Currentyear=date("Y");
 

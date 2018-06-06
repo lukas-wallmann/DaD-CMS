@@ -68,7 +68,7 @@ var DaDCMS={
                 code.push('<option value="'+field.data[i].value+'"'+selected+'>'+field.data[i].name+'</option>');
               }
             }
-            code.push('</select><br>');
+            code.push('</select>');
 
           break;
       case "filemanager":
@@ -87,10 +87,15 @@ var DaDCMS={
           }
           code.push('<div class="formmanager"><textarea style="display:none" class="template">'+JSON.stringify(field.fields)+'</textarea><textarea style="display:none" class="saveme json formfields" data-name="'+field.name+'">'+JSON.stringify(data.fields)+'</textarea></div>');
           break;
+      case "videomanager":
+          var val=JSON.stringify(data);
+          code.push('<label>'+field.name+'</label><br><div class="videomanager"><textarea style="display:none" class="saveme json" data-name="'+field.name+'">'+val+'</textarea></div>');
+          break;
+
       default:
           code.push("<div>unknown fieldtype:"+field.type+"</div>");
     }
-    return code.join("");
+    return '<div class="elm mb-3">'+code.join("")+"</div>";
   },
 
   helpers:{
@@ -202,6 +207,9 @@ var DaDCMS={
     });
     $(".formmanager").each(function(){
       if(!$(this).hasClass("hasformmanager"))$(this).formManager().addClass("hasformmanager");
+    });
+    $(".videomanager").each(function(){
+      if(!$(this).hasClass("hasvideomanager"))$(this).videoManager().addClass("hasvideomanager");
     });
     $('select.getdata').each(function(){
       var elm=$(this);

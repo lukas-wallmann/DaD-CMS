@@ -1,6 +1,7 @@
 <?php
   $siterow=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM sites WHERE ID=".$_GET["ID"]));
   if(isset($_GET["no"])){
+    checkWritePerm();
     $id=$_GET["ID"];
     $title=mysqli_real_escape_string($_dbcon,$_POST["title"]);
     $menu=$_POST["menu"];
@@ -182,12 +183,16 @@
 <script src="js/touchpunch.js"></script>
 <script src="js/filemanager.js"></script>
 <script src="js/formmanager.js"></script>
+<script src="js/videomanager.js"></script>
 <script src="js/cmd.js"></script>
 <script>
 var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="js/sites.core.js"></script>
 <style>
+.invalid {
+    border: 1px solid red;
+}
 .fixedtop {
     position: fixed;
     top: 56px;
