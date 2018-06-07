@@ -213,6 +213,7 @@ var DaDCMS={
     });
     $('select.getdata').each(function(){
       var elm=$(this);
+      elm.removeClass("getdata");
       $.ajax({url:elm.attr("data-url")}).done(function(d){
         var data=JSON.parse(d);
         for(var i=0; i<data.length; i++){

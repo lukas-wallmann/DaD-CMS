@@ -143,17 +143,29 @@ $.fn.formManager = function() {
         for(var i=0; i<fields.length; i++){
           fm.addFieldToCMD(fields[i]);
         }
-        fm.setDataBuilderFunctions();
+        fm.setDataFunctions();
       },
 
-      setDataBuilderFunctions:function(){
+      setDataFunctions:function(){
+        $('select.getdata').each(function(){
+          var elm=$(this);
+          elm.removeClass("getdata");
+          $.ajax({url:elm.attr("data-url")}).done(function(d){
+            var data=JSON.parse(d);
+            for(var i=0; i<data.length; i++){
+              var selected="";
+              if(data[i][1]==elm.attr("data-val"))selected=" selected";
+              elm.append('<option value="'+data[i][1]+'"'+selected+'>'+data[i][0]+'</option>');
+            }
+          });
+        });
         $(".databuilder .add").off().click(function(e){
           e.preventDefault();
           cmd(
             '<label>name</label><input class="form-control name"><label>value</label><input class="form-control value">',
             function(){
               $(".cmd .databuilder ul").append("<li><span class='icon mr-3'><i class='fas fa-bars'></i></span><span class='name'>"+$(".cmd").last().find(".name").val()+"</span>,<span class='value'>"+$(".cmd").last().find(".value").val()+"</span><span class='delete ml-3'><i class='fas fa-trash-alt'></i></span></li>")
-              fm.setDataBuilderFunctions();
+              fm.setDataFunctions();
               fm.updateDataBuilderVal($(".cmd .databuilder"));
             },
             function(){$(".cmd").last().find(".name").change(function(){
@@ -179,7 +191,7 @@ $.fn.formManager = function() {
             function(){
               $(li).html("<span class='icon mr-3'><i class='fas fa-bars'></i></span><span class='name'>"+$(".cmd").last().find(".name").val()+"</span>,<span class='value'>"+$(".cmd").last().find(".value").val()+"</span><span class='delete ml-3'><i class='fas fa-trash-alt'></i></span>")
               fm.updateDataBuilderVal(li.parent().parent());
-              fm.setDataBuilderFunctions();
+              fm.setDataFunctions();
             },
             function(){$(".cmd").last().find(".name").change(function(){
               var valfield=$(this).parent().find(".value");
@@ -218,7 +230,7 @@ $.fn.formManager = function() {
                 code.push('<input type="checkbox" class="saveme mr-3" id="'+fm.id+'" data-name="'+field.name+'"'+checked+'><label for="'+fm.id+'">'+field.name+'</label>')
                 break;
             case "fieldchooser":
-                  code.push("<select class='saveme form-control' data-name='"+field.name+"'>");
+                  code.push("<label>"+field.name+"</label><select class='saveme form-control' data-name='"+field.name+"'>");
                   main.find("li").each(function(){
                     var $tmpdata=JSON.parse($(this).find(".data").text());
                     if($tmpdata.type==field.allow){
@@ -228,6 +240,25 @@ $.fn.formManager = function() {
                     }
                   })
                   break;
+            case "select":
+                code.push('<label>'+field.name+'</label><br>');
+                var dataf=field.dataURL!=undefined;
+                var dataclass="";
+                var dataattr="";
+                if(dataf){
+                  dataclass=" getdata";
+                  dataattr=" data-url='"+field.dataURL+"'";
+                }
+                code.push('<select class="saveme form-control'+dataclass+'" data-name="'+field.name+'" data-val="'+data+'"'+dataattr+'>');
+                if(field.data!=undefined){
+                  for(var i=0; i<field.data.length; i++){
+                    var selected="";
+                    if(field.data[i][1]==data)selected=" selected";
+                    code.push('<option value="'+field.data[i].value+'"'+selected+'>'+field.data[i].name+'</option>');
+                  }
+                }
+                code.push('</select>');
+                break;
             default:
                 code.push("unknown type:"+field.type);
         }
@@ -274,7 +305,7 @@ $.fn.formManager = function() {
                 $(this).find("ul").append("<li><span class='icon mr-3'><i class='fas fa-bars'></i></span><span class='name'>"+data[i].name+"</span>,<span class='value'>"+data[i].value+"</span><span class='delete ml-3'><i class='fas fa-trash-alt'></i></span></li>")
               }
             });
-            fm.setDataBuilderFunctions();
+            fm.setDataFunctions();
           },
         );
       },

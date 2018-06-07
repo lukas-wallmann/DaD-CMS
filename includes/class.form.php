@@ -10,6 +10,7 @@
     var $fromid="";
     var $redirectaftersend="";
     var $mailtemplate="";
+    var $newsletterreceivergroup="";
 
     public function handle($baseurl){
 
@@ -29,11 +30,10 @@
         if(isset($_POST["value_".$field->id]))$field->value=$_POST["value_".$field->id];
         $field->type=$_POST["_field_type_".$i];
         if($field->type=="registernewsletter" && $field->value!=""){
-            echo "send nl";
             $this->registernewsletter=1;
             $this->emailfornewsletter=$_POST["value_".$_POST["value_".$field->id."_emailfield"]];
             $this->confirmnewsletter=$_POST["value_".$field->id."_confirmmail"];
-
+            $this->newsletterreceivergroup=$_POST["value_".$field->id."_receivergroup"];
         }
         if($field->type=="sendcopy" && $field->value!=""){
           $this->sendcopy=1;
