@@ -15,7 +15,7 @@ $url=substr($_SERVER['REQUEST_URI'],$basefolderlength,strlen($_SERVER['REQUEST_U
 if(isset($_POST["_fromid"])){
   include "includes/class.form.php";
   $form=new form();
-  $form->handle();
+  $form->handle($basefolder);
   die();
 }
 

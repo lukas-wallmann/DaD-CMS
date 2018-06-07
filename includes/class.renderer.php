@@ -180,7 +180,6 @@ class renderer{
           $tmp=explode(" ",$tmp[0]);
           $compare=explode("=",$tmp[1]);
           $action="=";
-          if(count($compare)==1){
             $t=explode("<",$tmp[1]);
             if(count($t)==2)$action="<";
             $t=explode(">",$tmp[1]);
@@ -189,7 +188,9 @@ class renderer{
             if(count($t)==2)$action=">=";
             $t=explode("<=",$tmp[1]);
             if(count($t)==2)$action="<=";
-          }
+            $t=explode("!=",$tmp[1]);
+            if(count($t)==2)$action="!=";
+          
           $compare=explode($action,$tmp[1]);
           $field=explode(".",$compare[0]);
           $d=$data;
@@ -223,6 +224,11 @@ class renderer{
             }
             if($action==">="){
               if($d>=$compare[1]){
+                $this->render($data,$ifto[0],"");
+              }
+            }
+            if($action=="!="){
+              if($d!=$compare[1]){
                 $this->render($data,$ifto[0],"");
               }
             }
