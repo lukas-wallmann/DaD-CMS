@@ -23,6 +23,7 @@
 			array("User","settings/users"),
 			array("Cache","settings/caching"),
 			array("Language","settings/languages"),
+			array("E-Mail send settings","settings/email"),
 		)),
 		array("Theme","settings/themes")
 

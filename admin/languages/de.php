@@ -23,6 +23,7 @@
 			array("Benutzer","settings/users"),
 			array("Cache","settings/caching"),
 			array("Sprachen","settings/languages"),
+			array("E-Mail Sendeeinstellung","settings/email"),
 		)),
 		array("Design","settings/themes")
 
@@ -97,7 +98,7 @@
 
 	$lang->mainCode="Hauptcode";
 
-	//settings->languages	
+	//settings->languages
 	$lang->standardLang="Standard Sprache";
 
 	//Settings->Cache

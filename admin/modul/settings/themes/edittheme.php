@@ -4,8 +4,13 @@
     <div class="themepart"><b><?php echo $lang->themeParts ?></b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
     <br><div class="maincode selected" data-table="theme" data-id="<?php echo $_GET["ID"] ?>"><span class="name"><?php echo $lang->mainCode ?></span></div>
     <div class="menu parts"></div>
+    <?php
+      $res=mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `theme` WHERE ID=".$_GET["ID"]))["LayoutFor"];
+      if($res!="mail"){
+    ?>
     <br><div class="themeplugin mt-3"><b><?php echo $lang->themePlugins ?></b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
     <br><div class="menu plugins"></div>
+  <?php } ?>
   </div>
   <div class="col-md-9 codeEditor" id="editor"></div>
 </div>
