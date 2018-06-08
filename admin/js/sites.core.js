@@ -171,10 +171,11 @@ var DaDCMS={
 
   setFunctions:function(){
     DaDCMS.dragger.setFunctions();
-    DaDCMS.helpers.updateURL();
 
-    $("#title").change(DaDCMS.helpers.updateURL).keyup(DaDCMS.helpers.updateURL);
-
+    if(editMode=="site"){
+      DaDCMS.helpers.updateURL();
+      $("#title").change(DaDCMS.helpers.updateURL).keyup(DaDCMS.helpers.updateURL);
+    }
     $(".fixedtop .save").click(function(e){
       e.preventDefault();
       DaDCMS.updateContentsVal();

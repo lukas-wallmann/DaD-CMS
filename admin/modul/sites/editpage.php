@@ -186,6 +186,7 @@
 <script src="js/videomanager.js"></script>
 <script src="js/cmd.js"></script>
 <script>
+var editMode="site";
 var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="js/sites.core.js"></script>

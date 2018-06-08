@@ -56,6 +56,9 @@
 	$lang->teaserGroup="Teaser group";
 
 	//Newsletter
+	$lang->newNewsletter="new newsletter";
+	$lang->sendNewsletter="send %%NAME%%";
+	$lang->preview="preview";
 	$lang->receiverlist="Receiver list";
 	$lang->receivers="Receivers";
 	$lang->newReceiverlist="new receiver list";
