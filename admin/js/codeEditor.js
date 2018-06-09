@@ -1,4 +1,5 @@
 
+  var editor="";
   var codeEditor={
 
     isFirstCode:true,
@@ -7,8 +8,20 @@
     cache:[],
     pluginData:[],
     plugins:[],
+    editorwasset:false,
 
     init:function(){
+
+      if(!codeEditor.editorwasset){
+        editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/html");
+        editor.session.setUseWorker(false);
+        editor.setOptions({
+          fontSize: "13pt"
+        });
+        codeEditor.editorwasset=true;
+      }
       $(document).bind('keydown', function(e) {
         if(e.ctrlKey && (e.which == 83)) {
           e.preventDefault();

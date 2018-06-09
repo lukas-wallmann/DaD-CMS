@@ -3,12 +3,26 @@ $(document).ready(function(){
     pluginEditor.init(data);
   });
 });
+var editor="";
 var pluginEditor={
 
   currentMode:"",
   cache:{},
+  editorwasset:false,
 
   init:function(code){
+
+    if(!pluginEditor.editorwasset){
+      editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.session.setMode("ace/mode/javascript");
+      editor.session.setUseWorker(false);
+      editor.setOptions({
+        fontSize: "13pt"
+      });
+      pluginEditor.editorwasset=true;
+    }
+
     pluginEditor.cache=code;
     $(".leftsidebar .plugincode").click(pluginEditor.getPluginCode);
     $(".leftsidebar .template").click(pluginEditor.getTemplateCode);

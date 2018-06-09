@@ -1,10 +1,30 @@
+var editor = "";
+
 var cssjsEditor={
 
   firstcode:true,
   cache:[],
   currentID:0,
+  editorwasset:false,
 
   init:function(){
+
+    if(!cssjsEditor.editorwasset){
+      editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      if(mode=="script"){
+        editor.session.setMode("ace/mode/javascript");
+      }else{
+        editor.session.setMode("ace/mode/css");
+      }
+      editor.session.setUseWorker(false);
+      editor.setOptions({
+        fontSize: "13pt"
+      });
+      cssjsEditor.editorwasset=true;
+    }
+
+
     cssjsEditor.getParts("","","",true);
     $("button.add").click(function(){
       cmd(

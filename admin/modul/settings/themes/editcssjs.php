@@ -11,17 +11,7 @@
 <script src="js/height100.js"></script>
 <script>
   var mode="<?php echo $_GET["mode"]?>"
-  var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
-  if(mode=="script"){
-    editor.session.setMode("ace/mode/javascript");
-  }else{
-    editor.session.setMode("ace/mode/css");
-  }
-  editor.session.setUseWorker(false);
-  editor.setOptions({
-    fontSize: "13pt"
-  });
+  
   var ID=<?php echo $_GET["ID"] ?>;
   var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>

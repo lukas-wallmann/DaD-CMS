@@ -3,7 +3,7 @@
   <?php
     $res=mysqli_query($_dbcon,"Select * From newsletter");
     while($row=mysqli_fetch_assoc($res)){
-      echo '<li><a href="?m=newsletter/newsletter&f=editnewsletter&nh=1&ID='.$row["ID"].'">'.$row["Title"].'</a><a class="ml-3" href="?m=newsletter/newsletter&f=send&ID='.$row["ID"].'"><i class="fas fa-envelope"></i></a></li>';
+      echo '<li><a href="?m=newsletter/newsletter&f=editnewsletter&nh=1&ID='.$row["ID"].'">'.$row["Title"].'</a><a class="ml-3" href="?m=newsletter/newsletter&f=send&ID='.$row["ID"].'"><i class="fas fa-envelope"></i></a><a href="?m=newsletter/newsletter&f=preview&no=1&ID='.$row["ID"].'" class="ml-1"><i class="fas fa-search"></i></a></li>';
     }
    ?>
 </ul>
