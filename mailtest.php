@@ -1,10 +1,11 @@
 <?php
 
 // mehrere Empfänger
-$empfaenger  = 'lukas@wallmanns-ideenwerkstatt.com'; // beachte das Komma
+$empfaenger  = 'lukas@wallmanns-ideenwerkstatt.com, john.doe.jagg@gmail.com, lukas.wallmann@yahoo.de'; // beachte das Komma
 
 // Betreff
-$betreff = 'Testmail';
+$betreff = 'Testmail 123 äöü';
+
 
 // Nachricht
 $nachricht = '
@@ -29,15 +30,19 @@ $nachricht = '
 </html>
 ';
 
-// für HTML-E-Mails muss der 'Content-type'-Header gesetzt werden
-$header[] = 'MIME-Version: 1.0';
-$header[] = 'Content-type: text/html; charset=utf-8';
+utf8mail($empfaenger,$betreff,$nachricht);
 
-// zusätzliche Header
-$header[] = 'From: Lukas Test ö <office@wallmanns-ideenwerkstatt.com>';
-
-// verschicke die E-Mail
-mail($empfaenger, $betreff, $nachricht, implode("\r\n", $header));
+function utf8mail($to,$s,$body,$from_name="öäü",$from_a = "office@wallmanns-ideenwerkstatt.com", $reply="office@wallmanns-ideenwerkstatt.com")
+{
+    $s= "=?utf-8?b?".base64_encode($s)."?=";
+    $headers = "MIME-Version: 1.0\r\n";
+    $headers.= "From: =?utf-8?b?".base64_encode($from_name)."?= <".$from_a.">\r\n";
+    $headers.= "Content-Type: text/html;charset=utf-8\r\n";
+    $headers.= "Reply-To: $reply\r\n";
+    $headers.= "X-Mailer: PHP/" . phpversion();
+    echo $headers;
+    mail($to, $s, $body, $headers);
+}
 
 
  ?>

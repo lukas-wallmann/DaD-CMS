@@ -1,7 +1,9 @@
 <?php
   if(isset($_POST["cache"])){
+    checkWritePerm();
     $cache=$_POST["cache"];
     mysqli_query($_dbcon,"UPDATE `settings` SET `Value` = '$cache' WHERE `settings`.`Name` = 'cache';");
+    echo '<div class="bg-danger text-white mb-3 p-2">'.$lang->saved.'</div>';
   }
  ?>
 

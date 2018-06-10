@@ -3,16 +3,19 @@
     checkWritePerm();
     $name=mysqli_real_escape_string($_dbcon,$_GET["new"]);
     mysqli_query($_dbcon,"INSERT INTO languages (Name) SELECT * FROM (SELECT '$name') AS tmp WHERE NOT EXISTS (SELECT Name FROM languages WHERE Name = '$name') LIMIT 1;");
+    echo '<div class="bg-danger text-white mb-3 p-2">'.$lang->saved.'</div>';
   };
   if(isset($_GET["delete"])){
     checkWritePerm();
     $id=$_GET["delete"];
     mysqli_query($_dbcon,"DELETE FROM `languages` WHERE `languages`.`ID` = ".$id);
+    echo '<div class="bg-danger text-white mb-3 p-2">'.$lang->saved.'</div>';
   }
   if(isset($_POST["standardLanguage"])){
     checkWritePerm();
     $langnew=$_POST["standardLanguage"];
     mysqli_query($_dbcon,"UPDATE `settings` SET `Value` = '$langnew' WHERE `settings`.`Name` = 'standardLanguage';");
+    echo '<div class="bg-danger text-white mb-3 p-2">'.$lang->saved.'</div>';
   }
 ?>
 <table class="table table-striped">

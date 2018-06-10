@@ -8,6 +8,7 @@
 	$lang->delete="löschen";
 	$lang->cancel="abbrechen";
 	$lang->language="Sprache";
+	$lang->saved="Gespeichert";
 
 	//Menu
 	$lang->menu=array(

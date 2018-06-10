@@ -1,5 +1,5 @@
 <?php
-  if(isset($_GET["msg"]) && $_GET["msg"]=="saved")echo '<div class="p-3 mb-2 bg-primary text-white">saved</div>';
+  if(isset($_GET["msg"]) && $_GET["msg"]=="saved")    echo '<div class="bg-danger text-white mb-3 p-2">'.$lang->saved.'</div>';
   if(isset($_GET["q"])){
     if($_GET["q"]=="del"){
       die('<form action="?m=settings/users&f=edit&q=delnow&ID='.$_GET["ID"].'" method="post">
