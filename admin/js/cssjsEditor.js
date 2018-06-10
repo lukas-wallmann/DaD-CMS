@@ -15,7 +15,7 @@ var cssjsEditor={
       if(mode=="script"){
         editor.session.setMode("ace/mode/javascript");
       }else{
-        editor.session.setMode("ace/mode/css");
+        editor.session.setMode("ace/mode/scss");
       }
       editor.session.setUseWorker(false);
       editor.setOptions({
