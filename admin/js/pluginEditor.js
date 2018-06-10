@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $.getJSON("?m=settings/themes&f=apiplugins&no=1&ID="+pluginID, function( data ) {
+  $.getJSON("?m=themes&f=apiplugins&no=1&ID="+pluginID, function( data ) {
     pluginEditor.init(data);
   });
 });
@@ -69,7 +69,7 @@ var pluginEditor={
     data.cache=JSON.stringify(pluginEditor.cache);
     $.ajax({
       type: "POST",
-      url: "?m=settings/themes&f=apiplugins&no=1&ID="+pluginID,
+      url: "?m=themes&f=apiplugins&no=1&ID="+pluginID,
       data: data
     }).done(function(){
       alert("done");

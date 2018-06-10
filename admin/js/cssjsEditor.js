@@ -49,7 +49,7 @@ var cssjsEditor={
     cssjsEditor.saveTemp();
     var data={};
     data.cache=JSON.stringify(cssjsEditor.cache);
-    $.ajax({type:"POST",data:data,url:"?m=settings/themes&f=apicssjs&no=1&mode="+mode}).done(function(){
+    $.ajax({type:"POST",data:data,url:"?m=themes&f=apicssjs&no=1&mode="+mode}).done(function(){
       alert("done");
     })
   },
@@ -72,7 +72,7 @@ var cssjsEditor={
       {
         type:type,
         data:data,
-        url:"?m=settings/themes&f=apicssjs&no=1&mode="+mode+"&ID="+ID
+        url:"?m=themes&f=apicssjs&no=1&mode="+mode+"&ID="+ID
       }
     ).done(function(d){
       var data=JSON.parse(d);
@@ -134,7 +134,7 @@ var cssjsEditor={
       }
     }
     if(!found){
-      var url="?m=settings/themes&f=apicssjs&no=1&code=1&mode="+mode+"&ID="+id;
+      var url="?m=themes&f=apicssjs&no=1&code=1&mode="+mode+"&ID="+id;
       $.ajax({url:url}).done(function(d){
         editor.setValue(d);
       });

@@ -26,7 +26,7 @@
 			array("Language","settings/languages"),
 			array("E-Mail send settings","settings/email"),
 		)),
-		array("Theme","settings/themes")
+		array("Theme","themes")
 
 	);
 

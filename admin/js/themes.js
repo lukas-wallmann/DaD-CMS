@@ -22,7 +22,7 @@ var themeManager={
     data.newname=newname;
     data.ID=elm.attr("data-id");
     data.table=elm.attr("data-table");
-    $.ajax({type:"POST",data:data, url:"?m=settings/themes&f=apitheme&no=1&action=rename"});
+    $.ajax({type:"POST",data:data, url:"?m=themes&f=apitheme&no=1&action=rename"});
   },
 
   del:function(elm){
@@ -30,7 +30,7 @@ var themeManager={
     var data={};
     data.ID=elm.attr("data-id");
     data.table=elm.attr("data-table");
-    $.ajax({type:"POST",data:data, url:"?m=settings/themes&f=apitheme&no=1&action=delete"});
+    $.ajax({type:"POST",data:data, url:"?m=themes&f=apitheme&no=1&action=delete"});
   }
 }
 $(document).ready(themeManager.init);

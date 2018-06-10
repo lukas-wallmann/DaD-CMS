@@ -35,8 +35,8 @@
       $(".syncwith input").each(function(){
         if($(this).is(":checked"))sync.push($(this).attr("data-value"));
       })
-      $.ajax({type:"POST",data:{sync:JSON.stringify(sync)},url:"?m=settings/themes&f=syncplugin&no=1&ID=<?php echo $_GET["ID"] ?>"}).done(function(){
-        document.location.href="?m=settings/themes";
+      $.ajax({type:"POST",data:{sync:JSON.stringify(sync)},url:"?m=themes&f=syncplugin&no=1&ID=<?php echo $_GET["ID"] ?>"}).done(function(){
+        document.location.href="?m=themes";
       });
     });
   });

@@ -37,7 +37,7 @@
         )
       });
       $(".themeplugin .b").click(function(){
-        $.ajax({url:"?m=settings/themes&f=apigetplugins&no=1"}).done(function(d){
+        $.ajax({url:"?m=themes&f=apigetplugins&no=1"}).done(function(d){
           codeEditor.pluginData=JSON.parse(d);
           var html=[];
           for(var i=0; i<codeEditor.pluginData.length; i++){
@@ -77,7 +77,7 @@
       data.parts=JSON.stringify(codeEditor.cache);
       $.ajax({
         type: "POST",
-        url: "?m=settings/themes&f=apisavecode&no=1",
+        url: "?m=themes&f=apisavecode&no=1",
         data: data
       }).done(function(){
         alert("done");
@@ -97,7 +97,7 @@
       $.ajax({
         type: type,
         data: data,
-        url: "?m=settings/themes&f=apigetthemeparts&no=1&ID="+layoutID
+        url: "?m=themes&f=apigetthemeparts&no=1&ID="+layoutID
       }).done(function(d) {
         var json=JSON.parse(d);
         $(".menu.parts").html("");
@@ -137,7 +137,7 @@
       var data={};
       if(action=="new")data.cache=JSON.stringify(cache);
       if(action=="delete")data.deleteID=id;
-      $.ajax({url:"?m=settings/themes&f=apiplugin&no=1&ID="+layoutID,type:type,data:data}).done(function(d){
+      $.ajax({url:"?m=themes&f=apiplugin&no=1&ID="+layoutID,type:type,data:data}).done(function(d){
         codeEditor.plugins=JSON.parse(d);
         $(".menu.plugins").html("");
         for(var i=0; i<codeEditor.plugins.length; i++){
@@ -179,7 +179,7 @@
 
       if(!found){
         $.ajax({
-          url: "?m=settings/themes&f=apigetthemecode&no=1&ID="+id+"&table="+table
+          url: "?m=themes&f=apigetthemecode&no=1&ID="+id+"&table="+table
         }).done(function(d) {
           editor.setValue(d,1);
         });
