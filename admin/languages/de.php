@@ -48,6 +48,7 @@
 	$lang->metaTitle="Metatitel";
 	$lang->metaTags="Meta Keywords";
 	$lang->metaDescription="Metabeschreibung";
+	$lang->fixMeta="Metadaten fixieren";
 	$lang->teaser="Teaser";
 	$lang->teaserName="Teasertitel";
 	$lang->teaserPicture="Teaserbild";
@@ -57,6 +58,8 @@
 
 	//Newsletter
 	$lang->newNewsletter="neuer Newsletter";
+	$lang->sendNewsletter="%%NAME%% versenden";
+	$lang->preview="Vorschau";
 	$lang->receiverlist="Empfängergruppe";
 	$lang->receivers="Empfänger";
 	$lang->newReceiverlist="neue Empfängergruppe";

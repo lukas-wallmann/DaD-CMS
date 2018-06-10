@@ -9,7 +9,6 @@
     $fixurl=0;
     if(isset($_POST["fixurl"]))$fixurl=1;
     $layout=$_POST["layout"];
-    $metatitle=mysqli_real_escape_string($_dbcon,$_POST["metatitle"]);
     $metatags=mysqli_real_escape_string($_dbcon,$_POST["metatags"]);
     $metadescription=mysqli_real_escape_string($_dbcon,$_POST["metadescription"]);
     $teasername=mysqli_real_escape_string($_dbcon,$_POST["teasername"]);
@@ -18,12 +17,13 @@
     $teaserprice=mysqli_real_escape_string($_dbcon,$_POST["teaserprice"]);
     $content=mysqli_real_escape_string($_dbcon,$_POST["content"]);
     $fixmeta=0;
-    mysqli_query($_dbcon,"UPDATE `sites` SET `Title` = '$title', `MenuID` = '$menu', `MetaTitle` = '$metatitle', `MetaDescription` = '$metadescription', `MetaTags` = '$metatags', `Content` = '$content', `TeaserName` = '$teasername', `TeaserPicture` = '$teaserimage', `TeaserText` = '$teasertext', `TeaserPrice` = '$teaserprice', `FixSiteURL` = '$fixurl', `SiteURL` = '$url', `FixMeta` = '$fixmeta', `Layout` = '$layout' WHERE `sites`.`ID` = $id;");
+    if(isset($_POST["fixmeta"]))$fixmeta=1;
+    mysqli_query($_dbcon,"UPDATE `sites` SET `Title` = '$title', `MenuID` = '$menu', `MetaDescription` = '$metadescription', `MetaTags` = '$metatags', `Content` = '$content', `TeaserName` = '$teasername', `TeaserPicture` = '$teaserimage', `TeaserText` = '$teasertext', `TeaserPrice` = '$teaserprice', `FixSiteURL` = '$fixurl', `SiteURL` = '$url', `FixMeta` = '$fixmeta', `Layout` = '$layout' WHERE `sites`.`ID` = $id;");
     header("Location:?m=sites");
   }
  ?>
 <form action="?m=sites&f=editpage&no=1&ID=<?php echo $_GET["ID"]?>" method="post">
-<div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button></div>
+<div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button><span class="ml-3 showelements"><i class="fas fa-arrows-alt-v mr-2"></i><?php echo $lang->plugins ?></span></div>
 <div class="topbar">
   <div class="section">
     <div class="dropper"><i class="fas fa-arrows-alt-v mr-2"></i><?php echo $lang->siteSettings ?></div>
@@ -110,10 +110,10 @@
    <div class="content">
      <div>
        <div>
-         <label for="metatitle"><?php echo $lang->metaTitle ?></label>
+         <label for="fixmeta"><?php echo $lang->fixMeta ?></label>
        </div>
        <div>
-         <input id="metatitle" name="metatitle" class="form-control" value="<?php echo $siterow["MetaTitle"]?>"><br>
+         <input id="fixmeta" type="checkbox" value="1" name="fixmeta" class="form-check" <?php if($siterow["FixMeta"]==1)echo "checked"; ?>><br>
        </div>
      </div>
      <div>
@@ -191,20 +191,6 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 <script src="js/sites.core.js"></script>
 <style>
-.invalid {
-    border: 1px solid red;
-}
-.fixedtop {
-    position: fixed;
-    top: 56px;
-    left: 0;
-    z-index: 100;
-    background: #fff;
-    padding: 10px 20px;
-    width: 100%;
-    box-shadow: 0 0 5px;
-}
-
 form {
     padding: 43px 0 0 0;
 }

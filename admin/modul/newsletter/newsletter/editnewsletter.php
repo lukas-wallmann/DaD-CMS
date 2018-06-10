@@ -11,7 +11,7 @@
   }
  ?>
 <form action="?m=newsletter/newsletter&f=editnewsletter&no=1&ID=<?php echo $_GET["ID"]?>" method="post">
-<div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button></div>
+<div class="fixedtop"><button type="submit" class="btn btn-primary save"><?php echo $lang->save ?></button><span class="ml-3 showelements"><i class="fas fa-arrows-alt-v mr-2"></i><?php echo $lang->plugins ?></span></div>
 <label><?php echo $lang->title ?></label><input class="form-control mb-3" name="title" value="<?php echo $siterow["Title"] ?>">
 <label><?php echo $lang->layout ?></label>
 <select id="layout" name="layout" class="form-control mb-3">

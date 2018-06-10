@@ -1,3 +1,5 @@
+
+
 .draggable, #content .icon {
   width: 70px;
   height: 70px;
@@ -69,6 +71,41 @@ ul#elements, ul#content {
 #popupwin .itm.selected{
   border:2px solid #ff0000;
 }
+.invalid {
+    border: 1px solid red;
+}
+.showelements{
+  display:none;
+}
+.fixed .showelements{
+  display: inline-block;
+}
+body:not(.fixed) #elements{
+  display: block!important;
+}
+
+.fixedtop {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 101;
+    background: #fff;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 0 5px;
+}
+.fixed #elements {
+	position: fixed;
+	top: 114px;
+	background: #fff;
+  display:none;
+	width: 100%;
+	z-index: 100;
+	left: 0;
+	padding: 10px 20px 5px;
+	box-shadow: 0 0 5px #000;
+}
+
 .formmanager ul.form {
     background: #fff;
     padding: 20px;

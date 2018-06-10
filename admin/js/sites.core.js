@@ -5,7 +5,18 @@ $( function() {
   $("main").append('<ul id="elements" class="drag"></ul><ul id="content" class="drag"></ul>');
   $.getScript( "?m=sites&f=apigetjs&no=1&ID="+$("#layout").val() ).done(function( script, textStatus ) {
     DaDCMS.init();
-  })
+  });
+  /*$("ul#elements").attr("start-pos",$("#elements").offset().top-$(".fixedtop").height()-$(".navbar").height());
+  $(window).bind('scroll', function () {
+    if ($(window).scrollTop() > $("ul#elements").attr("start-pos")) {
+        $('body').addClass('fixed');
+    } else {
+        $('body').removeClass('fixed');
+    }
+  });
+  $(".showelements").click(function(){
+    $("#elements").toggle("fast");
+  })*/
 } );
 
 var DaDCMS={
@@ -64,7 +75,7 @@ var DaDCMS={
             if(field.data!=undefined){
               for(var i=0; i<field.data.length; i++){
                 var selected="";
-                if(field.data[i][1]==data)selected=" selected";
+                if(field.data[i].value==data)selected=" selected";
                 code.push('<option value="'+field.data[i].value+'"'+selected+'>'+field.data[i].name+'</option>');
               }
             }
@@ -144,6 +155,8 @@ var DaDCMS={
 
   updateContentsVal:function(){
     var tmp=[];
+    var texts="";
+    var headlines="";
     $("#content > li").each(function(){
       var data={};
       data.pluginID=$(this).attr("data-pluginid");
@@ -162,12 +175,79 @@ var DaDCMS={
         }else{
           data[name]=value;
         }
+        if(!$(this).hasClass("json") && !$(this).is("select") && !$(this).is("input[type='checkbox']")){
+          if($(this).parent().parent().parent().attr("data-name")=="headline"){
+            headlines+=value+" ";
+          }else{
+            texts+=value+" ";
+          }
+        }
       });
       tmp.push(data);
     });
     $("#contents").text(JSON.stringify(tmp));
+    DaDCMS.updateMeta(headlines,texts);
   },
 
+  updateMeta:function(headlines,texts){
+
+    if(!$("#fixmeta").is(":checked")){
+      
+      $("body").append("<div id='metahelper'><div class='headlines'>"+headlines+" "+headlines+"</div> "+texts+"</div>"); //double prio for headline texts
+      var text=removeShorts(removeUnwanted($('#metahelper').text()).split(" "));
+      $("#metahelper .headlines").remove();
+      var $text=$('#metahelper').text();
+      $('#metahelper').remove();
+      var metatags=count(text,128);
+      var metaDescription=trimlen($text,255);
+      $("#metatags").val(metatags);
+      $('#metadescription').text(metaDescription);
+
+      function removeUnwanted(s){
+        return s.split(".").join("").split(",").join("").split(";").join("").split("!").join("").split("?").join("").split(":").join("");
+      }
+
+      function trimlen(t,l){
+        t=t.split(" ");
+        var words=[];
+        var length=0;
+        for(var i=0; i<t.length; i++){
+          length+=t[i].length+1;
+          if(length>l)break;
+          words.push(t[i]);
+        }
+        return words.join(" ");
+      }
+
+      function removeShorts(a){
+        var tmp=[];
+        for(var i=0; i<a.length; i++){
+          if(a[i].length>3)tmp.push(a[i]);
+        }
+        return tmp;
+      }
+
+      function count(array_elements, to) {
+
+          var words=[];
+          array_elements.sort();
+          var length=0;
+          var current="";
+          for(var i=0; i<array_elements.length; i++){
+            if(current!=array_elements[i]){
+              length+=array_elements[i].length+2;
+              if(length>to)break;
+              words.push(array_elements[i]);
+              current=array_elements[i];
+            }
+
+          }
+          return words.join(", ");
+      }
+
+
+    }
+  },
 
   setFunctions:function(){
     DaDCMS.dragger.setFunctions();

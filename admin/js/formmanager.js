@@ -253,7 +253,7 @@ $.fn.formManager = function() {
                 if(field.data!=undefined){
                   for(var i=0; i<field.data.length; i++){
                     var selected="";
-                    if(field.data[i][1]==data)selected=" selected";
+                    if(field.data[i].value==data)selected=" selected";
                     code.push('<option value="'+field.data[i].value+'"'+selected+'>'+field.data[i].name+'</option>');
                   }
                 }

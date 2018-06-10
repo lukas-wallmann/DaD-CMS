@@ -48,6 +48,7 @@
 	$lang->metaTitle="Meta title";
 	$lang->metaTags="Meta keywords";
 	$lang->metaDescription="Meta description";
+	$lang->fixMeta="fix meta data";
 	$lang->teaser="Teaser";
 	$lang->teaserName="Teaser title";
 	$lang->teaserPicture="Teaser image";

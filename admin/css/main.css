@@ -74,6 +74,11 @@ footer {
 	font-size: 10px;
 	overflow: hidden;
 }
+ul.sites {
+	list-style: none;
+	padding: 0;
+	font-size: 24px;
+}
 #filebrowser .entry .title .controls{
 	display: none;
 }
