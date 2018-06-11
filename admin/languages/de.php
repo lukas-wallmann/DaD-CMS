@@ -91,13 +91,6 @@
 	$lang->newThemePart="Neues Design Teilstück";
 
 	$lang->plugins="Plugins";
-	$lang->pluginsVariants="Plugin Varianten";
-	$lang->newPlugin="Neues Plugin";
-	$lang->newJavascript="Neues Javascript";
-	$lang->newCSS="Neues CSS";
-	$lang->importPlugin="Plugin importieren";
-	$lang->syncPlugin="Plugin syncronisieren";
-
 	$lang->themeParts="Code Teile";
 	$lang->themePlugins="Plugins";
 

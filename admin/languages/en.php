@@ -90,13 +90,7 @@
 	$lang->newTheme="new theme";
 	$lang->newThemePart="new theme part";
 
-	$lang->plugins="Plugins";
-	$lang->pluginsVariants="Plugin variants";
-	$lang->newPlugin="New plugin";
-	$lang->newJavascript="New Javascript";
-	$lang->newCSS="New CSS";
-	$lang->importPlugin="Plugin import";
-	$lang->syncPlugin="Plugin sync";
+	$lang->plugins="Plugins";;
 
 	$lang->themeParts="Code parts";
 	$lang->themePlugins="Plugins";
