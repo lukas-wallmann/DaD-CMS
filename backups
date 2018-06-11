@@ -1,0 +1,593 @@
+<p>
+    A form was sent, see below for infos.
+</p>
+
+<table>
+((foreach form.fields as field))
+    ((if field.type!=captcha))
+        ((if field.type!=submit))
+        <tr>
+            <td>{{field.name}}</td>
+            <td>{{field.value}}</td>
+        </tr>
+        ((/if))
+    ((/if))
+((/foreach))
+</table>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{site.Title}}</title>
+<meta name="keywords" content="{{site.MetaTags}}">
+<meta name="description" content="{{site.MetaDescription}}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="((css:Site))">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid bg-dark">
+        [[nav]]
+    </div>
+    <main>
+        <div class="container bg-light">
+            ((listPlugins))
+        </div>
+    </main>
+    <footer class="bg-primary text-white">
+        <div class="container">
+            [[footernav]]
+            [[copyright]]
+        </div>
+    </footer>
+</body>
+[[scripts]]
+</html>
+
+
+
+<span class="copyright">Copyright @{{site.Currentyear}}</span>
+
+
+
+<nav>
+    ((foreach nav.meta as point))
+            <a href="{{point.href}}" ((if point.active))class="active" ((/if))target="{{point.target}}">{{point.name}}</a>
+    ((/foreach))
+</nav>
+
+
+
+
+
+<nav class="navbar container navbar-expand-md navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+
+        ((foreach nav.main as point))
+
+        <li class="nav-item((if point.active)) active((/if))((if point.hassub)) dropdown((/if))">
+            <a class="nav-link((if point.hassub)) dropdown-toggle((/if))" href="{{point.href}}" target="{{point.target}}"((if point.hassub)) id="dropdown{{point.index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"((/if))>{{point.name}}</a>
+            ((if point.hassub))
+             <div class="dropdown-menu" aria-labelledby="dropdown{{point.index}}">
+                ((foreach point.sub as sub))
+                    <a class="dropdown-item((if sub.active)) active((/if))" href="{{sub.href}}" target="{{sub.target}}">{{sub.name}}</a>
+                ((/foreach))
+            </div>
+            ((/if))
+
+        </li>
+
+        ((/foreach))
+        </ul>
+      </div>
+    </nav>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="((js:Site))"></script>
+
+
+
+
+
+    <!--Elements-->
+
+    <div class="itm downloads">
+        ((foreach downloads as file))
+            <a href="{{uploadpath}}{{file.link}}">{{file.name}}</a>
+        ((/foreach))
+    </div>
+
+
+
+    <div class="itm form">
+    <form action="{{baseurl}}index.php" method="post">
+        <input type="hidden" name="_receiver" value="{{receiver}}">
+        <input type="hidden" name="_fromid" value="{{site.ID}}">
+        <input type="hidden" name="_redirectaftersend" value="{{redirectaftersend}}">
+        <input type="hidden" name="_mailtemplate" value="{{mailtemplate}}">
+        ((foreach form.fields as field))
+
+            <input type="hidden" name="_field_{{field.index}}" value="{{field.name}}">
+            <input type="hidden" name="_field_type_{{field.index}}" value="{{field.type}}">
+            <input type="hidden" name="_field_field_{{field.index}}" value="{{field.id}}">
+
+            ((if field.type=textfield))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                  <input name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
+                </div>
+            </div>
+            ((/if))
+
+            ((if field.type=email))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                  <input name="value_{{field.id}}" type="email" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
+                </div>
+            </div>
+            ((/if))
+
+            ((if field.type=textarea))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                  <textarea name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}"></textarea>
+                </div>
+            </div>
+            ((/if))
+
+            ((if field.type=select))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                    <select name="value_{{field.id}}" class="form-control" id="field{{field.index}}">
+                        ((foreach field.data as data))
+                            <option value="{{data.value}}">{{data.name}}</option>
+                        ((/foreach))
+                    </select>
+                </div>
+            </div>
+            ((/if))
+            ((if field.type=number))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                  <input type="number" name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
+                </div>
+            </div>
+            ((/if))
+            ((if field.type=checkbox))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check((if field.required)) required((/if))" id="field{{field.index}}">
+                </div>
+            </div>
+            ((/if))
+            ((if field.type=registernewsletter))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="value_{{field.id}}_confirmmail" value="{{field.confirmmail}}">
+                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
+                    <input type="hidden" name="value_{{field.id}}_receivergroup" value="{{field.receivergroup}}">
+
+                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}">
+                </div>
+            </div>
+            ((/if))
+
+            ((if field.type=submit))
+            <button class="btn btn-primary mt-3">{{field.name}}</button>
+            ((/if))
+
+            ((if field.type=captcha))
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+            <div class="g-recaptcha" data-sitekey="6Lciel0UAAAAADRNjLxt8HMZGruU4eiQfpO5M-VU"></div>
+            ((/if))
+
+           ((if field.type=sendcopy))
+               <div class="form-group row"((if field.setinvisible=1)) style="display:none"((/if))>
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
+                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}"((if field.setinvisible=1)) checked((/if))>
+                </div>
+            </div>
+           ((/if))
+
+           ((if field.type=registernewsletter))
+            <div class="form-group row">
+                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="value_{{field.id}}_confirmmail" value="{{field.confirmmail}}">
+                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
+
+                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}">
+                </div>
+            </div>
+            ((/if))
+
+        ((/foreach))
+    </form>
+
+</div>
+
+
+
+
+<div class="itm gallery">
+    ((foreach files as image))
+    <a href="{{uploadpath}}{{image.big}}"><img src="{{uploadpath}}{{image.thumb}}"></a>
+    ((/foreach))
+</div>
+
+
+<div class="itm headline"><{{variant}}>{{text}}</{{variant}}></div>
+
+
+
+<div class="itm text">{{text}}</div>
+
+
+
+
+((if alignment=left))
+    <div class="itm text-image left">
+        <a href="{{uploadpath}}{{image.big}}"><img src="{{uploadpath}}{{image.thumb}}"></a>
+        <div class="text">{{text}}</div>
+    </div>
+((/if))
+((if alignment=right))
+     <div class="itm text-image right">
+        <div class="text">{{text}}</div>
+        <a href="{{uploadpath}}{{image.big}}"><img src="{{uploadpath}}{{image.thumb}}"></a>
+    </div>
+((/if))
+
+
+
+<div class="itm video">
+    <h1>{{headline}}</h1>
+    <div class="player">
+        ((if video.type=vimeo))
+        <iframe src="http://player.vimeo.com/video/{{video.videoid}}?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0"width="1600" height="900" frameborder="0" webkitAllowFullScreenmozallowfullscreen allowFullScreen></iframe>
+        ((/if))
+        ((if video.type=youtube))
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{video.videoid}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        ((/if))
+    </div>
+    <div class="text">{{text}}</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a{
+    text-decoration:none;
+    font-weight:bold;
+}
+nav a{
+    font-weight:normal;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px; /* Margin bottom by footer height */
+}
+main .container{padding:20px}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+}
+footer nav a{color:#fff}
+footer nav a:hover{color:#fff}
+
+
+
+
+
+
+.itm{
+    margin:30px 0;
+}
+.text-image{
+    a{
+        width:50%;
+        display:inline-block;
+        max-width:500px;
+    }
+    a img {
+        width: 100%;
+    }
+    .text {
+        display: inline-block;
+        vertical-align: top;
+        padding:0 0 0 10px;
+    }
+}
+.itm.text-image.right a {
+    float: right;
+}
+
+.itm.text-image.right:after {
+    content:  "";
+    display: block;
+    clear: both;
+}
+
+.downloads{
+    a{display:block;
+        &:before {
+            content: ">> ";
+            padding: 0 10px 5px 10px;
+        }
+}
+}
+.video .player {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    iframe {
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+
+.itm.gallery {
+    margin: 0 -10px 0 0;
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+    a img {
+        display: block;
+        width: 100%;
+    }
+    a {
+        display: block;
+        width: 33.333%;
+        box-sizing: border-box;
+        padding: 0 10px 10px 0;
+        float: left;
+    }
+
+}
+
+@media screen and (max-width: 768px){
+    .itm.gallery a{
+        width:50%;
+    }
+}
+@media screen and (max-width: 500px){
+    .itm.gallery a{
+        width:100%;
+    }
+    .text-image a {width:100%}
+}
+
+
+
+
+
+
+
+footer{
+
+    nav {
+        float: left;
+        a{
+            font-weight:normal;
+            padding:0 20px 0 0;
+        }
+    }
+
+    span.copyright {
+        float: right;
+    }
+    .container::after {
+        display: block;
+        clear: both;
+        content: "";
+    }
+}
+@media screen and (max-width: 500px){
+    footer span.copyright{
+        width:100%;
+        float:none;
+        white-space:nowrap;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DaDCMS.registerPlugin({
+   icon:'<i class="fas fa-download"></i>',
+   name:"{{name}}",
+   id:"{{id}}",
+   fieldset:[{name:"downloads",type:"filemanager",settings:{multiple:true}}]
+});
+
+DaDCMS.registerPlugin({
+    icon:'<i class="fas fa-envelope-open"></i>',
+    name:"{{name}}",
+    id:"{{id}}",
+    fieldset:[
+        {name:"receiver",type:"textfield"},
+        {name:"redirectaftersend",type:"select",dataURL:"?m=api&f=getsites&no=1"},
+        {name:"mailtemplate",type:"select",dataURL:"?m=api&f=getmaillayouts&no=1"},
+        {
+            name:"form", type:"formmanager",fields:[
+              {type:"textfield",fieldset:[{name:"name",type:"textfield"},{name:"placeholder",type:"textfield"},{name:"required",type:"checkbox"}]},
+              {type:"email",fieldset:[{name:"name",type:"textfield"},{name:"placeholder",type:"textfield"},{name:"required",type:"checkbox"}]},
+              {type:"textarea",fieldset:[{name:"name",type:"textfield"},{name:"placeholder",type:"textfield"},{name:"required",type:"checkbox"}]},
+              {type:"select",fieldset:[{name:"name",type:"textfield"},{name:"data", type:"databuilder"}]},
+              {type:"number",fieldset:[{name:"name",type:"textfield"},{name:"placeholder",type:"textfield"},{name:"required",type:"checkbox"}]},
+              {type:"checkbox",fieldset:[{name:"name",type:"textfield"},{name:"required",type:"checkbox"}]},
+              {type:"registernewsletter",fieldset:[
+                  {name:"name",type:"textfield"},
+                  {name:"confirmmail",type:"checkbox"},
+                  {name:"emailfield",type:"fieldchooser",allow:"email"},
+                  {name:"receivergroup",type:"select",dataURL:"?m=api&f=getreceivergroups&no=1"}]},
+              {type:"sendcopy", fieldset:[{name:"name",type:"textfield"},{name:"setinvisible",type:"checkbox"},{name:"emailfield",type:"fieldchooser",allow:"email"}]},
+              {type:"captcha",fieldset:[{name:"name",type:"textfield"}]},
+              {type:"submit",fieldset:[{name:"name",type:"textfield"}]}
+            ]
+        }
+    ]
+});
+
+
+DaDCMS.registerPlugin({
+    icon:'<i class="far fa-images"></i>',
+    name:"{{name}}",
+    id:"{{id}}",
+    fieldset:[
+        {name:"files", type:"imagemanager", settings:{multiple:true,formats:[
+            ["thumb","cut:500x300",true],
+            ["big","fitin:2560x2560"]
+        ]}}
+    ]
+});
+
+
+DaDCMS.registerPlugin({
+    icon:'<i class="fas fa-heading"></i>',
+    name:"{{name}}",
+    id:"{{id}}",
+    fieldset:[
+        {
+            name:"variant",
+            type:"select",
+            data:[
+                {value:"h1",name:"h1"},
+                {value:"h2",name:"h2"},
+                {value:"h3",name:"h3"},
+                {value:"h4",name:"h4"},
+                {value:"h5",name:"h5"},
+                {value:"h6",name:"h6"}
+            ]
+        },
+        {
+            name:"text",
+            type:"textfield"
+        }
+    ]
+});
+
+
+
+DaDCMS.registerPlugin({
+    icon:'<i class="fas fa-align-left"></i>',
+    name:"{{name}}",
+    id:"{{id}}",
+    fieldset:[
+      {
+        name:"text",
+        type:"editor"
+      }
+ ]
+});
+
+
+DaDCMS.registerPlugin({
+  icon:'<span style="font-size: 26px;margin: 0 0 0 -5px;"><i class="far fa-image"></i> <i class="fas fa-align-left"></i></span>',
+   name:"{{name}}",
+   id:"{{id}}",
+   fieldset:[{
+    name:"image",
+    type:"imagemanager",
+    settings:{
+      multiple:false,
+      formats:[
+        ["thumb","fitin:500x500",true],
+        ["big","fitin:2560x2560"]
+      ]
+    }},
+    {
+        name:"alignment",
+        type:"select",
+        data:[{name:"left",value:"left"},{name:"right",value:"right"}]
+    },
+    {name:"text",type:"editor"}
+  ]
+});
+
+
+
+DaDCMS.registerPlugin({
+    icon:'<i class="fab fa-youtube"></i>',
+    name:"{{name}}",
+    id:"{{id}}",
+    fieldset:[
+      {
+        name:"headline",
+        type:"textfield"
+      },
+      {
+        name:"text",
+        type:"editor"
+      },
+      {
+        name:"video",
+        type:"videomanager"
+      }
+ ]
+});

@@ -23,7 +23,7 @@
   var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
 
-<script src="js/themeEditor.js"></script>
+<script src="js/codeEditor.js"></script>
 <style>
 @media screen and (max-width: 768px) {
   main.container-fluid {
