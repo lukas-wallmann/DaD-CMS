@@ -1,114 +1,12 @@
-<div class="itm form">
-    <form action="{{baseurl}}index.php" method="post">
-        <input type="hidden" name="_receiver" value="{{receiver}}">
-        <input type="hidden" name="_fromid" value="{{site.ID}}">
-        <input type="hidden" name="_redirectaftersend" value="{{redirectaftersend}}">
-        <input type="hidden" name="_mailtemplate" value="{{mailtemplate}}">
-        ((foreach form.fields as field))
+themeeditor new
+- layout + plugins + css + js + assets in one
 
-            <input type="hidden" name="_field_{{field.index}}" value="{{field.name}}">
-            <input type="hidden" name="_field_type_{{field.index}}" value="{{field.type}}">
-            <input type="hidden" name="_field_field_{{field.index}}" value="{{field.id}}">
+Language consants
 
-            ((if field.type=textfield))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                  <input name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
-                </div>
-            </div>
-            ((/if))
+headers
 
-            ((if field.type=email))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                  <input name="value_{{field.id}}" type="email" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
-                </div>
-            </div>
-            ((/if))
+imageformats teaser & max upload
 
-            ((if field.type=textarea))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                  <textarea name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}"></textarea>
-                </div>
-            </div>
-            ((/if))
+Newsletter registration
 
-            ((if field.type=select))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                    <select name="value_{{field.id}}" class="form-control" id="field{{field.index}}">
-                        ((foreach field.data as data))
-                            <option value="{{data.value}}">{{data.name}}</option>
-                        ((/foreach))
-                    </select>
-                </div>
-            </div>
-            ((/if))
-            ((if field.type=number))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                  <input type="number" name="value_{{field.id}}" class="form-control((if field.required)) required((/if))" id="field{{field.index}}" placeholder="{{field.placeholder}}">
-                </div>
-            </div>
-            ((/if))
-            ((if field.type=checkbox))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check((if field.required)) required((/if))" id="field{{field.index}}">
-                </div>
-            </div>
-            ((/if))
-            ((if field.type=registernewsletter))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                    <input type="hidden" name="value_{{field.id}}_confirmmail" value="{{field.confirmmail}}">
-                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
-
-                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}">
-                </div>
-            </div>
-            ((/if))
-
-            ((if field.type=submit))
-            <button class="btn btn-primary mt-3">{{field.name}}</button>
-            ((/if))
-
-            ((if field.type=captcha))
-            <script src="https://www.google.com/recaptcha/api.js"></script>
-            <div class="g-recaptcha" data-sitekey="6Lciel0UAAAAADRNjLxt8HMZGruU4eiQfpO5M-VU"></div>
-            ((/if))
-
-           ((if field.type=sendcopy))
-               <div class="form-group row"((if field.setinvisible=1)) style="display:none"((/if))>
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
-                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}"((if field.setinvisible=1)) checked((/if))>
-                </div>
-            </div>
-           ((/if))
-
-           ((if field.type=registernewsletter))
-            <div class="form-group row">
-                <label for="field{{field.index}}" class="col-sm-3 col-form-label">{{field.name}}</label>
-                <div class="col-sm-9">
-                    <input type="hidden" name="value_{{field.id}}_confirmmail" value="{{field.confirmmail}}">
-                    <input type="hidden" name="value_{{field.id}}_emailfield" value="{{field.emailfield}}">
-
-                  <input type="checkbox" name="value_{{field.id}}" value="1" class="form-check" id="field{{field.index}}">
-                </div>
-            </div>
-            ((/if))
-
-        ((/foreach))
-    </form>
-
-</div>
+form submit
