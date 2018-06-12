@@ -11,6 +11,7 @@
     var $redirectaftersend="";
     var $mailtemplate="";
     var $newsletterreceivergroup="";
+    var $subject="";
 
     public function handle($baseurl){
 
@@ -18,6 +19,7 @@
       $this->fromid=$_POST["_fromid"];
       $this->redirectaftersend=$_POST["_redirectaftersend"];
       $this->mailtemplate=$_POST["_mailtemplate"];
+      $this->subject=$_POST["_subject"];
 
       $tmp=array();
       $i=0;
@@ -49,14 +51,31 @@
       $mailtemplate=$this->render($data);
       $this->send($mailtemplate);
       if($this->registernewsletter==1)$this->registernl();
+
     }
 
     private function send($mailtemplate){
-      echo "email sent".$mailtemplate;
+      global $_dbcon;
+      $mailsettings=json_decode(mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `settings` WHERE `Name`='email'"))["Value"]);
+      $this->utf8mail($this->receiver,$this->subject,$mailtemplate,$mailsettings->name,$mailsettings->email,$mailsettings->reply);
+      if($this->sendcopy==1){
+        $this->utf8mail($this->emailforcopy,$this->subject,$mailtemplate,$mailsettings->name,$mailsettings->email,$mailsettings->reply);
+      }
     }
 
     private function registernl(){
       echo "newletter registered";
+    }
+
+    private function utf8mail($to,$s,$body,$from_name="öäü",$from_a = "office@wallmanns-ideenwerkstatt.com", $reply="office@wallmanns-ideenwerkstatt.com")
+    {
+        $s= "=?utf-8?b?".base64_encode($s)."?=";
+        $headers = "MIME-Version: 1.0\r\n";
+        $headers.= "From: =?utf-8?b?".base64_encode($from_name)."?= <".$from_a.">\r\n";
+        $headers.= "Content-Type: text/html;charset=utf-8\r\n";
+        $headers.= "Reply-To: $reply\r\n";
+        $headers.= "X-Mailer: PHP/" . phpversion();
+        mail($to, $s, $body, $headers);
     }
 
     private function render($data){
