@@ -5,13 +5,24 @@ var themeEditor={
   init:function(){
     themeEditor.helpers.getCodeEditor();
     themeEditor.helpers.load(themeEditor.helpers.fill);
+    $(window).bind('keydown', function(event) {
+      if (event.ctrlKey || event.metaKey) {
+          switch (String.fromCharCode(event.which).toLowerCase()) {
+          case 's':
+              event.preventDefault();
+              themeEditor.code.save();
+              break;
+          }
+      }
+    });
   },
 
   setFunctions:function(){
 
     $('.leftsidebar .theme .b').off().click(function(){
-      var addTo=$(this).parent().attr("data-add");
-      var toggle=$($(this).parent().attr("data-toggle"));
+      var elm=$(this).parent();
+      var addTo=elm.attr("data-add");
+      var toggle=$(elm.attr("data-toggle"));
       var pos=toggle.children("li").length;
       cmd(
         '<label class="mr-3">'+consts.name+'</label><input>',
@@ -27,6 +38,9 @@ var themeEditor={
             if(toggle.hasClass("css") || toggle.hasClass("script")){
               subable=true;
             }
+            if(toggle.css("display")=="none"){
+              elm.find(".openclose").click();
+            }
             toggle.append(themeEditor.helpers.getMenuEntry(data.name,d,addTo,editable,subable,[],"",pluginsign));
             themeEditor.setFunctions();
           },"POST",data);
@@ -36,7 +50,7 @@ var themeEditor={
     });
 
     $('.menu li .delete').off().click(function(){
-      var r=confirm(consts.delete+": "+$(this).parent().text());
+      var r=confirm(consts.delete+": "+$(this).parent().children(".name").text());
       if(r){
         var elm=$(this).parent();
         var data={action:"delete",table:elm.attr("data-table"),id:elm.attr("data-id")};
@@ -46,7 +60,7 @@ var themeEditor={
 
     $(".menu li .edit").off().click(function(){
       var elm=$(this).parent();
-      var name=elm.text();
+      var name=elm.children(".name").text();
       cmd(
         '<label class="mr-3">'+consts.name+'</label><input value="'+name+'">',
         function(){
@@ -78,6 +92,121 @@ var themeEditor={
         function(){$(".cmd input").focus()}
       )
     });
+
+    $(".leftsidebar .theme .openclose").off().click(function(){
+      if($(this).find(".opend").css("display")=="inline"){
+        $(this).find(".opend").css("display","none");
+        $(this).find(".closed").css("display","inline");
+      }else{
+        $(this).find(".opend").css("display","inline");
+        $(this).find(".closed").css("display","none");
+      }
+      $($(this).parent().attr("data-toggle")).toggle("fast");
+    })
+
+    $(".menu li .name").off().click(function(){
+      var table=$(this).parent().attr("data-table");
+      if(table!="css" && table!="script"){
+        $(".selected").removeClass("selected");
+        $(this).parent().addClass("selected");
+        themeEditor.code.get($(this).parent());
+      }
+    });
+
+    if(themeEditor.code.info.id==undefined){
+      $(".menu li").first().find(".name").click();
+    }
+
+    $(".menu li .plugin").off().click(function(){
+      $(".selected").removeClass("selected");
+      $(this).parent().addClass("selected");
+      $(this).addClass("selected");
+      themeEditor.code.get($(this).parent(),true)
+    });
+
+    $(".leftsidebar ul").fixedsortable({
+      fixed:".nodrop"
+    });
+
+  },
+
+  code:{
+
+    cache:[],
+    info:{},
+
+    get:function(elm,plugin=false){
+      themeEditor.code.setCache();
+      var data={};
+      data.a="getCode";
+      data.id=elm.attr("data-id");
+      data.table=elm.attr("data-table");
+      data.field="Code";
+      data.mode="html";
+      if(plugin){
+        data.mode="javascript";
+        data.field="PluginCode";
+      }
+      if(data.table=="cssParts"){
+        data.mode="scss";
+      }
+      if(data.table=="scriptParts"){
+        data.mode="javascript";
+      }
+
+      var found=false;
+      for(var i=0; i<themeEditor.code.cache.length; i++){
+        if(themeEditor.code.cache[i].id==data.id && themeEditor.code.cache[i].field==data.field && themeEditor.code.cache[i].table==data.table){
+          found=true;
+          themeEditor.code.set(themeEditor.code.cache[i].code,themeEditor.code.cache[i]);
+        }
+      }
+      if(!found)themeEditor.helpers.load(function(d){themeEditor.code.set(d,data)},"POST",data);
+
+    },
+
+    set:function(d,data){
+      editor.session.setMode("ace/mode/"+data.mode);
+      editor.setValue(d);
+      themeEditor.code.info=data;
+    },
+
+    save:function(){
+      themeEditor.code.setCache();
+      var tmp=[];
+      for(var i=0; i<themeEditor.code.cache.length; i++){
+        if(themeEditor.code.cache[i].save){
+          tmp.push(themeEditor.code.cache[i]);
+          themeEditor.code.cache[i].save=false;
+        }
+      }
+      var data={};
+      data.action="save";
+      data.parts=JSON.stringify(tmp);
+      themeEditor.helpers.load(function(){alert("done")},"POST",data);
+    },
+
+    setCache:function(){
+      if(themeEditor.code.info.id!=undefined){
+        var found=false;
+        for(var i=0; i<themeEditor.code.cache.length; i++){
+          if(themeEditor.code.cache[i].id==themeEditor.code.info.id && themeEditor.code.cache[i].field==themeEditor.code.info.field && themeEditor.code.cache[i].table==themeEditor.code.info.table){
+            found=true;
+            var data=themeEditor.code.info;
+            data.code=editor.getValue();
+            data.save=true;
+            themeEditor.code.cache[i]=data;
+            break;
+          }
+        }
+        if(!found){
+          var data=themeEditor.code.info;
+          data.save=true;
+          data.code=editor.getValue();
+          themeEditor.code.cache.push(data);
+        }
+      }
+    }
 
   },
 
@@ -127,7 +256,7 @@ var themeEditor={
       if(pluginsign)edit+='<span class="plugin ml-1"><i class="fas fa-plug"></i></span>';
       var sub="";
       if(subable)sub='<span class="add ml-1"><i class="fas fa-plus-square"></i></span>';
-      var code='<li class="'+specialclass+'" data-table="'+table+'" data-id="'+id+'"><span class="name mr-2">'+name+'</span>'+edit+sub+'</li>';
+      var code='<li class="'+specialclass+'" data-table="'+table+'" data-id="'+id+'"><span class="name mr-2">'+name+'</span>'+edit+sub;
       if(parts.length>0){
         code+="<ul>";
         for(var i=0; i<parts.length; i++){
@@ -136,6 +265,7 @@ var themeEditor={
         }
         code+="</ul>";
       }
+      code+="</li>";
       return code;
     },
 

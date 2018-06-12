@@ -1,10 +1,9 @@
 <?php
-  $res=mysqli_query($_dbcon,"SELECT * FROM `themePlugins` WHERE `ThemeID`=".$_GET["ID"]);
+  $res=mysqli_query($_dbcon,"SELECT * FROM `plugins` WHERE `LayoutID`=".$_GET["ID"]);
   while($row=mysqli_fetch_assoc($res)){
-    $row2=mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `plugins` WHERE `ID`=".$row["PluginID"]));
-    $str=$row2["Code"]."\n";
-    $str=str_replace("{{name}}",$row2["Name"],$str);
-    $str=str_replace("{{id}}",$row2["ID"],$str);
+    $str=$row["PluginCode"]."\n";
+    $str=str_replace("{{name}}",$row["Name"],$str);
+    $str=str_replace("{{id}}",$row["ID"],$str);
     echo $str;
   }
 ?>

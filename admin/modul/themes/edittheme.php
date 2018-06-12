@@ -25,15 +25,20 @@
   var layoutID=<?php echo $_GET["ID"] ?>;
   var consts=JSON.parse('<?php echo json_encode($lang)?>');
 </script>
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/touchpunch.js"></script>
+<script src="js/fixedsortable.js"></script>
 <script src="js/themeEditor.js"></script>
 <style>
-.leftsidebar span.opend {
+.leftsidebar span.closed {
     display: none;
 }
 .leftsidebar ul.menu {
     list-style: none;
     padding: 0;
+}
+.plugin.ml-1.selected{
+  color:red;
 }
 
 .leftsidebar ul.menu ul {

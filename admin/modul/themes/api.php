@@ -48,6 +48,27 @@
       mysqli_query($_dbcon,"UPDATE `$table` SET `Name` = '$name' WHERE `$table`.`ID` = $ID;");
     }
 
+    if($action=="save"){
+      $parts=json_decode($_POST["parts"]);
+      foreach($parts as &$part){
+        $code=mysqli_real_escape_string($_dbcon,$part->code);
+        $id=$part->id;
+        $table=$part->table;
+        $field=$part->field;
+        mysqli_query($_dbcon,"UPDATE `$table` SET `$field` = '$code' WHERE `$table`.`ID` = $id;");
+      }
+    }
+
+  }
+
+  if(isset($_POST["a"])){
+    if($_POST["a"]=="getCode"){
+      $table=$_POST["table"];
+      $ID=$_POST["id"];
+      $field=$_POST["field"];
+      echo mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * FROM $table WHERE ID=$ID"))[$field];
+      die();
+    }
   }
 
   $data=new stdClass();

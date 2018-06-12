@@ -31,7 +31,7 @@ var DaDCMS={
     var contents=JSON.parse($("#contents").text());
     for(var i=0; i<contents.length; i++){
       var content=contents[i];
-      var plugin=DaDCMS.helpers.getPlugin(content.pluginID);
+      var plugin=DaDCMS.helpers.getPlugin(content.pluginName);
       $("#content").append(DaDCMS.buildPlugin(plugin,content));
     }
     DaDCMS.setFunctions();
@@ -159,7 +159,7 @@ var DaDCMS={
     var headlines="";
     $("#content > li").each(function(){
       var data={};
-      data.pluginID=$(this).attr("data-pluginid");
+      data.pluginName=$(this).attr("data-name");
       $(this).find('.saveme').each(function(){
         var name=$(this).attr("data-name");
         var value=$(this).val();
@@ -192,7 +192,7 @@ var DaDCMS={
   updateMeta:function(headlines,texts){
 
     if(!$("#fixmeta").is(":checked")){
-      
+
       $("body").append("<div id='metahelper'><div class='headlines'>"+headlines+" "+headlines+"</div> "+texts+"</div>"); //double prio for headline texts
       var text=removeShorts(removeUnwanted($('#metahelper').text()).split(" "));
       $("#metahelper .headlines").remove();
@@ -311,7 +311,7 @@ var DaDCMS={
       $( "#elements .draggable" ).draggable({ scroll: true, scrollSensitivity: 100, helper:"clone", drag:function(){
         DaDCMS.dragger.checkHit($(".ui-draggable-dragging").offset())
       }, stop:function(){
-        $("#placeholder").replaceWith(DaDCMS.buildPlugin(DaDCMS.helpers.getPlugin($(this).attr("data-pluginid"))));
+        $("#placeholder").replaceWith(DaDCMS.buildPlugin(DaDCMS.helpers.getPlugin($(this).attr("data-name"))));
         DaDCMS.setFunctions();
       } });
 
