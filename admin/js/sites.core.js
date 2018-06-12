@@ -113,7 +113,7 @@ var DaDCMS={
     quillcount:0,
     getPlugin:function(id){
       for(var i=0; i<DaDCMS.plugins.length; i++){
-        if(DaDCMS.plugins[i].id==id){
+        if(DaDCMS.plugins[i].name==id){
           return DaDCMS.plugins[i];
           break;
         }
