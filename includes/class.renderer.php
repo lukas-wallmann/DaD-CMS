@@ -134,7 +134,7 @@ class renderer{
             $tmpdata->nav=$data->nav;
             $tmpdata->uploadpath=$data->uploadpath;
             $tmpdata->baseurl=$data->baseurl;
-            $pluginID=$content->pluginID;
+            $pluginID=$content->pluginName;
             $tmptemplate=$data->theme->plugins->$pluginID;
             $this->code.=$this->render($tmpdata,$tmptemplate,"");
           }
@@ -190,7 +190,7 @@ class renderer{
             if(count($t)==2)$action="<=";
             $t=explode("!=",$tmp[1]);
             if(count($t)==2)$action="!=";
-          
+
           $compare=explode($action,$tmp[1]);
           $field=explode(".",$compare[0]);
           $d=$data;

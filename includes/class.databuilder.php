@@ -44,9 +44,9 @@ class databuilder{
     }
 
     $this->data->theme->plugins=new stdClass();
-    $res=mysqli_query($_dbcon,"Select * From themePlugins Where ThemeID=".$this->data->site->Layout);
+    $res=mysqli_query($_dbcon,"Select * From plugins Where LayoutID=".$this->data->site->Layout);
     while($row=mysqli_fetch_assoc($res)){
-      $name=$row["PluginID"];
+      $name=$row["Name"];
       $this->data->theme->plugins->$name=$row["Code"];
     }
     $this->data->nav=new stdClass();

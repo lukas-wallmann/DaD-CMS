@@ -59,6 +59,16 @@
       }
     }
 
+    if($action=="reposition"){
+      $table=$_POST["table"];
+      $arr=json_decode($_POST["arr"]);
+      $index=0;
+      foreach($arr as &$id){
+        mysqli_query($_dbcon,"UPDATE `$table` SET `Pos` = '$index' WHERE `$table`.`ID` = $id;");
+        $index+=1;
+      }
+    }
+
   }
 
   if(isset($_POST["a"])){

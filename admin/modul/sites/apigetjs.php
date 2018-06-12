@@ -3,7 +3,6 @@
   while($row=mysqli_fetch_assoc($res)){
     $str=$row["PluginCode"]."\n";
     $str=str_replace("{{name}}",$row["Name"],$str);
-    $str=str_replace("{{id}}",$row["ID"],$str);
     echo $str;
   }
 ?>

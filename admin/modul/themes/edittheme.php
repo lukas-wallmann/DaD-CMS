@@ -9,11 +9,14 @@
     ?>
     <div class="theme plugins mt-3" data-add="plugins" data-toggle=".menu.plugins"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b><?php echo $lang->themePlugins ?></b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
     <ul class="menu plugins"></ul>
+    <?php  if($res!="newsletter"){ ?>
     <div class="theme css mt-3" data-add="css" data-toggle=".menu.css"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b>CSS</b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
     <ul class="menu css"></ul>
     <div class="theme script mt-3" data-add="script" data-toggle=".menu.script"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b>Javascript</b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
     <ul class="menu script"></ul>
-  <?php } ?>
+  <?php }
+      }
+  ?>
   </div>
   <div class="col-md-9 codeEditor" id="editor"></div>
 </div>
