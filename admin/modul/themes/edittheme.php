@@ -7,7 +7,7 @@
       $res=mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `theme` WHERE ID=".$_GET["ID"]))["LayoutFor"];
       if($res!="mail"){
     ?>
-    <div class="theme plugins mt-3" data-add="plugins" data-toggle=".menu.plugins"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b><?php echo $lang->themePlugins ?></b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>
+    <div class="theme plugins mt-3" data-add="plugins" data-toggle=".menu.plugins"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b><?php echo $lang->themePlugins ?></b><span class="b"><i class="fas fa-plus-square ml-2"></i></span><span class="import"><i class="ml-1 fas fa-cloud-download-alt"></i></span></div>
     <ul class="menu plugins"></ul>
     <?php  if($res!="newsletter"){ ?>
     <div class="theme css mt-3" data-add="css" data-toggle=".menu.css"><span class="mr-2 openclose"><span class="closed"><i class="fas fa-arrow-right"></i></span><span class="opend"><i class="fas fa-arrow-down"></i></span></span><b>CSS</b><span class="b"><i class="fas fa-plus-square ml-2"></i></span></div>

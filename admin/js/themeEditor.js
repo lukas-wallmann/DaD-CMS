@@ -105,6 +105,51 @@ var themeEditor={
       $($(this).parent().attr("data-toggle")).toggle("fast");
     })
 
+    $(".leftsidebar .theme .import").off().click(function(){
+      var not="''";
+      $(".menu.plugins li").each(function(){
+        not+=",";
+        not+="'"+$(this).text()+"'";
+      });
+      var data={a:"listplugins",not:not};
+      themeEditor.helpers.load(function(d){
+        d=JSON.parse(d);
+        var code=[];
+        for(var i=0; i<d.length; i++){
+          code.push("<h4>"+d[i].name+"</h4>");
+          code.push("<div class='mb-3'>")
+          for(var j=0; j<d[i].plugins.length; j++){
+            code.push("<div class='entry'>");
+            code.push('<input type="checkbox" data-index="'+i+'" id="'+j+'"><label class="ml-2" for="'+j+'">'+d[i].plugins[j].name+'</label>');
+            code.push("</div>");
+          }
+          code.push("</div>");
+        }
+        cmd(code.join(""),function(){
+          var tmp=[];
+          var pos=$(".menu.plugins li").length;
+          $(".cmd .entry input[type='checkbox']").each(function(){
+            if($(this).is(":checked")){
+              var index=$(this).attr("data-index");
+              var id=$(this).attr("id");
+              d[index].plugins[id].pos=pos;
+              pos++;
+              tmp.push(d[index].plugins[id]);
+            }
+          })
+          var data={action:"import",tmp:JSON.stringify(tmp)};
+          themeEditor.helpers.load(function(d){
+            d=JSON.parse(d);
+            for(var i=0; i<d.length; i++){
+              var o=d[i];
+              $('.leftsidebar .menu.plugins').append(themeEditor.helpers.getMenuEntry(o.name,o.id,"plugins",true,false,[],"",true));
+            }
+            themeEditor.setFunctions();
+          },"POST",data)
+        },function(){});
+      },"POST",data);
+    });
+
     $(".menu li .name").off().click(function(){
       var table=$(this).parent().attr("data-table");
       if(table!="css" && table!="script"){
