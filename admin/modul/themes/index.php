@@ -35,5 +35,8 @@
         $(this).parent().remove();
       }
     });
+    $(".themes .copy").click(function(){
+      document.location.href="?m=themes&f=copy&ID="+$(this).parent().attr("data-id");
+    });
   });
 </script>
