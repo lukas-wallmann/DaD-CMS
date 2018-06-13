@@ -49,6 +49,21 @@ class databuilder{
       $name=$row["Name"];
       $this->data->theme->plugins->$name=$row["Code"];
     }
+
+    $this->data->theme->css=new stdClass();
+    $res=mysqli_query($_dbcon,"Select * From css Where LayoutID=".$this->data->site->Layout);
+    while($row=mysqli_fetch_assoc($res)){
+      $name=$row["Name"];
+      $this->data->theme->css->$name=$row["ID"];
+    }
+
+    $this->data->theme->script=new stdClass();
+    $res=mysqli_query($_dbcon,"Select * From script Where LayoutID=".$this->data->site->Layout);
+    while($row=mysqli_fetch_assoc($res)){
+      $name=$row["Name"];
+      $this->data->theme->script->$name=$row["ID"];
+    }
+
     $this->data->nav=new stdClass();
     $res=mysqli_query($_dbcon,"Select * From menus WHERE Language='$lang'");
     while($row=mysqli_fetch_assoc($res)){

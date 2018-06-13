@@ -36,13 +36,8 @@ class serverjscss{
 
   private function generate(){
     global $_dbcon;
-    $id=mysqli_fetch_assoc(mysqli_query($_dbcon,"SELECT * FROM `$this->type` WHERE Name='$this->name'"))["ID"];
-    if($id==""){
-      http_response_code(404);
-      echo "not found";
-      die();
-    }else{
-      $res=mysqli_query($_dbcon,"Select * From ".$this->type."Parts WHERE ParentID=".$id);
+
+      $res=mysqli_query($_dbcon,"Select * From ".$this->type."Parts WHERE ParentID=".$this->name);
       $tmp="";
       while($row=mysqli_fetch_assoc($res)){
         $tmp.=$row["Code"];
@@ -60,7 +55,7 @@ class serverjscss{
       }
       echo $tmp;
       $this->generateCache($tmp);
-    }
+
 
   }
 

@@ -143,13 +143,13 @@ class renderer{
         if(substr($template,0,4)=="css:"){
           $tmp=explode("))",$template,2);
           $name=explode(":",$tmp[0])[1];
-          $this->code.=$basefolder."css/".$name;
+          $this->code.=$basefolder."css/".$data->theme->css->$name;
           $this->code.=$this->render($data,$tmp[1],"");
         }
         if(substr($template,0,3)=="js:"){
           $tmp=explode("))",$template,2);
           $name=explode(":",$tmp[0])[1];
-          $this->code.=$basefolder."script/".$name;
+          $this->code.=$basefolder."script/".$data->theme->script->$name;
           $this->code.=$this->render($data,$tmp[1],"");
         }
         if(substr($template,0,7)=="foreach"){
