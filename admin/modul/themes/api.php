@@ -32,6 +32,35 @@
       die();
     }
 
+    if($action=="deletetheme"){
+      $querys="";
+      $querys.="DELETE FROM `theme` WHERE `theme`.`ID` = ".$id.";";
+      $querys.="DELETE FROM `themeParts` WHERE `themeParts`.`ThemeID` = ".$id.";";
+      $querys.="DELETE FROM `plugins` WHERE `plugins`.`LayoutID` = ".$id.";";
+      $querys.="DELETE FROM `css` WHERE `css`.`LayoutID` = ".$id.";";
+      $querys.="DELETE FROM `script` WHERE `script`.`LayoutID` = ".$id.";";
+      $res=mysqli_query($_dbcon,"Select * From css WHERE LayoutID=".$id);
+      while($row=mysqli_fetch_assoc($res)){
+        $querys.="DELETE FROM `cssParts` WHERE `cssParts`.`ParentID` = ".$row["ID"].";";
+      }
+      $res=mysqli_query($_dbcon,"Select * From script WHERE LayoutID=".$id);
+      while($row=mysqli_fetch_assoc($res)){
+        $querys.="DELETE FROM `scriptParts` WHERE `scriptParts`.`ParentID` = ".$row["ID"].";";
+      }
+      $querys=explode(";",$querys);
+      foreach($querys as &$query){
+         mysqli_query($_dbcon,$query);
+      }
+      die();
+
+    }
+
+    if($action=="renametheme"){
+      $name=mysqli_real_escape_string($_dbcon,$_POST["name"]);
+      mysqli_query($_dbcon,"UPDATE `theme` SET `Name` = '$name' WHERE `theme`.`ID` = $id;");
+      die();
+    }
+
     if($action=="delete"){
       $table=$_POST["table"];
       $ID=$_POST["id"];
