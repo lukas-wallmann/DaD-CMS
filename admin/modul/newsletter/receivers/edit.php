@@ -13,11 +13,10 @@
             SELECT name FROM newsletterReceivers WHERE Email = '".$mail."'
         ) LIMIT 1;");
         $ID=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From newsletterReceivers WHERE Email='".$mail."'"))["ID"];
-        mysqli_query($_dbcon,"INSERT INTO newsletterReceiversGroupLinks (ReceiverID, GroupID)
-        SELECT * FROM (SELECT '".$ID."', '".$id."') AS tmp
-        WHERE NOT EXISTS (
-            SELECT ReceiverID FROM newsletterReceiversGroupLinks WHERE ReceiverID = '".$ID."'
-        ) LIMIT 1;");
+        $res=mysqli_query($_dbcon,"SELECT * FROM `newsletterReceiversGroupLinks` WHERE `ReceiverID`=$ID AND `GroupID`=$id");
+        if (mysqli_num_rows($res)==0){
+          mysqli_query($_dbcon,"INSERT INTO `newsletterReceiversGroupLinks` (`ReceiverID`, `GroupID`, `Active`, `ID`) VALUES ('$ID', '$id', '1', NULL);");
+        };
       }
       die("success");
 
@@ -157,7 +156,7 @@
               $(".stepsize").text("Stepsize:"+stepsize);
               runImport(n,email,name);
             }else{
-            //  document.location.href="?m=newsletter/receivers";
+             document.location.href="?m=newsletter/receivers";
             }
           }
         });

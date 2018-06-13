@@ -51,7 +51,22 @@
       $mailtemplate=$this->render($data);
       $this->send($mailtemplate);
       if($this->registernewsletter==1)$this->registernl();
+      $this->redirect($baseurl);
+    }
 
+    private function redirect($baseurl){
+      global $_dbcon;
+      $res=mysqli_query($_dbcon,"Select * From sites WHERE ID=".$this->redirectaftersend);
+      if (mysqli_num_rows($res)==0){
+        $res=mysqli_query($_dbcon,"Select * From sites WHERE ID=".$this->fromid);
+        $row=mysqli_fetch_assoc($res);
+        $link=$baseurl.$row["Language"]."/".$row["SiteURL"]."/";
+        header("Location:".$link);
+      }else{
+        $row=mysqli_fetch_assoc($res);
+        $link=$baseurl.$row["Language"]."/".$row["SiteURL"]."/";
+        header("Location:".$link);
+      }
     }
 
     private function send($mailtemplate){
@@ -64,7 +79,23 @@
     }
 
     private function registernl(){
-      echo "newletter registered";
+      global $_dbcon;
+      $mail=mysqli_real_escape_string($_dbcon,$this->emailfornewsletter);
+      $name="";
+      $id=$this->newsletterreceivergroup;
+      mysqli_query($_dbcon,"INSERT INTO newsletterReceivers (Name, Email)
+      SELECT * FROM (SELECT '".$name."', '".$mail."') AS tmp
+      WHERE NOT EXISTS (
+          SELECT name FROM newsletterReceivers WHERE Email = '".$mail."'
+      ) LIMIT 1;");
+      $ID=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From newsletterReceivers WHERE Email='".$mail."'"))["ID"];
+      $res=mysqli_query($_dbcon,"SELECT * FROM `newsletterReceiversGroupLinks` WHERE `ReceiverID`=$ID AND `GroupID`=$id");
+      if (mysqli_num_rows($res)==0){
+        mysqli_query($_dbcon,"INSERT INTO `newsletterReceiversGroupLinks` (`ReceiverID`, `GroupID`, `Active`, `ID`) VALUES ('$ID', '$id', '1', NULL);");
+      }else{
+        $linkID=mysqli_fetch_assoc($res)["ID"];
+        mysqli_query($_dbcon,"UPDATE `newsletterReceiversGroupLinks` SET `Active` = '1' WHERE `newsletterReceiversGroupLinks`.`ID` = $linkID;");
+      }
     }
 
     private function utf8mail($to,$s,$body,$from_name="öäü",$from_a = "office@wallmanns-ideenwerkstatt.com", $reply="office@wallmanns-ideenwerkstatt.com")
