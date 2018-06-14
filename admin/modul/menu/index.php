@@ -22,5 +22,4 @@ var consts=JSON.parse('<?php echo json_encode($lang)?>');
 ul.ui-sortable {
     padding-left: 20px;
 }
-.ui-state-highlight { height: 1.5em; line-height: 1.2em; background:#fcfc51; border:1px solid #a3a302 }
 </style>

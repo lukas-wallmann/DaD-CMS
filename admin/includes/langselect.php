@@ -1,6 +1,6 @@
-<div class="langselect">
+<div class="langselect mb-2">
   <label class="mr-3"><?php echo $lang->language ?></label>
-  <select>
+  <select class="form-control autowidth">
   <?php
     $dadcmslang=$_COOKIE["DaDCMS-lang"];
     $langres=mysqli_query($_dbcon,"Select * From languages ORDER BY Name");

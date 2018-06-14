@@ -1,5 +1,5 @@
 <?php include "includes/langselect.php" ?>
-<select class="menu">
+<select class="menu form-control autowidth">
   <option value="all"><?php echo $lang->allMenus ?></option>
   <option value="0"><?php echo $lang->noMenu ?></option>
 <?php

@@ -8,6 +8,7 @@ var site={
       )
     });
     $("ul.sites").sortable({
+      placeholder: "ui-state-highlight",
       stop:site.setPositions
     });
     $("select.menu").change(site.filterByMenu);
