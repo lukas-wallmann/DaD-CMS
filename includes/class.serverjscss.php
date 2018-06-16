@@ -1,4 +1,8 @@
 <?php
+
+include "includes/scssphp/scss.inc.php";
+use Leafo\ScssPhp\Compiler;
+
 class serverjscss{
 
   var $cachemode="db";
@@ -37,7 +41,7 @@ class serverjscss{
   private function generate(){
     global $_dbcon;
 
-      $res=mysqli_query($_dbcon,"Select * From ".$this->type."Parts WHERE ParentID=".$this->name);
+      $res=mysqli_query($_dbcon,"Select * From ".$this->type."Parts WHERE ParentID=".$this->name." ORDER BY Pos");
       $tmp="";
       while($row=mysqli_fetch_assoc($res)){
         $tmp.=$row["Code"];
@@ -46,8 +50,8 @@ class serverjscss{
         include "class.jsshrink.php";
         $tmp=\JShrink\Minifier::minify($tmp);
       }else{
-        include "class.scss.php";
-        $scss = new scssc();
+
+        $scss = new Compiler();
         $tmp=$scss->compile($tmp);
         $tmp = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $tmp);
         $tmp = str_replace(': ', ':', $tmp);
