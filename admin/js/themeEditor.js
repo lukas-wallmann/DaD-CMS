@@ -170,7 +170,7 @@ var themeEditor={
       themeEditor.code.get($(this).parent(),true)
     });
 
-    $(".leftsidebar ul").off().fixedsortable({
+    $(".leftsidebar ul").not(".ui-sortable").fixedsortable({
       fixed:".nodrop",
       stop:function(e,ui){
         var data={action:"reposition"}

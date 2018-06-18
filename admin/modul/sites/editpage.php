@@ -95,7 +95,7 @@
                 while($row=mysqli_fetch_assoc($res)){
                   $selected="";
                   if($row["ID"]==$siterow["Layout"])$selected=" selected";
-                  echo "<option value='".$row["ID"]."'>".$row["Name"]."</option>";
+                  echo "<option value='".$row["ID"]."'".$selected.">".$row["Name"]."</option>";
                 }
                ?>
             </select><br>

@@ -33,6 +33,9 @@
 <script src="js/fixedsortable.js"></script>
 <script src="js/themeEditor.js"></script>
 <style>
+.leftsidebar{
+  overflow-y: scroll;
+}
 .leftsidebar span.closed {
     display: none;
 }
