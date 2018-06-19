@@ -59,6 +59,9 @@ var DaDCMS={
       case "textfield":
           code.push('<label>'+field.name+'</label><br><input class="saveme form-control" data-name="'+field.name+'" value="'+data+'">');
           break;
+      case "textarea":
+          code.push('<label>'+field.name+'</label><br><textarea class="saveme textarea form-control" data-name="'+field.name+'">'+data+'</textarea>');
+          break;
       case "editor":
           code.push('<div class="saveme div texteditor" data-name="'+field.name+'">'+data+'</div>');
           break;
@@ -175,6 +178,7 @@ var DaDCMS={
         }else{
           data[name]=value;
         }
+
         if(!$(this).hasClass("json") && !$(this).is("select") && !$(this).is("input[type='checkbox']")){
           if($(this).parent().parent().parent().attr("data-name")=="headline"){
             headlines+=value+" ";

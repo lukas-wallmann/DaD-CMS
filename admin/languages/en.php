@@ -101,7 +101,7 @@
 	$lang->standardLang="Standard language";
 
 	//Settings->Cache
-	$lang->cacheInfo="Where the sites should be chached? In database is fast if it runs on SSD while the rest not.";
+	$lang->cacheInfo="Where the sites should be chached? In database is faster if it runs on SSD, while the rest not.";
 	$lang->useDbCache="use database";
 	$lang->useFileCache="use filesystem";
 
