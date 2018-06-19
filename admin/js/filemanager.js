@@ -152,8 +152,9 @@ $.fn.fileManager = function() {
           for(var i=0; i<oldval.length; i++){
               main.find(".preview").append('<li><label class="file" for="input'+main.fileManager+"-"+i+'">'+oldval[i].link+'</label><input style="position:relative; z-index:99" id="input'+main.fileManager+"-"+i+'" class="form-control" value="'+oldval[i].name+'"><div class="delete"><i class="fas fa-trash-alt"></i></div></li>');
           }
-          main.find(".preview").sortable({stop:fb.updateval, handle:".file"});
+          main.find('.preview input').on("change",fb.updateval);
 
+          main.find(".preview").sortable({stop:fb.updateval, handle:".file"});
         }
         main.find(".preview .delete").click(function(){
           $(this).parent().remove();
@@ -176,7 +177,6 @@ $.fn.fileManager = function() {
           })
         }
         main.find(".saveme").text(JSON.stringify(tmp));
-
 
       },
 
