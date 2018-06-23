@@ -182,7 +182,7 @@ var DaDCMS={
         if(!$(this).hasClass("json") && !$(this).is("select") && !$(this).is("input[type='checkbox']")){
           if($(this).parent().parent().parent().attr("data-name")=="headline"){
             headlines+=value+" ";
-          }else{
+          }else if($(this).hasClass("texteditor")){
             texts+=value+" ";
           }
         }

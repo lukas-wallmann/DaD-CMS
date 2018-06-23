@@ -46,6 +46,7 @@ section {
 }
 .section .content{
   display:none;
+  margin:0 0 30px 0;
 }
 ul#elements, ul#content {
   padding: 0;
