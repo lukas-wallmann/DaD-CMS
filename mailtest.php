@@ -46,22 +46,24 @@ try {
     //Server settings
     $mail->SMTPDebug = 2;                                 // Enable verbose debug output
     $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = 'smtp.mail.yahoo.com';
+    $mail->Host = 'wallmanns-ideenwerkstatt.com';
     // use
     // $mail->Host = gethostbyname('smtp.gmail.com');
     // if your network does not support SMTP over IPv6
     //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-    $mail->Port = 587;
+    $mail->Port = 25;
     //Set the encryption system to use - ssl (deprecated) or tls
-    $mail->SMTPSecure = 'tls';
+    $mail->SMTPSecure = false;
+    $mail->SMTPAutoTLS = false;
+    //$mail->SMTPSecure = 'tls';
     //Whether to use SMTP authentication
     $mail->SMTPAuth = true;
     //Username to use for SMTP authentication - use full email address for gmail
-    $mail->Username = "lukas.wallmann@yahoo.de";
+    $mail->Username = "lukas@wallmanns-ideenwerkstatt.com";
     //Password to use for SMTP authentication
     $mail->Password = "********";
     //Recipients
-    $mail->setFrom('lukas.wallmann@yahoo.de', 'John Doe JaGG');
+    $mail->setFrom('lukas@wallmanns-ideenwerkstatt.com', 'John Doe JaGG');
     $mail->addAddress($empfaenger);     // Add a recipient
     $mail->addReplyTo('john.doe.jagg@gmail.com', 'John Doe JaGG');
 

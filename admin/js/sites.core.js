@@ -23,7 +23,7 @@ var DaDCMS={
   plugins:[],
   registerPlugin:function(plugin){
     DaDCMS.plugins.push(plugin);
-    $('#elements').append('<li class="draggable btn bg-secondary" data-pluginid="'+plugin.id+'" data-name="'+plugin.name+'"><div class="icon">'+plugin.icon+'</div></li>');
+    $('#elements').append('<li class="draggable btn bg-secondary" data-name="'+plugin.name+'"><div class="icon">'+plugin.icon+'</div></li>');
   },
 
   init:function(){
@@ -39,7 +39,7 @@ var DaDCMS={
 
   buildPlugin:function(plugin,content={}){
     var code=[];
-    code.push("<li class='itm' data-name='"+plugin.name+"' data-pluginid='"+plugin.id+"'><div class='handle'><div class='icon'>"+plugin.icon+"</div><div class='delete'><i class='fas fa-trash'></i></div></div><div class='content'><div class='name'>"+plugin.name+"</div>");
+    code.push("<li class='itm' data-name='"+plugin.name+"'><div class='handle'><div class='icon'>"+plugin.icon+"</div><div class='delete'><i class='fas fa-trash'></i></div></div><div class='content'><div class='name'>"+plugin.name+"</div>");
     for(var i=0; i<plugin.fieldset.length; i++){
       code.push(DaDCMS.getField(plugin.fieldset[i],content));
     }
@@ -58,6 +58,32 @@ var DaDCMS={
     switch(field.type) {
       case "textfield":
           code.push('<label>'+field.name+'</label><br><input class="saveme form-control" data-name="'+field.name+'" value="'+data+'">');
+          break;
+      case "codeEditor":
+          var codef=data;
+          if(data.code!=undefined)codef=data.code;
+          var mode="";
+          if(data.mode!=undefined)mode=data.mode;
+          var select="";
+          if(field.mode=="selectable"){
+            select="<select class='form-control mode'>";
+            var parts=field.select.split(",");
+            for(var i=0; i<parts.length; i++){
+              if(i==0 && mode=="")mode=parts[i];
+              var selected="";
+              if(mode==parts[i])selected=" selected";
+              select+='<option value="'+parts[i]+'"'+selected+'>'+parts[i]+"</option>";
+            }
+            select+="</select>";
+          }else{
+            mode=field.mode;
+          }
+          if(field.replaceChars==false){
+            codef=codef.split("&").join("\&amp;").split(">").join("\&gt;").split("<").join("\&lt;");
+          }else{
+            codef=DaDCMS.helpers.undoHTML(codef);
+          }
+          code.push(select+'<div class="saveme codeEditor" style="height:200px" data-name="'+field.name+'" data-mode="'+mode+'" data-replaceChars="'+field.replaceChars+'">'+codef+'</div>');
           break;
       case "textarea":
           code.push('<label>'+field.name+'</label><br><textarea class="saveme textarea form-control" data-name="'+field.name+'">'+data+'</textarea>');
@@ -114,6 +140,13 @@ var DaDCMS={
 
   helpers:{
     quillcount:0,
+    codeEditors:[],
+    replaceHTML:function(s){
+      return s.split("&").join("\&amp;").split(">").join("\&gt;").split("<").join("\&lt;").split("\n").join("<br>").split(" ").join("\&nbsp;");
+    },
+    undoHTML:function(s){
+      return s.split("<br>").join("\n").split(" ").join(" ").split(">").join("\&gt;").split("<").join("\&lt;");
+    },
     getPlugin:function(id){
       for(var i=0; i<DaDCMS.plugins.length; i++){
         if(DaDCMS.plugins[i].name==id){
@@ -172,6 +205,14 @@ var DaDCMS={
         }
         if($(this).hasClass("texteditor")){
           value=$(this).find('.ql-editor').html();
+        }
+        if($(this).hasClass("codeEditor")){
+          var mode=$(this).attr("data-mode");
+          var code=DaDCMS.helpers.codeEditors[$(this).attr("data-id")].getValue();
+          if($(this).attr("data-replacechars")=="true"){
+            code=DaDCMS.helpers.replaceHTML(code);
+          }
+          value={mode:mode,code:code};
         }
         if($(this).hasClass("formfields")){
           data[name]={fields:value};
@@ -307,6 +348,25 @@ var DaDCMS={
           elm.append('<option value="'+data[i][1]+'"'+selected+'>'+data[i][0]+'</option>');
         }
       });
+    })
+    $('.codeEditor').each(function(){
+      if($(this).attr("data-id")==undefined){
+        $(this).attr("data-id",DaDCMS.helpers.codeEditors.length);
+        $(this).attr("id","codeeditor-"+DaDCMS.helpers.codeEditors.length);
+        var editor=ace.edit("codeeditor-"+$(this).attr("data-id"));
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/"+$(this).attr("data-mode"));
+        editor.session.setUseWorker(false);
+        editor.setOptions({
+          fontSize: "13pt"
+        });
+        DaDCMS.helpers.codeEditors.push(editor);
+        $(this).parent().find("select.mode").change(function(){
+          var ed=$(this).parent().find(".codeEditor");
+          ed.attr("data-mode",$(this).val());
+          DaDCMS.helpers.codeEditors[ed.attr("data-id")].session.setMode("ace/mode/"+$(this).val());
+        })
+      }
     })
   },
 

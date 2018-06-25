@@ -184,6 +184,7 @@
 <script src="js/filemanager.js"></script>
 <script src="js/formmanager.js"></script>
 <script src="js/videomanager.js"></script>
+<script src="js/ace/ace.js"></script>
 <script src="js/cmd.js"></script>
 <script>
 var editMode="site";
