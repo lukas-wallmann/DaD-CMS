@@ -186,6 +186,14 @@
 <script src="js/videomanager.js"></script>
 <script src="js/ace/ace.js"></script>
 <script src="js/cmd.js"></script>
+<?php
+  $res=mysqli_query($_dbcon,"SELECT * FROM `sites` WHERE `ID`!=".$_GET["ID"]);
+  $tmp=array();
+  while($row=mysqli_fetch_assoc($res)){
+    array_push($tmp,$row["SiteURL"]);
+  }
+  echo "<script>var siteurls=JSON.parse('".json_encode($tmp)."')</script>";
+ ?>
 <script>
 var editMode="site";
 var consts=JSON.parse('<?php echo json_encode($lang)?>');

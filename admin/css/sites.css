@@ -37,6 +37,41 @@
 .texteditor{
   background: #fff;
 }
+.elementslider .innner {
+    overflow: hidden;
+    margin: 0 30px;
+    position: relative;
+    height: 75px;
+}
+
+.elementslider ul#elements {
+    width: 1000px;
+    position: absolute;
+}
+
+.elementslider .left,.elementslider .right {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 70px;
+    line-height: 70px;
+    WIDTH: 30px;
+    text-align: center;
+    background: #eee;
+    border: 1px solid #ccc;
+}
+
+.elementslider {
+    position: relative;
+}
+
+.elementslider .right {
+    left: auto;
+    right: 0;
+}
+.elementslider .inactive{
+    opacity:0.5;
+}
 section {
     margin: 20px 0;
 }
