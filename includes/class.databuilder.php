@@ -10,9 +10,10 @@ class databuilder{
     $this->data->site=new stdClass();
     $this->data->site->Currentyear=date("Y");
 
+    if(substr($url,0,1)=="/")$url=substr($url,1);
     $parts=explode("/",$url);
-    if($parts[1]!=""){
 
+    if($parts[1]!=""){
       $url=mysqli_real_escape_string($_dbcon,$parts[1]);
       $lang=mysqli_real_escape_string($_dbcon,$parts[0]);
       $res=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From sites WHERE SiteURL='$url' AND Language='$lang' Limit 1"));

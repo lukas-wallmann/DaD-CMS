@@ -7,8 +7,9 @@ $basefolder=explode($_SERVER['DOCUMENT_ROOT'],dirname(__FILE__));
 if(count($basefolder)==1){
   $basefolder="/";
 }else{
-  $basefolder=$basefolder[1]."/";
+  $basefolder="/".$basefolder[1]."/";
 }
+echo "basefolder:".$basefolder."<br>";
 $basefolderlength=strlen($basefolder);
 $url=substr($_SERVER['REQUEST_URI'],$basefolderlength,strlen($_SERVER['REQUEST_URI'])-$basefolderlength);
 
