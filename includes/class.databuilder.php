@@ -23,6 +23,7 @@ class databuilder{
       $res=mysqli_fetch_assoc(mysqli_query($_dbcon,"Select * From sites WHERE Language='$lang' ORDER BY Pos Limit 1"));
     }
 
+    //If nothing found
     if($res==""){
       http_response_code(404);
       //include('my_404.php');
