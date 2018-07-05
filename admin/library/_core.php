@@ -7,7 +7,6 @@
 	include "user.php";
 	include "language.php";
 	include "select.php";
-	include "files.php";
 	include "modul.php";
 
 ?>

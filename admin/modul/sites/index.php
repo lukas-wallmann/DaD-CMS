@@ -26,7 +26,7 @@
   <?php
     $res=mysqli_query($_dbcon,"Select * From sites WHERE Language='$dadcmslang' ORDER BY Pos");
     while($row=mysqli_fetch_assoc($res)){
-      echo '<li data-id="'.$row["ID"].'" data-pos="'.$row["Pos"].'" data-menuid="'.$row["MenuID"].'"><a href="?m=sites&f=editpage&nh=1&ID='.$row["ID"].'">'.$row["Title"].'</a></li>';
+      echo '<li data-id="'.$row["ID"].'" data-pos="'.$row["Pos"].'" data-menuid="'.$row["MenuID"].'"><a href="?m=sites&f=editpage&nh=1&ID='.$row["ID"].'">'.$row["Title"].'</a><a class="ml-3" href="?m=sites&f=copy&ID='.$row["ID"].'"><i class="far fa-copy"></i></a><span class="ml-2 delete"><i class="far fa-trash-alt"></i></span></li>';
     }
    ?>
 </ul>

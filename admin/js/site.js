@@ -13,6 +13,14 @@ var site={
     });
     $("select.menu").change(site.filterByMenu);
     site.filterByMenu();
+    $('ul.sites .delete').click(function(){
+      var r=confirm(consts.delete+": "+$(this).parent().text());
+      if(r){
+        var data={action:"delete",id:$(this).parent().attr("data-id")};
+        $.ajax({url:"?m=sites&f=apisite&no=1", type:"POST", data:data});
+        $(this).parent().remove();
+      }
+    })
   },
 
   new:function(name,menuid){

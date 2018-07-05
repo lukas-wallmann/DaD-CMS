@@ -19,6 +19,11 @@
       }
     }
 
+    if($_POST["action"]=="delete"){
+      mysqli_query($_dbcon,"DELETE FROM `sites` WHERE `sites`.`ID` = ".$_POST["id"]);
+    }
+
+
   }
 
 ?>

@@ -7,7 +7,7 @@
  		echo "Failed to connect to MySQL: " . mysqli_connect_error();
  	}
 
-	function prepareToCopy($row,$tablename,$field="",$val=""){
+	function prepareToCopy($row,$tablename,$field="",$val="",$field2="",$val2=""){
 		global $_dbcon;
 		$keys=array();
 		$values=array();
@@ -15,12 +15,16 @@
 		$vals="";
 		foreach ($row as $key => $value) {
 			if($key!="ID"){
-				if($key!=$field){
-					array_push($keys,$key);
+				array_push($keys,$key);
+				if($key!=$field && $key!=$field2){
 					array_push($values,mysqli_real_escape_string($_dbcon,$value));
 				}else{
-					array_push($keys,$key);
-					array_push($values,mysqli_real_escape_string($_dbcon,$val));
+					if($key==$field){
+						array_push($values,mysqli_real_escape_string($_dbcon,$val));
+					}else{
+						array_push($values,mysqli_real_escape_string($_dbcon,$val2));
+					}
+
 				}
 
 			}else{
@@ -32,7 +36,7 @@
 			if($i!=0)$fields.=", ";
 			$fields.="`".$keys[$i]."`";
 			if($i!=0)$vals.=",";
-			if($values[$i]==NULL){
+			if($values[$i]===NULL){
 				$vals.="NULL";
 			}else{
 				$vals.="'".$values[$i]."'";
