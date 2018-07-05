@@ -9,6 +9,10 @@
       echo $_dbcon->insert_id;
     }
 
+    if($_POST["action"]=="delete"){
+      mysqli_query($_dbcon,"DELETE FROM `newsletter` WHERE `newsletter`.`ID` = ".$_POST["id"]);
+    }
+
   }
 
 ?>
